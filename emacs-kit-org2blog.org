@@ -1,0 +1,11 @@
+#+TITLE: Emacs Kit org2blog
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:emacs-kit.org][Emacs Kit]].
+
+* Emacs Kit org2blog
+*** Load org2blog
+#+begin_src emacs-lisp
+(setq load-path (cons "~/.emacs.d/elisp/org2blog/" load-path))
+(require 'org2blog)
+#+end_src

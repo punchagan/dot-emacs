@@ -1,0 +1,27 @@
+#+TITLE: Emacs Kit dictem
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:emacs-kit.org][Emacs Kit]].
+
+* Emacs kit Dictem
+
+*** Load the module
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name 
+                           "dictem" (expand-file-name
+			                "elisp" dotfiles-dir)))
+  (require 'dictem)
+#+end_src
+
+*** Configure server
+#+begin_src emacs-lisp
+(setq dictem-server "localhost")
+(setq dictem-port   "2628")
+(dictem-initialize)
+#+end_src
+
+*** Keybindings
+The README is too good! Have a look. 
+#+begin_src emacs-lisp
+(global-set-key "\C-cs" 'dictem-run-search)
+#+end_src

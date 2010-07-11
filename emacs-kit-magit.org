@@ -1,0 +1,14 @@
+#+TITLE: Emacs Kit Magit
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:emacs-kit.org][Emacs Kit]].
+
+* Emacs kit Magit
+
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name 
+                           "magit" (expand-file-name
+			                "elisp" dotfiles-dir)))
+  (require 'magit)
+#+end_src
+

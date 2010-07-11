@@ -1,0 +1,33 @@
+#+TITLE: Emacs Kit ERC
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:emacs-kit.org][Emacs Kit]].
+
+* Emacs kit ERC
+*** Configuration
+#+begin_src emacs-lisp
+(setq erc-enable-logging t
+      erc-generate-log-file-name-function (quote
+      erc-generate-log-file-name-network) 
+      erc-header-line-face-method t
+      erc-header-line-uses-tabbar-p t
+      erc-hide-prompt t
+      erc-log-insert-log-on-open nil
+      erc-log-mode t
+      erc-log-write-after-insert t
+      erc-log-write-after-send t
+      erc-modules (quote (autojoin button completion fill irccontrols
+      list log match menu move-to-prompt netsplit networks noncommands
+      page readonly ring stamp)) 
+      erc-notify-mode t
+      erc-paranoid t
+      erc-port 6667
+      erc-server "irc.freenode.net"
+      erc-sound-mode t
+      erc-track-minor-mode t
+      erc-track-mode t
+      erc-track-showcount t
+      erc-track-visibility t
+      erc-track-when-inactive nil)
+#+end_src
+

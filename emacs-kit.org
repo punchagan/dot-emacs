@@ -1,0 +1,209 @@
+#+TITLE: emacs kit
+#+SEQ_TODO: PROPOSED TODO STARTED | DONE DEFERRED REJECTED
+#+OPTIONS: H:2 num:nil toc:t
+#+STARTUP: oddeven
+
+#+begin_quote 
+Emacs outshines all other editing software in approximately the same
+way that the noonday sun does the stars. It is not just bigger and
+brighter; it simply makes everything else vanish.
+
+-- Neal Stephenson, "In the Beginning was the Command Line"
+#+end_quote
+
+* Emacs kit basics
+** Load path etc.
+
+#+srcname: emacs-kit-load-paths
+#+begin_src emacs-lisp 
+  (setq dotfiles-dir (file-name-directory
+                      (or load-file-name (buffer-file-name))))
+  
+  (add-to-list 'load-path dotfiles-dir)
+#+end_src
+
+** Ubiquitous Packages
+
+These should be loaded on startup rather than autoloaded on demand
+since they are likely to be used in every session
+
+#+srcname: emacs-kit-load-on-startup
+#+begin_src emacs-lisp 
+  (require 'cl)
+  (require 'saveplace)
+  (require 'ffap)
+  (require 'uniquify)
+  (require 'ansi-color)
+  (require 'recentf)
+#+end_src
+
+** Function for loading emacs-kit-*
+#+srcname: emacs-kit-load
+#+begin_src emacs-lisp 
+  (defun emacs-kit-load (file)
+    "This function is to be used to load emacs-kit-*.org files."
+    (org-babel-load-file (expand-file-name file
+                                           dotfiles-dir)))
+#+end_src
+
+** System/User specific customizations
+
+You can keep system- or user-specific customizations here in either
+raw emacs-lisp files or as embedded elisp in org-mode files (as done
+in this document).
+
+#+srcname: emacs-kit-user/system-setup
+#+begin_src emacs-lisp 
+  (setq system-specific-config (concat dotfiles-dir system-name ".el")
+        system-specific-literate-config (concat dotfiles-dir system-name ".org")
+        user-specific-config (concat dotfiles-dir user-login-name ".el")
+        user-specific-literate-config (concat dotfiles-dir user-login-name ".org")
+        user-specific-dir (concat dotfiles-dir user-login-name))
+  (add-to-list 'load-path user-specific-dir)
+#+end_src
+
+You can keep elisp source in the =elisp= directory.  Packages loaded
+from here will override those installed by ELPA.  This is useful if
+you want to track the development versions of a project, or if a
+project is not in elpa.
+
+#+srcname: emacs-kit-load-elisp-dir
+#+begin_src emacs-lisp
+(setq elisp-source-dir (concat dotfiles-dir "elisp"))
+(add-to-list 'load-path elisp-source-dir)
+#+end_src
+
+* Language/Mode Specific Files
+These sections pertain to specific languages or modes.  
+
+** Emacs kit yasnippet
+   Located in [[file:emacs-kit-yasnippet.org][emacs-kit-yasnippet]]
+#+begin_src emacs-lisp
+  (emacs-kit-load "emacs-kit-yasnippet.org")
+#+end_src
+
+** Emacs kit xml-rpc
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name 
+                           "xml-rpc" (expand-file-name
+			                "elisp" dotfiles-dir)))
+  (require 'xml-rpc)
+#+end_src
+
+** Emacs kit python-mode
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name 
+                           "python-mode" (expand-file-name
+			                "elisp" dotfiles-dir)))
+  (require 'python-mode)
+#+end_src
+
+
+** Emacs kit identica-mode
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name 
+                           "identica-mode" (expand-file-name
+			                "elisp" dotfiles-dir)))
+  (require 'identica-mode)
+#+end_src
+
+** Emacs kit Org-mode
+Located in [[file:emacs-kit-org.org][emacs-kit-org]]
+
+#+begin_src emacs-lisp
+  (emacs-kit-load "emacs-kit-org.org")
+#+end_src
+** Emacs kit org2blog
+Located in [[file:emacs-kit-org2blog.org][emacs-kit-org2blog]]
+
+#+begin_src emacs-lisp
+(emacs-kit-load "emacs-kit-org2blog.org")
+#+end_src
+
+** Emacs kit eshell
+Located in [[file:emacs-kit-eshell.org][emacs-kit-eshell]]
+
+#+begin_src emacs-lisp
+  (emacs-kit-load "emacs-kit-eshell.org")
+#+end_src
+
+** Emacs kit lisp
+Located in [[file:emacs-kit-lisp.org][emacs-kit-lisp]]
+
+#+begin_src emacs-lisp
+;;(emacs-kit-load "emacs-kit-lisp.org")
+#+end_src
+
+** Emacs kit magit
+Located in [[file:emacs-kit-magit.org][emacs-kit-magit]]
+
+#+begin_src emacs-lisp
+(emacs-kit-load "emacs-kit-magit.org")
+#+end_src
+
+** Emacs kit dictem
+Located in [[file:emacs-kit-dictem.org][emacs-kit-dictem]]
+
+#+begin_src emacs-lisp
+(emacs-kit-load "emacs-kit-dictem.org")
+#+end_src
+
+** Emacs kit ERC
+Located in [[file:emacs-kit-erc.org][emacs-kit-erc]]
+
+#+begin_src emacs-lisp
+(emacs-kit-load "emacs-kit-erc.org")
+#+end_src
+
+* Load the rest of the emacs kit core
+The following files contain the remainder of the core of the Emacs
+Emacs Kit.  All of the code in this section should be loaded by
+everyone using the emacs kit.
+
+** Emacs kit defuns
+Emacs kit function definitions in [[file:emacs-kit-defuns.org][emacs-kit-defuns]]
+
+#+begin_src emacs-lisp
+(emacs-kit-load "emacs-kit-defuns.org")
+#+end_src
+
+** Emacs kit bindings
+Key Bindings in [[file:emacs-kit-bindings.org][emacs-kit-bindings]]
+
+#+begin_src emacs-lisp
+;;(emacs-kit-load "emacs-kit-bindings.org")
+#+end_src
+
+** Emacs kit misc
+   Miscellaneous settings in [[file:emacs-kit-misc.org][emacs-kit-misc]]
+
+#+begin_src emacs-lisp
+(emacs-kit-load "emacs-kit-misc.org")
+#+end_src
+
+** Emacs kit registers
+Registers for jumping to commonly used files in [[file:emacs-kit-registers.org][emacs-kit-registers]]
+
+#+begin_src emacs-lisp
+;;(emacs-kit-load "emacs-kit-registers.org")
+#+end_src
+
+* Load User/System Specific Files
+
+After we've loaded all the Emacs Kit defaults, lets load the User's stuff.
+#+srcname: emacs-kit-load-files
+#+begin_src emacs-lisp
+  (if (file-exists-p elisp-source-dir)
+      (let ((default-directory elisp-source-dir))
+        (normal-top-level-add-subdirs-to-load-path)))
+  (if (file-exists-p system-specific-config) (load system-specific-config))
+  (if (file-exists-p system-specific-literate-config)
+      (org-babel-load-file system-specific-literate-config))
+  (if (file-exists-p user-specific-config) (load user-specific-config))
+  (if (file-exists-p user-specific-literate-config)
+      (org-babel-load-file user-specific-literate-config))
+  (when (file-exists-p user-specific-dir)
+    (let ((default-directory user-specific-dir))
+      (mapc #'load (directory-files user-specific-dir nil ".*el$"))
+      (mapc #'org-babel-load-file (directory-files user-specific-dir nil ".*org$"))))
+#+end_src

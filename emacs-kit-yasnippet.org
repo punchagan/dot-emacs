@@ -1,0 +1,23 @@
+#+TITLE: Emacs Kit Yasnippet
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:emacs-kit.org][Emacs Kit]].
+
+* Emacs kit yasnippet
+[[http://code.google.com/p/yasnippet/][yasnippet]] is yet another snippet expansion system for Emacs.  It is
+inspired by TextMate's templating syntax.
+- watch the [[http://www.youtube.com/watch?v=vOj7btx3ATg][video on YouTube]]
+- see the [[http://yasnippet.googlecode.com/svn/trunk/doc/index.html][intro and tutorial]]
+
+load the yasnippet bundle
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name 
+                           "yasnippet" (expand-file-name
+			                "elisp" dotfiles-dir)))
+  (require 'yasnippet)
+#+end_src
+
+load the snippets defined in the =./snippets/= directory
+#+begin_src emacs-lisp
+  (yas/load-directory (expand-file-name "snippets" dotfiles-dir))
+#+end_src

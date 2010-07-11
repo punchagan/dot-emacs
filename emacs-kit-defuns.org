@@ -1,0 +1,8 @@
+#+TITLE: Emacs Kit Defuns
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:emacs-kit.org][Emacs Kit]].
+
+* Emacs Kit Defuns
+Function definitions
+
