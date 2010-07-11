@@ -1,0 +1,27 @@
+[submodule "elisp/color-theme"]
+	path = elisp/color-theme
+	url = http://github.com/emacsmirror/color-theme.git
+[submodule "elisp/dictem"]
+	path = elisp/dictem
+	url = http://github.com/emacsmirror/dictem.git
+[submodule "elisp/identica-mode"]
+	path = elisp/identica-mode
+	url = http://git.sv.gnu.org/r/identica-mode.git
+[submodule "elisp/magit"]
+	path = elisp/magit
+	url = http://github.com/philjackson/magit.git
+[submodule "elisp/org2blog"]
+	path = elisp/org2blog
+	url = https://punchagan@github.com/punchagan/org2blog.git
+[submodule "elisp/org"]
+	path = elisp/org
+	url = http://repo.or.cz/r/org-mode.git
+[submodule "elisp/python-mode"]
+	path = elisp/python-mode
+	url = http://github.com/emacsmirror/python-mode.git
+[submodule "elisp/xml-rpc"]
+	path = elisp/xml-rpc
+	url = http://github.com/emacsmirror/xml-rpc.git
+[submodule "elisp/yasnippet"]
+	path = elisp/yasnippet
+	url = http://github.com/emacsmirror/yasnippet.git
