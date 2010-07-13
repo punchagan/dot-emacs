@@ -101,7 +101,7 @@ Set this to whatever browser you use e.g...
 #+end_src
 ** Use socks proxy
 #+begin_src emacs-lisp
-(setq url-gateway-method (quote native))
+(setq url-gateway-method (quote socks))
 #+end_src 
 ** Default Major Mode
 #+begin_src emacs-lisp
