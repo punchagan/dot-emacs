@@ -103,6 +103,10 @@ Set this to whatever browser you use e.g...
 #+begin_src emacs-lisp
 (setq url-gateway-method (quote socks))
 #+end_src 
+** Start server
+#+begin_src emacs-lisp
+(server-start)
+#+end_src 
 ** Default Major Mode
 #+begin_src emacs-lisp
 (setq default-major-mode 'org-mode)
