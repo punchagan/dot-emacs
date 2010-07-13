@@ -6,3 +6,6 @@ This is part of the [[file:emacs-kit.org][Emacs Kit]].
 * Emacs Kit Defuns
 Function definitions
 
+#+begin_src emacs-lisp
+;;
+#+end_src
