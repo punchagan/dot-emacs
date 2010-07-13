@@ -155,6 +155,21 @@ Located in [[file:emacs-kit-erc.org][emacs-kit-erc]]
 (emacs-kit-load "emacs-kit-erc.org")
 #+end_src
 
+** Emacs kit gnus
+Located in [[file:emacs-kit-gnus.org][emacs-kit-gnus]]
+
+#+begin_src emacs-lisp
+;;(emacs-kit-load "emacs-kit-gnus.org")
+#+end_src
+
+** Emacs kit pastebin
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name 
+                           "pastebin" (expand-file-name
+			                "elisp" dotfiles-dir)))
+  (require 'pastebin)
+#+end_src
+
 * Load the rest of the emacs kit core
 The following files contain the remainder of the core of the Emacs
 Emacs Kit.  All of the code in this section should be loaded by
@@ -171,7 +186,7 @@ Emacs kit function definitions in [[file:emacs-kit-defuns.org][emacs-kit-defuns]
 Key Bindings in [[file:emacs-kit-bindings.org][emacs-kit-bindings]]
 
 #+begin_src emacs-lisp
-;;(emacs-kit-load "emacs-kit-bindings.org")
+(emacs-kit-load "emacs-kit-bindings.org")
 #+end_src
 
 ** Emacs kit misc
@@ -185,7 +200,7 @@ Key Bindings in [[file:emacs-kit-bindings.org][emacs-kit-bindings]]
 Registers for jumping to commonly used files in [[file:emacs-kit-registers.org][emacs-kit-registers]]
 
 #+begin_src emacs-lisp
-;;(emacs-kit-load "emacs-kit-registers.org")
+(emacs-kit-load "emacs-kit-registers.org")
 #+end_src
 
 * Load User/System Specific Files
