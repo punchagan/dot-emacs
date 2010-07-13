@@ -65,7 +65,7 @@ This following loads color-theme so that it is available by default.
 Set this to whatever browser you use e.g...
 #+begin_src emacs-lisp
 (setq browse-url-browser-function 'browse-url-firefox)
-(global-set-key (kbd "C-M-f") 'browse-url-browser-function)
+(global-set-key (kbd "C-M-f") 'browse-url-firefox)
 #+end_src
 ** Transparently open compressed files
 #+begin_src emacs-lisp
@@ -96,12 +96,12 @@ Set this to whatever browser you use e.g...
 #+end_src
 ** Display time
 #+begin_src emacs-lisp
-(setq display-time-day-and-date t)
+(setq display-time-day-and-date nil)
 (display-time)
 #+end_src
 ** Use socks proxy
 #+begin_src emacs-lisp
-(setq url-gateway-method (quote socks))
+(setq url-gateway-method (quote native))
 #+end_src 
 ** Default Major Mode
 #+begin_src emacs-lisp
