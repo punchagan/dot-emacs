@@ -25,3 +25,6 @@
 [submodule "elisp/yasnippet"]
 	path = elisp/yasnippet
 	url = http://github.com/emacsmirror/yasnippet.git
+[submodule "elisp/pastebin"]
+	path = elisp/pastebin
+	url = http://github.com/emacsmirror/pastebin.git

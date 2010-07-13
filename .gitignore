@@ -2,6 +2,8 @@ loaddefs.el*
 backups/*
 auto-save-list
 *elc
+*~
+session*
 places
 url/cookies
 mail
