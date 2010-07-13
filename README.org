@@ -1,0 +1,4 @@
+This is a shameless copy of eschulte's emacs starter kit. 
+It's not a fork, since I will not be pulling changes from there. 
+
+It uses the idea of submodules to give a "mobile" emacs setup. 
