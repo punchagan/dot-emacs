@@ -63,7 +63,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+begin_src emacs-lisp
 (setq org-todo-keywords 
       (quote (
-	      (sequence "TODO(t)" "NEXT(s!)" "|" "DONE(d!/!)")
+	      (sequence "TODO(t)" "NEXT(n!)" "|" "DONE(d!/!)")
 	      (sequence "WAITING(w!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)")
 	      (sequence "TOREAD(o)" "FOUND(f)" "READING(r)" "|" "DONE(d!/!)" ))))
 
@@ -103,7 +103,8 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
  ;;  (unless (get-buffer-window buf)
  ;;    (org-agenda-goto-calendar)))
  )
-(run-with-idle-timer 600 t 'jump-to-org-agenda)
+
+(run-with-idle-timer 900 t 'jump-to-org-agenda)
 
 #+end_src
 
@@ -121,8 +122,12 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 ; Allow refile to create parent tasks with confirmation
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 #+end_src
-
-
+* Archiving
+#+begin_src emacs-lisp
+;; Donot change status of items when archiving.
+(setq org-archive-mark-done nil)
+;;
+#+end_src
 * org-capture stuff
 #+begin_src emacs-lisp
 (require 'org-capture)
