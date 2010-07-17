@@ -151,10 +151,10 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 	 "* %(format-time-string \"%H:%M:%S\")\n  %?")
 	("n" "note" entry
 	 (file+datetree "journal.org")
-	 "* %^{About} %^G:\n  %U\n  %?")
+	 "  %^{About} \n\n  %U\n\n  %?")
 	("t" "task" entry
 	 (file+headline "refile.org" "Tasks")
-	 "* TODO %? %^G:\n  " :clock-in t :clock-resume t)
+	 "* TODO %? \n  " :clock-in t :clock-resume t)
 	("x" "org-protocol save relevant links" item
 	 (clock)
 	 "[[%:link][%:description]]" :immediate-finish t)
