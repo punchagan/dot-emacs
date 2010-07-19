@@ -99,6 +99,11 @@ Set this to whatever browser you use e.g...
 (setq display-time-day-and-date nil)
 (display-time)
 #+end_src
+** Faces
+#+begin_src emacs-lisp
+(custom-set-faces
+ '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
+#+end_src
 ** Use socks proxy
 #+begin_src emacs-lisp
 (setq url-gateway-method (quote socks))
