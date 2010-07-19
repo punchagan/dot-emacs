@@ -44,7 +44,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 (setq org-startup-folded t)
 (setq org-startup-indented nil) ;indented mode. works only with emacs>=23.2
 (setq org-cycle-separator-lines 0) ;never leave empty lines in collapsed view.
-(setq org-directory "/media/all/life-in-plain-text/")
+(setq org-directory "/data/life-in-plain-text/")
 (setq org-default-notes-file (concat org-directory "notes.org"))
 (setq org-agenda-include-diary nil)
 (setq org-hide-leading-stars t)
@@ -142,10 +142,10 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 	 "|%^{To/From}|%^{Detail}|%^{Amount}|%u|" :immediate-finish t)
 	("b" "book" entry
 	 (file+headline "books.org" "Book List")
-	 "%[/media/all/life-in-plain-text/template-books]" :immediate-finish t)
+	 "%[/data/life-in-plain-text/template-books]" :immediate-finish t)
 	("c" "contacts" entry
 	 (file+headline "contacts.org" "Contacts")
-	 "%[/media/all/life-in-plain-text/template-contacts]" :immediate-finish t)
+	 "%[/data/life-in-plain-text/template-contacts]" :immediate-finish t)
 	("j" "journal" entry
 	 (file+datetree "journal.org")
 	 "* %(format-time-string \"%H:%M:%S\")\n  %?")
