@@ -113,6 +113,7 @@ Located in [[file:emacs-kit-org.org][emacs-kit-org]]
 #+begin_src emacs-lisp
   (emacs-kit-load "emacs-kit-org.org")
 #+end_src
+
 ** Emacs kit org2blog
 Located in [[file:emacs-kit-org2blog.org][emacs-kit-org2blog]]
 

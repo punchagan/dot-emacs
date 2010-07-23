@@ -16,195 +16,195 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 
 * Loading stuff
 #+begin_src emacs-lisp
-;;Org-mode
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq load-path (cons "~/.emacs.d/elisp/org/lisp" load-path))
-(setq load-path (cons "~/.emacs.d/elisp/org/contrib/lisp" load-path))
-(require 'org-install)
-(require 'org-habit)
+  (add-to-list 'load-path (expand-file-name
+                           "lisp" (expand-file-name
+                                   "contrib" (expand-file-name
+                                              "org" (expand-file-name
+                                                     "elisp" dotfiles-dir)))))
+  (require 'org-habit)
 #+end_src
 
 * Keybindings
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c b") 'org-iswitchb)
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c b") 'org-iswitchb)
 #+end_src
 
 * Auto mode and hooks
 #+begin_src emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
-(add-hook 'org-mode-hook 'turn-on-flyspell)
-(add-hook 'org-mode-hook 'turn-on-font-lock)
+  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  (add-hook 'org-mode-hook 'turn-on-flyspell)
+  (add-hook 'org-mode-hook 'turn-on-font-lock)
 #+end_src
 
 * Miscellaneous
 #+begin_src emacs-lisp
-(setq org-startup-folded t)
-(setq org-startup-indented nil) ;indented mode. works only with emacs>=23.2
-(setq org-cycle-separator-lines 0) ;never leave empty lines in collapsed view.
-(setq org-directory "/data/life-in-plain-text/")
-(setq org-default-notes-file (concat org-directory "notes.org"))
-(setq org-agenda-include-diary nil)
-(setq org-hide-leading-stars t)
-(setq org-odd-levels-only t)
-(setq org-popup-calendar-for-date-prompt nil)
-(setq org-return-follows-link t)
-(setq org-log-done 'time)
+  (setq org-startup-folded t)
+  (setq org-cycle-separator-lines 1) ;never leave empty lines in collapsed view.
+  (setq org-directory "/data/life-in-plain-text/")
+  (setq org-default-notes-file (concat org-directory "notes.org"))
+  (setq org-agenda-include-diary nil)
+  (setq org-hide-leading-stars t)
+  (setq org-odd-levels-only t)
+  (setq org-popup-calendar-for-date-prompt nil)
+  (setq org-return-follows-link t)
+  (setq org-log-done 'time)
 #+end_src
 
 * save all org buffers every hour
 #+begin_src emacs-lisp
-(run-at-time "00:59" 3600 'org-save-all-org-buffers)
+  (run-at-time "00:59" 3600 'org-save-all-org-buffers)
 #+end_src 
 
 * TODO Stuff
 #+begin_src emacs-lisp
-(setq org-todo-keywords 
-      (quote (
-	      (sequence "TODO(t)" "NEXT(n!)" "|" "DONE(d!/!)")
-	      (sequence "WAITING(w!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)")
-	      (sequence "TOREAD(o)" "FOUND(f)" "READING(r)" "|" "DONE(d!/!)" ))))
-
-
-(setq org-todo-keyword-faces 
-      (quote (("TODO" :foreground "red" :weight bold)
-	      ("NEXT" :foreground "blue" :weight bold)
-	      ("DONE" :foreground "forest green" :weight bold)
-	      ("WAITING" :foreground "orange" :weight bold)
-	      ("SOMEDAY" :foreground "magenta" :weight bold)
-	      ("CANCELLED" :foreground "forest green" :weight bold))))
-
-(setq org-use-fast-todo-selection t)
-(setq org-treat-S-cursor-todo-selection-as-state-change nil)
-(setq org-agenda-include-all-todo t)
-
-;; Jump to org-agenda after Idle time. 
-(defun jump-to-org-agenda ()
- (interactive)
- (let ((buf (get-buffer "*Org Agenda*"))
-       wind)
-   (if buf
-       (if (setq wind (get-buffer-window buf))
-           (select-window wind)
-         (if (called-interactively-p)
-             (progn
-               (select-window (display-buffer buf t t))
+  (setq org-todo-keywords 
+        (quote (
+                (sequence "TODO(t)" "NEXT(n!)" "|" "DONE(d!/!)")
+                (sequence "WAITING(w!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)")
+                (sequence "TOREAD(o)" "FOUND(f)" "READING(r)" "|" "DONE(d!/!)" ))))
+  
+  
+  (setq org-todo-keyword-faces 
+        (quote (("TODO" :foreground "red" :weight bold)
+                ("NEXT" :foreground "blue" :weight bold)
+                ("DONE" :foreground "forest green" :weight bold)
+                ("WAITING" :foreground "orange" :weight bold)
+                ("SOMEDAY" :foreground "magenta" :weight bold)
+                ("CANCELLED" :foreground "forest green" :weight bold))))
+  
+  (setq org-use-fast-todo-selection t)
+  (setq org-treat-S-cursor-todo-selection-as-state-change nil)
+  (setq org-agenda-include-all-todo t)
+  
+  ;; Jump to org-agenda after Idle time. 
+  (defun jump-to-org-agenda ()
+   (interactive)
+   (let ((buf (get-buffer "*Org Agenda*"))
+         wind)
+     (if buf
+         (if (setq wind (get-buffer-window buf))
+             (select-window wind)
+           (if (called-interactively-p)
+               (progn
+                 (select-window (display-buffer buf t t))
+                 (org-fit-window-to-buffer)
+                 ;; (org-agenda-redo)
+                 )
+             (with-selected-window (display-buffer buf)
                (org-fit-window-to-buffer)
                ;; (org-agenda-redo)
-               )
-           (with-selected-window (display-buffer buf)
-             (org-fit-window-to-buffer)
-             ;; (org-agenda-redo)
-             )))
-     (call-interactively 'org-agenda-list)))
- ;;(let ((buf (get-buffer "*Calendar*")))
- ;;  (unless (get-buffer-window buf)
- ;;    (org-agenda-goto-calendar)))
- )
-
-(run-with-idle-timer 900 t 'jump-to-org-agenda)
-
+               )))
+       (call-interactively 'org-agenda-list)))
+   ;;(let ((buf (get-buffer "*Calendar*")))
+   ;;  (unless (get-buffer-window buf)
+   ;;    (org-agenda-goto-calendar)))
+   )
+  
+  (run-with-idle-timer 900 t 'jump-to-org-agenda)
 #+end_src
 
 
 * Refiling
 #+begin_src emacs-lisp
-; Use IDO for target completion
-(setq org-completion-use-ido t)
-; Targets include this file and any file contributing to the agenda - up to 5 levels deep
-(setq org-refile-targets (quote ((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5))))
-; Targets start with the file name - allows creating level 1 tasks
-(setq org-refile-use-outline-path (quote file))
-; Targets complete in steps so we start with filename, TAB shows the next level of targets etc
-(setq org-outline-path-complete-in-steps t)
-; Allow refile to create parent tasks with confirmation
-(setq org-refile-allow-creating-parent-nodes (quote confirm))
+  ; Use IDO for target completion
+  (setq org-completion-use-ido t)
+  ; Targets include this file and any file contributing to the agenda - up to 5 levels deep
+  (setq org-refile-targets (quote ((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5))))
+  ; Targets start with the file name - allows creating level 1 tasks
+  (setq org-refile-use-outline-path (quote file))
+  ; Targets complete in steps so we start with filename, TAB shows the next level of targets etc
+  (setq org-outline-path-complete-in-steps t)
+  ; Allow refile to create parent tasks with confirmation
+  (setq org-refile-allow-creating-parent-nodes (quote confirm))
 #+end_src
+
 * Archiving
 #+begin_src emacs-lisp
-;; Donot change status of items when archiving.
-(setq org-archive-mark-done nil)
-;;
+  ;; Donot change status of items when archiving.
+  (setq org-archive-mark-done nil)
+  ;;
 #+end_src
+
 * org-capture stuff
 #+begin_src emacs-lisp
-(require 'org-capture)
-(global-set-key (kbd "C-M-r") 'org-capture)
-
-;; org-protocol
-(require 'org-protocol)
-
-(setq org-capture-templates
-      '(("a" "accounts" table-line
-	 (file+headline "accounts.org" "Expenses")
-	 "|%^{To/From}|%^{Detail}|%^{Amount}|%u|" :immediate-finish t)
-	("b" "book" entry
-	 (file+headline "books.org" "Book List")
-	 "%[/data/life-in-plain-text/template-books]" :immediate-finish t)
-	("c" "contacts" entry
-	 (file+headline "contacts.org" "Contacts")
-	 "%[/data/life-in-plain-text/template-contacts]" :immediate-finish t)
-	("j" "journal" entry
-	 (file+datetree "journal.org")
-	 "* %(format-time-string \"%H:%M:%S\")\n  %?")
-	("n" "note" entry
-	 (file+datetree "journal.org")
-	 "  %^{About} \n\n  %U\n\n  %?")
-	("t" "task" entry
-	 (file+headline "refile.org" "Tasks")
-	 "* TODO %? \n  " :clock-in t :clock-resume t)
-	("x" "org-protocol save relevant links" item
-	 (clock)
-	 "[[%:link][%:description]]" :immediate-finish t)
-	("w" "org-protocol bookmarks" entry
-	 (file+headline "refile.org" "Links")
-	 "* %:description %^G:\n  %u\n  %:link\n  %i" :immediate-finish t)))
+  (require 'org-capture)
+  (global-set-key (kbd "C-M-r") 'org-capture)
+  
+  ;; org-protocol
+  (require 'org-protocol)
+  
+  (setq org-capture-templates
+        '(("a" "accounts" table-line
+           (file+headline "accounts.org" "Expenses")
+           "|%^{To/From}|%^{Detail}|%^{Amount}|%u|" :immediate-finish t)
+          ("b" "book" entry
+           (file+headline "books.org" "Book List")
+           "%[/data/life-in-plain-text/template-books]" :immediate-finish t)
+          ("c" "contacts" entry
+           (file+headline "contacts.org" "Contacts")
+           "%[/data/life-in-plain-text/template-contacts]" :immediate-finish t)
+          ("j" "journal" entry
+           (file+datetree "journal.org")
+           "* %(format-time-string \"%H:%M:%S\")\n  %?")
+          ("n" "note" entry
+           (file+datetree "journal.org")
+           "  %^{About} \n\n  %U\n\n  %?")
+          ("t" "task" entry
+           (file+headline "refile.org" "Tasks")
+           "* TODO %? \n  " :clock-in t :clock-resume t)
+          ("x" "org-protocol save relevant links" item
+           (clock)
+           "[[%:link][%:description]]")
+          ("w" "org-protocol bookmarks" entry
+           (file+headline "refile.org" "Links")
+           "* %:description %^G:\n  %u\n  %:link\n  %i" :immediate-finish t)))
 #+end_src
-
+         
 * Clocking stuff
 #+begin_src emacs-lisp
-;; Resume clocking tasks when emacs is restarted
-(setq org-clock-persist 'history)
-(org-clock-persistence-insinuate)
-(setq org-clock-history-length 28)
-;; Resume clocking task on clock-in if the clock is open
-(setq org-clock-in-resume t)
-;; Change task state to STARTED when clocking in
-(setq org-clock-in-switch-to-state (quote bh/clock-in-to-next))
-
-;; Change task state to NEXT from TODO when clocking in
-(defun bh/clock-in-to-next (kw)
-  "Switch task from TODO to NEXT when clocking in.
-Skips remember tasks and tasks with subtasks"
-  (if (and (string-equal kw "TODO")
-           (not (string-match "^CAPTURE.+org$"(buffer-name) )))
-      (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-            (has-subtask nil))
-        (save-excursion
-          (forward-line 1)
-          (while (and (not has-subtask)
-                      (< (point) subtree-end)
-                      (re-search-forward "^\*+ " subtree-end t))
-            (when (member (org-get-todo-state) org-not-done-keywords)
-              (setq has-subtask t))))
-        (when (not has-subtask)
-          "NEXT"))))
-
-;;Resolving idle time
-(setq org-clock-idle-time 5)
-;; Separate drawers for clocking and logs
-(setq org-drawers (quote ("PROPERTIES" "LOGBOOK" "CLOCK")))
-;; Save clock data in the CLOCK drawer and state changes and notes in the LOGBOOK drawer
-(setq org-clock-into-drawer "CLOCK")
-;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
-(setq org-clock-out-remove-zero-time-clocks t)
-;; Don't clock out when moving task to a done state
-(setq org-clock-out-when-done nil)
-;; Disable auto clock resolution
-(setq org-clock-auto-clock-resolution nil)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Resume clocking tasks when emacs is restarted
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+  (setq org-clock-history-length 28)
+  ;; Resume clocking task on clock-in if the clock is open
+  (setq org-clock-in-resume t)
+  ;; Change task state to STARTED when clocking in
+  (setq org-clock-in-switch-to-state (quote bh/clock-in-to-next))
+  
+  ;; Change task state to NEXT from TODO when clocking in
+  (defun bh/clock-in-to-next (kw)
+    "Switch task from TODO to NEXT when clocking in.
+  Skips remember tasks and tasks with subtasks"
+    (if (and (string-equal kw "TODO")
+             (not (string-match "^CAPTURE.+org$"(buffer-name) )))
+        (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+              (has-subtask nil))
+          (save-excursion
+            (forward-line 1)
+            (while (and (not has-subtask)
+                        (< (point) subtree-end)
+                        (re-search-forward "^\*+ " subtree-end t))
+              (when (member (org-get-todo-state) org-not-done-keywords)
+                (setq has-subtask t))))
+          (when (not has-subtask)
+            "NEXT"))))
+  
+  ;;Resolving idle time
+  (setq org-clock-idle-time 5)
+  ;; Separate drawers for clocking and logs
+  (setq org-drawers (quote ("PROPERTIES" "LOGBOOK" "CLOCK")))
+  ;; Save clock data in the CLOCK drawer and state changes and notes in the LOGBOOK drawer
+  (setq org-clock-into-drawer "CLOCK")
+  ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+  (setq org-clock-out-remove-zero-time-clocks t)
+  ;; Don't clock out when moving task to a done state
+  (setq org-clock-out-when-done nil)
+  ;; Disable auto clock resolution
+  (setq org-clock-auto-clock-resolution nil)
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #+end_src
 
 * org-publish
