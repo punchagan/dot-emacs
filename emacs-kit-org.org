@@ -44,7 +44,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-startup-folded t)
   (setq org-cycle-separator-lines 0) ; leave no empty line in collapsed view
   (setq org-directory "/data/life-in-plain-text/")
-  (setq org-default-notes-file (concat org-directory "refile.org"))
+  (setq org-default-notes-file (expand-file-name "refile.org" org-directory))
   (setq org-agenda-include-diary nil)
   (setq org-hide-leading-stars t)
   (setq org-odd-levels-only t)
@@ -153,10 +153,10 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            "%[/data/life-in-plain-text/template-contacts]" :immediate-finish t)
           ("j" "journal" entry
            (file+datetree "journal.org")
-           "* %(format-time-string \"%H:%M:%S\")\n  %?")
+           "* %(format-time-string \"%T\")\n  %?")
           ("n" "note" entry
-           (file+datetree "journal.org")
-           "  %^{About} \n\n  %U\n\n  %?")
+           (file+headline "refile.org" "Notes")
+           "* %^{About} :note: \n\n  %U\n\n  %?")           
           ("t" "task" entry
            (file+headline "refile.org" "Tasks")
            "* TODO %? \n  " :clock-in t :clock-resume t)
@@ -169,6 +169,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+end_src
          
 * Clocking stuff
+*** Misc
 #+begin_src emacs-lisp
   ;; Resume clocking tasks when emacs is restarted
   (setq org-clock-persist 'history)
@@ -223,6 +224,15 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
           (when (not has-subtask)
             "NEXT"))))
   #+end_src 
+*** Effort Estimates
+***** Column view headings
+      #+begin_src emacs-lisp
+        (setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
+      #+end_src
+***** Effort Estimate Global Values
+      #+begin_src emacs-lisp
+        (setq org-global-properties (quote (("Effort_ALL" . "0:10 0:30 1:00 2:00 3:00 4:00 5:00 6:00 7:00 8:00"))))
+      #+end_src
 * org-publish
 #+begin_src emacs-lisp
 ;; Exporting & Publishing
