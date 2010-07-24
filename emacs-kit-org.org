@@ -42,7 +42,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 * Miscellaneous
 #+begin_src emacs-lisp
   (setq org-startup-folded t)
-  (setq org-cycle-separator-lines 1) ;never leave empty lines in collapsed view.
+  (setq org-cycle-separator-lines 0) ; leave no empty line in collapsed view
   (setq org-directory "/data/life-in-plain-text/")
   (setq org-default-notes-file (concat org-directory "notes.org"))
   (setq org-agenda-include-diary nil)
@@ -52,6 +52,11 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-return-follows-link t)
   (setq org-log-done 'time)
 #+end_src
+
+* Add final new line when saving files
+#+begin_src emacs-lisp
+  (setq require-final-newline t)
+#+end_src 
 
 * save all org buffers every hour
 #+begin_src emacs-lisp
@@ -317,4 +322,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 ;;        "\\end{frame}"
 ;;        "\\begin{frame}[fragile]\\frametitle{%s}"
 ;;        "\\end{frame}")))
+#+end_src
+
+* Org git documentation with info
+#+begin_src emacs-lisp
+  (add-to-list 'Info-default-directory-list "~/git/org-mode/doc")
 #+end_src

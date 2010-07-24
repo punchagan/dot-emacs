@@ -87,6 +87,7 @@ These sections pertain to specific languages or modes.
   (add-to-list 'load-path (expand-file-name 
                            "xml-rpc" (expand-file-name
 			                "elisp" dotfiles-dir)))
+
   (require 'xml-rpc)
 #+end_src
 
