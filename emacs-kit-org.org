@@ -44,7 +44,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-startup-folded t)
   (setq org-cycle-separator-lines 0) ; leave no empty line in collapsed view
   (setq org-directory "/data/life-in-plain-text/")
-  (setq org-default-notes-file (concat org-directory "notes.org"))
+  (setq org-default-notes-file (concat org-directory "refile.org"))
   (setq org-agenda-include-diary nil)
   (setq org-hide-leading-stars t)
   (setq org-odd-levels-only t)
@@ -178,8 +178,34 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-clock-in-resume t)
   ;; Change task state to STARTED when clocking in
   (setq org-clock-in-switch-to-state (quote bh/clock-in-to-next))
+  ;;Resolving idle time
+  (setq org-clock-idle-time 5)
+  ;; Separate drawers for clocking and logs
+  (setq org-drawers (quote ("PROPERTIES" "LOGBOOK" "CLOCK")))
+  ;; Save clock data in the CLOCK drawer and state changes and notes in the LOGBOOK drawer
+  (setq org-clock-into-drawer "CLOCK")
+  ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+  (setq org-clock-out-remove-zero-time-clocks t)
+  ;; Don't clock out when moving task to a done state
+  (setq org-clock-out-when-done nil)
+  ;; Disable auto clock resolution
+  (setq org-clock-auto-clock-resolution nil)
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#+end_src
+
+*** Removing empty clock drawers on clock out
+#+begin_src emacs-lisp
+  (defun bh/remove-empty-drawer-on-clock-out ()
+    (interactive)
+    (save-excursion
+      (beginning-of-line 0)
+      (org-remove-empty-drawer-at "CLOCK" (point))))
   
-  ;; Change task state to NEXT from TODO when clocking in
+  (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
+#+end_src
+
+*** Change task state to NEXT from TODO when clocking in
+  #+begin_src emacs-lisp
   (defun bh/clock-in-to-next (kw)
     "Switch task from TODO to NEXT when clocking in.
   Skips remember tasks and tasks with subtasks"
@@ -196,22 +222,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
                 (setq has-subtask t))))
           (when (not has-subtask)
             "NEXT"))))
-  
-  ;;Resolving idle time
-  (setq org-clock-idle-time 5)
-  ;; Separate drawers for clocking and logs
-  (setq org-drawers (quote ("PROPERTIES" "LOGBOOK" "CLOCK")))
-  ;; Save clock data in the CLOCK drawer and state changes and notes in the LOGBOOK drawer
-  (setq org-clock-into-drawer "CLOCK")
-  ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
-  (setq org-clock-out-remove-zero-time-clocks t)
-  ;; Don't clock out when moving task to a done state
-  (setq org-clock-out-when-done nil)
-  ;; Disable auto clock resolution
-  (setq org-clock-auto-clock-resolution nil)
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-#+end_src
-
+  #+end_src 
 * org-publish
 #+begin_src emacs-lisp
 ;; Exporting & Publishing
@@ -326,5 +337,8 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 
 * Org git documentation with info
 #+begin_src emacs-lisp
-  (add-to-list 'Info-default-directory-list "~/git/org-mode/doc")
+  (add-to-list 'Info-default-directory-list (expand-file-name
+                                             "doc" (expand-file-name
+                                                    "org" (expand-file-name
+                                                           "elisp" dotfiles-dir))))
 #+end_src
