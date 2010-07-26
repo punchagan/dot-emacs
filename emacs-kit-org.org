@@ -51,6 +51,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-popup-calendar-for-date-prompt nil)
   (setq org-return-follows-link t)
   (setq org-log-done 'time)
+  (setq org-agenda-ndays 1)
 #+end_src
 
 * Add final new line when saving files
@@ -151,9 +152,6 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
           ("c" "contacts" entry
            (file+headline "contacts.org" "Contacts")
            "%[/data/life-in-plain-text/template-contacts]" :immediate-finish t)
-          ("j" "journal" entry
-           (file+datetree "journal.org")
-           "* %(format-time-string \"%T\")\n  %?")
           ("n" "note" entry
            (file+headline "refile.org" "Notes")
            "* %^{About} :note: \n\n  %U\n\n  %?")           
