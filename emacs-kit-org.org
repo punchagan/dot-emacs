@@ -52,6 +52,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-return-follows-link t)
   (setq org-log-done 'time)
   (setq org-agenda-ndays 1)
+  (setq org-insert-heading-respect-content t)
 #+end_src
 
 * Add final new line when saving files
@@ -111,7 +112,6 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   
   (run-with-idle-timer 900 t 'jump-to-org-agenda)
 #+end_src
-
 
 * Refiling
 #+begin_src emacs-lisp
