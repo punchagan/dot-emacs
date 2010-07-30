@@ -150,7 +150,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 *** Refile to date-tree                            :emacs:orgmode:code:elisp:
     :PROPERTIES:
     :Post Date: [2010-07-30 Fri 05:33]
-    :ID:       o2b:2b577bcd-5fb3-4841-b6d7-abd78ef713b3
+    :ID:       o2b-2b577bcd-5fb3-4841-b6d7-abd78ef713b3
     :CATEGORIES: ology
     :END:
     Useful to refile notes to the journal file, which is a
