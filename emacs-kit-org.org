@@ -45,13 +45,11 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-cycle-separator-lines 0) ; leave no empty line in collapsed view
   (setq org-directory "/data/life-in-plain-text/")
   (setq org-default-notes-file (expand-file-name "refile.org" org-directory))
-  (setq org-agenda-include-diary nil)
   (setq org-hide-leading-stars t)
   (setq org-odd-levels-only t)
   (setq org-popup-calendar-for-date-prompt nil)
   (setq org-return-follows-link t)
   (setq org-log-done 'time)
-  (setq org-agenda-ndays 1)
   (setq org-insert-heading-respect-content t)
 #+end_src
 
@@ -84,37 +82,60 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   
   (setq org-use-fast-todo-selection t)
   (setq org-treat-S-cursor-todo-selection-as-state-change nil)
-  (setq org-agenda-include-all-todo t)
-  
-  ;; Jump to org-agenda after Idle time. 
-  (defun jump-to-org-agenda ()
-   (interactive)
-   (let ((buf (get-buffer "*Org Agenda*"))
-         wind)
-     (if buf
-         (if (setq wind (get-buffer-window buf))
-             (select-window wind)
-           (if (called-interactively-p)
-               (progn
-                 (select-window (display-buffer buf t t))
-                 (org-fit-window-to-buffer)
-                 ;; (org-agenda-redo)
-                 )
-             (with-selected-window (display-buffer buf)
-               (org-fit-window-to-buffer)
-               ;; (org-agenda-redo)
-               )))
-       (call-interactively 'org-agenda-list)))
-   ;;(let ((buf (get-buffer "*Calendar*")))
-   ;;  (unless (get-buffer-window buf)
-   ;;    (org-agenda-goto-calendar)))
-   )
-  
-  (run-with-idle-timer 900 t 'jump-to-org-agenda)
 #+end_src
 
+* Agenda Stuff
+*** agenda will always contain all TODO entries.
+    #+begin_src emacs-lisp
+      (setq org-agenda-include-all-todo t)
+    #+end_src 
+*** do not include diary entries
+    #+begin_src emacs-lisp
+      (setq org-agenda-include-diary nil)
+    #+end_src
+*** Number of days to include in overview display.
+    #+begin_src emacs-lisp
+      (setq org-agenda-ndays 1)
+    #+end_src
+*** Custom Agenda Keys
+    #+begin_src emacs-lisp
+      (setq org-agenda-custom-commands
+            (quote (
+                    ("r" "Refile New Notes and Tasks" tags "LEVEL=2+REFILE"
+                     ((org-agenda-todo-ignore-with-date nil)
+                      (org-agenda-todo-ignore-deadlines nil)
+                      (org-agenda-todo-ignore-scheduled nil))))))
+    #+end_src
+*** Jump to org-agenda after Idle time. 
+    #+begin_src emacs-lisp
+      (defun jump-to-org-agenda ()
+        (interactive)
+        (let ((buf (get-buffer "*Org Agenda*"))
+              wind)
+          (if buf
+              (if (setq wind (get-buffer-window buf))
+                  (select-window wind)
+                (if (called-interactively-p)
+                    (progn
+                      (select-window (display-buffer buf t t))
+                      (org-fit-window-to-buffer)
+                      ;; (org-agenda-redo)
+                      )
+                  (with-selected-window (display-buffer buf)
+                    (org-fit-window-to-buffer)
+                    ;; (org-agenda-redo)
+                    )))
+            (call-interactively 'org-agenda-list)))
+        ;;(let ((buf (get-buffer "*Calendar*")))
+        ;;  (unless (get-buffer-window buf)
+        ;;    (org-agenda-goto-calendar)))
+        )
+      
+      (run-with-idle-timer 900 t 'jump-to-org-agenda)
+    #+end_src
 * Refiling
-#+begin_src emacs-lisp
+*** from doc.norang
+  #+begin_src emacs-lisp
   ; Use IDO for target completion
   (setq org-completion-use-ido t)
   ; Targets include this file and any file contributing to the agenda - up to 5 levels deep
@@ -126,7 +147,53 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   ; Allow refile to create parent tasks with confirmation
   (setq org-refile-allow-creating-parent-nodes (quote confirm))
 #+end_src
-
+*** Refile to date-tree
+    :PROPERTIES:
+    :Post Date: [2010-07-30 Fri 05:33]
+    :ID:       o2b:2b577bcd-5fb3-4841-b6d7-abd78ef713b3
+    :END:
+    Useful to refile notes to the journal file, which is a
+    date-tree. I org-refile
+    #+begin_src emacs-lisp
+      (defun my/org-refile-to-journal ()
+        "Refile an entry to journal file's date-tree"
+        (interactive)
+        (require 'org-datetree)
+        (let ((journal "/data/life-in-plain-text/journal.org")
+              post-date)
+          (setq post-date (or (org-entry-get (point) "TIMESTAMP_IA")
+                              (org-entry-get (point) "TIMESTAMP")))
+          (setq post-date (nthcdr 3 (parse-time-string post-date)))
+          (setq post-date (list (cadr post-date) 
+                                (car post-date) 
+                                (caddr post-date)))
+          (org-cut-subtree)
+          (with-current-buffer (or (find-buffer-visiting journal)
+                                   (find-file-noselect file))
+            (save-excursion
+              (org-datetree-file-entry-under (current-kill 0) post-date)
+              (bookmark-set "org-refile-last-stored")))
+          (message "Refiled to %s" journal)))
+      
+      (defun my/org-agenda-refile-to-journal ()
+        "Refile the item at point to journal."
+        (interactive)
+        (let* ((marker (or (org-get-at-bol 'org-hd-marker)
+                           (org-agenda-error)))
+               (buffer (marker-buffer marker))
+               (pos (marker-position marker)))
+          (with-current-buffer buffer
+            (save-excursion
+              (save-restriction
+                (widen)
+                (goto-char marker)
+                (org-remove-subtree-entries-from-agenda)
+                (my/org-refile-to-journal)))))
+        (org-agenda-redo))
+      
+      (org-defkey org-agenda-mode-map (kbd "C-c C-S-w") 'my/org-agenda-refile-to-journal)
+      (org-defkey org-mode-map (kbd "C-c C-S-w") 'my/org-refile-to-journal)
+    #+end_src
 * Archiving
 #+begin_src emacs-lisp
   ;; Donot change status of items when archiving.
