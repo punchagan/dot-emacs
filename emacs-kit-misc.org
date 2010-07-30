@@ -106,7 +106,7 @@ Set this to whatever browser you use e.g...
 #+end_src
 ** Use socks proxy
 #+begin_src emacs-lisp
-(setq url-gateway-method (quote socks))
+;;(setq url-gateway-method (quote socks))
 #+end_src 
 ** Start server
 #+begin_src emacs-lisp
