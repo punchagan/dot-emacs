@@ -117,6 +117,13 @@ Set this to whatever browser you use e.g...
 (setq default-major-mode 'org-mode)
 #+end_src
 
+** Global auto revert mode
+   :PROPERTIES:
+   :ID:       a55289cd-8a08-4e39-be5e-591e5565bb04
+   :END:
+   #+begin_src emacs-lisp
+     (setq global-auto-revert-mode t)
+   #+end_src
 ** Save a list of recent files visited.
 #+begin_src emacs-lisp 
 (recentf-mode 1)
