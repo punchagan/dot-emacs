@@ -7,9 +7,6 @@ This is part of the [[file:emacs-kit.org][Emacs Kit]].
 Things that don't fit anywhere else.
 
 ** Color Themes
-   :PROPERTIES:
-   :ID:       9ca2d958-b944-485c-8642-61e53eef2fab
-   :END:
 The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
 sharing Emacs color themes.  To view and apply color themes available
 on your system run =M-x color-theme-select=.  See the color theme
@@ -33,9 +30,6 @@ This following loads color-theme so that it is available by default.
 #+end_src
 
 ** Window system stuff
-   :PROPERTIES:
-   :ID:       78b6358a-c049-4417-9fba-efdf90d99db5
-   :END:
 
 #+srcname: emacs-kit-window-view-stuff
 #+begin_src emacs-lisp 
@@ -68,34 +62,22 @@ This following loads color-theme so that it is available by default.
 #+end_src
 
 ** Set browser
-   :PROPERTIES:
-   :ID:       904c7125-f97d-4536-a258-0a71bf2b9c02
-   :END:
 Set this to whatever browser you use e.g...
 #+begin_src emacs-lisp
 (setq browse-url-browser-function 'browse-url-firefox)
 (global-set-key (kbd "C-M-f") 'browse-url-firefox)
 #+end_src
 ** Transparently open compressed files
-   :PROPERTIES:
-   :ID:       0f1a5d6c-25a2-4f0d-b994-9cd9023d3ee9
-   :END:
 #+begin_src emacs-lisp
 (auto-compression-mode t)
 #+end_src
 
 ** Enable syntax highlighting for older Emacsen that have it off
-   :PROPERTIES:
-   :ID:       8bae3f94-4c38-4c7c-8d17-4b5d0171811a
-   :END:
 #+begin_src emacs-lisp
 (global-font-lock-mode t)
 #+end_src
 
 ** No Menu Bar, Scroll Bar, Tool Bar
-   :PROPERTIES:
-   :ID:       97195d20-96c5-4d61-b104-9b7d6b4e93e0
-   :END:
 #+srcname: emacs-kit-no-menu
 #+begin_src emacs-lisp 
 (menu-bar-mode -1)
@@ -104,86 +86,49 @@ Set this to whatever browser you use e.g...
 #+end_src
 
 ** Copy from and to x-clipboard
-   :PROPERTIES:
-   :ID:       b979a992-4666-4bfc-8062-4d2a02a28414
-   :END:
 #+begin_src emacs-lisp 
 (setq x-select-enable-clipboard t)
 #+end_src
 
 ** Column number mode enabled
-   :PROPERTIES:
-   :ID:       6a10d4ac-2b7a-4e84-a141-1ccd904d492b
-   :END:
 #+begin_src emacs-lisp
 (column-number-mode t)
 #+end_src
 ** Display time
-   :PROPERTIES:
-   :ID:       21eabdea-71dc-4156-8d33-af45aa1b211c
-   :END:
 #+begin_src emacs-lisp
 (setq display-time-day-and-date nil)
 (display-time)
 #+end_src
 ** Faces
-   :PROPERTIES:
-   :ID:       b755d0b2-b1db-4033-8258-be9e676d70dc
-   :END:
 #+begin_src emacs-lisp
 (custom-set-faces
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 #+end_src
 ** Use socks proxy
-   :PROPERTIES:
-   :ID:       b1af0b12-c280-4270-84d9-092a524ff0b3
-   :END:
 #+begin_src emacs-lisp
 ;;(setq url-gateway-method (quote socks))
 #+end_src 
 ** Start server
-   :PROPERTIES:
-   :ID:       583a1eab-7e70-4465-a00c-dc1d211aa638
-   :END:
 #+begin_src emacs-lisp
 (server-start)
 #+end_src 
 ** Default Major Mode
-   :PROPERTIES:
-   :ID:       006b5a65-206e-46a5-a838-03e6282ee99c
-   :END:
 #+begin_src emacs-lisp
 (setq default-major-mode 'org-mode)
 #+end_src
 
-** Global auto revert mode
-   :PROPERTIES:
-   :ID:       a55289cd-8a08-4e39-be5e-591e5565bb04
-   :END:
-   #+begin_src emacs-lisp
-     (setq global-auto-revert-mode t)
-   #+end_src
 ** Save a list of recent files visited.
-   :PROPERTIES:
-   :ID:       cc8699b5-9c90-45f5-b436-2b18420b2f3e
-   :END:
 #+begin_src emacs-lisp 
 (recentf-mode 1)
 #+end_src
 
 ** Highlight matching parentheses when the point is on them.
-   :PROPERTIES:
-   :ID:       78964c64-2120-45d2-9f35-9ff62d8c85a0
-   :END:
 #+srcname: emacs-kit-match-parens
 #+begin_src emacs-lisp 
 (show-paren-mode 1)
 #+end_src
 
 ** ido mode
-   :PROPERTIES:
-   :ID:       f4a45377-c48f-4bc3-ae25-02d1a451b9fc
-   :END:
 ido-mode is like magic pixie dust!
 #+srcname: emacs-kit-loves-ido-mode
 #+begin_src emacs-lisp 
@@ -197,9 +142,6 @@ ido-mode is like magic pixie dust!
 #+end_src
 
 ** Other
-   :PROPERTIES:
-   :ID:       b5f4d0ee-3e37-4267-a61c-4e0d409a07a7
-   :END:
 #+begin_src emacs-lisp 
   (set-default 'indent-tabs-mode nil)
 ;;(set-default 'indicate-empty-lines t)
@@ -220,18 +162,12 @@ Most of the solution came from [[http://www.emacswiki.org/emacs/FlySpell][EmacsW
 possible fix.
 
 **** Emacs set path to aspell
-     :PROPERTIES:
-     :ID:       951a1788-b684-4de9-97f4-b892720c3e22
-     :END:
 it's possible aspell isn't in your path
 #+begin_src emacs-lisp :tangle no
    (setq exec-path (append exec-path '("/opt/local/bin")))
 #+end_src
 
 **** Emacs specify spelling program
-     :PROPERTIES:
-     :ID:       f94f280b-f0d0-413e-880d-85748700e375
-     :END:
 - This didn't work at first, possibly because cocoAspell was
   building its dictionary.  Now it seems to work fine.
 #+begin_src emacs-lisp :tangle no
@@ -247,36 +183,24 @@ it's possible aspell isn't in your path
 #+end_src
 
 ** Hippie expand: at times perhaps too hip
-   :PROPERTIES:
-   :ID:       e31db21a-3000-4181-b2e7-a49951a0d813
-   :END:
 #+begin_src emacs-lisp
 (delete 'try-expand-line hippie-expand-try-functions-list)
 (delete 'try-expand-list hippie-expand-try-functions-list)
 #+end_src
 
 ** Default bookmark fileDon't clutter up directories with files~
-   :PROPERTIES:
-   :ID:       403c295d-22b5-4f52-8d54-1f7abb83e21d
-   :END:
 #+begin_src emacs-lisp
 (setq bookmark-default-file (expand-file-name 
                              ".emacs.bmk" dotfiles-dir))
 #+end_src
 
 ** Don't clutter up directories with files~
-   :PROPERTIES:
-   :ID:       3f30bc85-6a23-4924-a939-0fdc46dd9ae5
-   :END:
 #+begin_src emacs-lisp
 (setq backup-directory-alist `(("." . ,(expand-file-name
                                         (concat dotfiles-dir "backups")))))
 #+end_src
 
 ** Associate modes with file extensions
-   :PROPERTIES:
-   :ID:       1b7d9847-ef9c-47f0-ae50-a0b28fc4f2a0
-   :END:
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG$" . diff-mode))
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
@@ -289,17 +213,11 @@ it's possible aspell isn't in your path
 #+end_src
 
 ** Default to unified diffs
-   :PROPERTIES:
-   :ID:       67f21ca4-14c6-41c2-a372-109e4d5fca6f
-   :END:
 #+begin_src emacs-lisp
 (setq diff-switches "-u")
 #+end_src
 
 ** Cosmetics
-   :PROPERTIES:
-   :ID:       7ad7e388-7e9b-4417-a4b0-5084b395d014
-   :END:
 
 #+begin_src emacs-lisp
 (eval-after-load 'diff-mode
