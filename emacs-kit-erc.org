@@ -4,9 +4,6 @@
 This is part of the [[file:emacs-kit.org][Emacs Kit]].
 
 * Emacs kit ERC
-  :PROPERTIES:
-  :tangle:   yes
-  :END:
 *** Configuration
 #+begin_src emacs-lisp
 (setq erc-log-write-after-insert t)
