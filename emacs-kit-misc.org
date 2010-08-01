@@ -113,56 +113,57 @@ Set this to whatever browser you use e.g...
 (server-start)
 #+end_src 
 ** Default Major Mode
-#+begin_src emacs-lisp
-(setq default-major-mode 'org-mode)
-#+end_src
+   #+begin_src emacs-lisp
+     (setq default-major-mode 'org-mode)
+   #+end_src
 
 ** Global auto revert mode
-   :PROPERTIES:
-   :ID:       a55289cd-8a08-4e39-be5e-591e5565bb04
-   :END:
    #+begin_src emacs-lisp
      (setq global-auto-revert-mode t)
    #+end_src
+** Add new line at end of file
+   #+begin_src emacs-lisp
+     (setq require-final-newline t)
+   #+end_src
 ** Save a list of recent files visited.
-#+begin_src emacs-lisp 
-(recentf-mode 1)
-#+end_src
+   #+begin_src emacs-lisp 
+     (recentf-mode 1)
+   #+end_src
 
 ** Highlight matching parentheses when the point is on them.
-#+srcname: emacs-kit-match-parens
-#+begin_src emacs-lisp 
-(show-paren-mode 1)
-#+end_src
+   #+srcname: emacs-kit-match-parens
+   #+begin_src emacs-lisp 
+     (show-paren-mode 1)
+   #+end_src
 
 ** ido mode
-ido-mode is like magic pixie dust!
-#+srcname: emacs-kit-loves-ido-mode
-#+begin_src emacs-lisp 
-(when (> emacs-major-version 21)
-  (ido-mode t)
-  (setq ido-enable-prefix nil
-        ido-enable-flex-matching t
-        ido-create-new-buffer 'always
-        ido-use-filename-at-point t
-        ido-max-prospects 10))
-#+end_src
+   ido-mode is like magic pixie dust!
+   #+srcname: emacs-kit-loves-ido-mode
+   #+begin_src emacs-lisp 
+     (when (> emacs-major-version 21)
+       (ido-mode t)
+       (setq ido-enable-prefix nil
+             ido-enable-flex-matching t
+             ido-create-new-buffer 'always
+             ido-use-filename-at-point t
+             ido-max-prospects 10))
+    #+end_src
 
 ** Other
-#+begin_src emacs-lisp 
-  (set-default 'indent-tabs-mode nil)
-;;(set-default 'indicate-empty-lines t)
-  (set-default 'imenu-auto-rescan t)
-  
-  (add-hook 'text-mode-hook 'turn-on-auto-fill)
-  (add-hook 'text-mode-hook 'turn-on-flyspell)
-  
-  (defvar coding-hook nil
-    "Hook that gets run on activation of any programming mode.")
-  
-  (defalias 'yes-or-no-p 'y-or-n-p)
-  (random t) ;; Seed the random-number generator
-#+end_src
+   #+begin_src emacs-lisp 
+       (set-default 'indent-tabs-mode nil)
+     ;;(set-default 'indicate-empty-lines t)
+       (set-default 'imenu-auto-rescan t)
+       
+       (add-hook 'text-mode-hook 'turn-on-auto-fill)
+       (add-hook 'text-mode-hook 'turn-on-flyspell)
+       
+       (defvar coding-hook nil
+         "Hook that gets run on activation of any programming mode.")
+       
+       (defalias 'yes-or-no-p 'y-or-n-p)
+       (random t) ;; Seed the random-number generator
+   #+end_src
 
 *** possible issues/resolutions with flyspell
 Most of the solution came from [[http://www.emacswiki.org/emacs/FlySpell][EmacsWiki-FlySpell]].  Here is one
@@ -190,10 +191,10 @@ it's possible aspell isn't in your path
 #+end_src
 
 ** Hippie expand: at times perhaps too hip
-#+begin_src emacs-lisp
-(delete 'try-expand-line hippie-expand-try-functions-list)
-(delete 'try-expand-list hippie-expand-try-functions-list)
-#+end_src
+   #+begin_src emacs-lisp
+     (delete 'try-expand-line hippie-expand-try-functions-list)
+     (delete 'try-expand-list hippie-expand-try-functions-list)
+   #+end_src
 
 ** Default bookmark fileDon't clutter up directories with files~
 #+begin_src emacs-lisp
