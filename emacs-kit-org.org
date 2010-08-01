@@ -89,6 +89,11 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     #+begin_src emacs-lisp
       (setq org-agenda-include-all-todo t)
     #+end_src 
+*** don't show scheduled and deadline items when done
+    #+begin_src emacs-lisp
+      (setq org-agenda-skip-scheduled-if-done t
+            org-agenda-skip-deadline-if-done t)
+    #+end_src
 *** do not include diary entries
     #+begin_src emacs-lisp
       (setq org-agenda-include-diary nil)
@@ -152,9 +157,11 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     :Post Date: [2010-07-30 Fri 05:33]
     :ID:       o2b-2b577bcd-5fb3-4841-b6d7-abd78ef713b3
     :CATEGORIES: ology
+    :Post ID: 1027
     :END:
     Useful to refile notes to the journal file, which is a
-    date-tree. I org-refile
+    date-tree. =org-refile= isn't convenient to refile stuff to a
+    date-tree. 
     #+begin_src emacs-lisp
       (defun my/org-refile-to-journal ()
         "Refile an entry to journal file's date-tree"
