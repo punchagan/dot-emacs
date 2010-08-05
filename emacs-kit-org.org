@@ -50,7 +50,6 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-popup-calendar-for-date-prompt nil)
   (setq org-return-follows-link t)
   (setq org-log-done 'time)
-  (setq org-insert-heading-respect-content t)
 #+end_src
 
 * Add final new line when saving files
@@ -235,7 +234,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            "* TODO %? \n  " :clock-in t :clock-resume t)
           ("x" "org-protocol save relevant links" item
            (clock)
-           "[[%:link][%:description]]")
+           "+ [[%:link][%:description]]" :immediate-finish t)
           ("w" "org-protocol bookmarks" entry
            (file+headline "refile.org" "Links")
            "* %:description %^G:\n  %u\n  %:link\n  %i" :immediate-finish t)))
