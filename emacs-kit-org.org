@@ -67,7 +67,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-todo-keywords 
         (quote (
                 (sequence "TODO(t)" "NEXT(n!)" "|" "DONE(d!/!)")
-                (sequence "WAITING(w!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)")
+                (sequence "WAITING(w!)" "SOMEDAY(S)" "|" "DELEGATED(D)" "CANCELLED(c@/!)")
                 (sequence "TOREAD(o)" "FOUND(f)" "READING(r)" "|" "DONE(d!/!)" ))))
   
   
@@ -228,7 +228,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            "%[/data/life-in-plain-text/template-contacts]" :immediate-finish t)
           ("n" "note" entry
            (file+headline "refile.org" "Notes")
-           "* %^{About} :note: \n\n  %U\n\n  %?")           
+           "* %^{About} :note: \n\n  %U\n\n  %?" :clock-in t :clock-resume t)           
           ("t" "task" entry
            (file+headline "refile.org" "Tasks")
            "* TODO %? \n  " :clock-in t :clock-resume t)
