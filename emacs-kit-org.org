@@ -22,6 +22,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
                                               "org" (expand-file-name
                                                      "elisp" dotfiles-dir)))))
   (require 'org-habit)
+  (require 'org-id)
 #+end_src
 
 * Keybindings
@@ -52,6 +53,16 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-log-done 'time)
 #+end_src
 
+
+* List demote modify bullet
+  #+begin_src emacs-lisp
+    (setq org-list-demote-modify-bullet
+          '(("+" . "-") 
+            ("-" . "+") 
+            ("*" . "+")
+            ("1." . "1)")
+            ("1)" . "1.")))
+  #+end_src
 * Add final new line when saving files
 #+begin_src emacs-lisp
   (setq require-final-newline t)
@@ -136,6 +147,45 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
         )
       
       (run-with-idle-timer 900 t 'jump-to-org-agenda)
+    #+end_src
+* Reminders with appt
+*** Erase all reminders; Rebuilt reminders for today agenda
+    #+begin_src emacs-lisp
+      (defun bh/org-agenda-to-appt ()
+        (interactive)
+        (setq appt-time-msg-list nil)
+        (org-agenda-to-appt))
+    #+end_src
+      
+*** Rebuild the reminders everytime the agenda is displayed
+    #+begin_src emacs-lisp
+      (add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt)
+    #+end_src      
+
+*** Setup appointments 
+    #+begin_src emacs-lisp
+      (bh/org-agenda-to-appt)
+      
+      (appt-activate t)
+      
+      (when window-system
+        
+        (setq appt-display-format 'window)
+      
+        (defun org-osd-display (min-to-app new-time msg)
+          (save-window-excursion
+            (shell-command (format "notify-send %s" msg))))
+        
+        (setq appt-disp-window-function (function org-osd-display))
+        
+        ;; Run once, activate and schedule refresh
+        (run-at-time nil 3600 'bh/org-agenda-to-appt)
+        (appt-activate t))
+    #+end_src
+
+*** reset the appointments one minute after midnight
+    #+begin_src emacs-lisp
+      (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
     #+end_src
 * Refiling
 *** from doc.norang
