@@ -104,6 +104,11 @@ Set this to whatever browser you use e.g...
 (custom-set-faces
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 #+end_src
+** Fill column
+#+begin_src emacs-lisp
+(setq fill-column 72)
+#+end_src
+   
 ** Use socks proxy
 #+begin_src emacs-lisp
   (setq url-gateway-method (quote socks))
@@ -150,6 +155,7 @@ Set this to whatever browser you use e.g...
     #+end_src
 
 ** Other
+
    #+begin_src emacs-lisp 
        (set-default 'indent-tabs-mode nil)
      ;;(set-default 'indicate-empty-lines t)
@@ -196,7 +202,7 @@ it's possible aspell isn't in your path
      (delete 'try-expand-list hippie-expand-try-functions-list)
    #+end_src
 
-** Default bookmark fileDon't clutter up directories with files~
+** Default bookmark file
 #+begin_src emacs-lisp
 (setq bookmark-default-file (expand-file-name 
                              ".emacs.bmk" dotfiles-dir))
