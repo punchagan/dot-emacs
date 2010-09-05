@@ -121,7 +121,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
                       (org-agenda-todo-ignore-deadlines nil)
                       (org-agenda-todo-ignore-scheduled nil))))))
     #+end_src
-*** Jump to org-agenda after Idle time. 
+*** Jump to org-agenda after Idle time.
     #+begin_src emacs-lisp
       (defun jump-to-org-agenda ()
         (interactive)
@@ -162,25 +162,25 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
       (add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt)
     #+end_src      
 
-*** Setup appointments 
+*** Setup appointments
     #+begin_src emacs-lisp
       (bh/org-agenda-to-appt)
       
       (appt-activate t)
       
-      (when window-system
+      ;; (when window-system
         
-        (setq appt-display-format 'window)
+      ;;   (setq appt-display-format 'window)
       
-        (defun org-osd-display (min-to-app new-time msg)
-          (save-window-excursion
-            (shell-command (format "notify-send %s" msg))))
+      ;;   (defun org-osd-display (min-to-app new-time msg)
+      ;;     (save-window-excursion
+      ;;       (shell-command (format "notify-send %s" msg))))
         
-        (setq appt-disp-window-function (function org-osd-display))
+      ;;   (setq appt-disp-window-function (function org-osd-display))
         
-        ;; Run once, activate and schedule refresh
-        (run-at-time nil 3600 'bh/org-agenda-to-appt)
-        (appt-activate t))
+      ;;   ;; Run once, activate and schedule refresh
+      ;;   (run-at-time nil 3600 'bh/org-agenda-to-appt)
+      ;;   (appt-activate t))
     #+end_src
 
 *** reset the appointments one minute after midnight
