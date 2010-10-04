@@ -474,3 +474,12 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
                                                     "org" (expand-file-name
                                                            "elisp" dotfiles-dir))))
 #+end_src
+* Babel
+*** Set languages
+    #+begin_src emacs-lisp
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((python . t)
+         (emacs-lisp . t)
+         ))
+    #+end_src
