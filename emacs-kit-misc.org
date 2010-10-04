@@ -30,7 +30,6 @@ This following loads color-theme so that it is available by default.
 #+end_src
 
 ** Window system stuff
-
 #+srcname: emacs-kit-window-view-stuff
 #+begin_src emacs-lisp 
 (when window-system
@@ -105,8 +104,8 @@ Set this to whatever browser you use e.g...
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 #+end_src
 ** Fill column
-#+begin_src emacs-lisp
-(setq fill-column 72)
+#+begin_src emacs-lisp :tangle
+(setq fill-column 79)
 #+end_src
    
 ** Use socks proxy
