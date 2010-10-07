@@ -13,7 +13,6 @@ brighter; it simply makes everything else vanish.
 
 * Emacs kit basics
 ** Load path etc.
-
 #+srcname: emacs-kit-load-paths
 #+begin_src emacs-lisp 
   (setq dotfiles-dir (file-name-directory
