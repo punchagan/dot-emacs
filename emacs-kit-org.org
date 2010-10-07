@@ -148,6 +148,11 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
       
       (run-with-idle-timer 900 t 'jump-to-org-agenda)
     #+end_src
+*** Org agenda files
+    #+begin_src emacs-lisp
+      (setq org-agenda-files (expand-file-name "agenda-files.org" org-directory))
+    #+end_src 
+
 * Reminders with appt
 *** Erase all reminders; Rebuilt reminders for today agenda
     #+begin_src emacs-lisp
