@@ -216,7 +216,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
         "Refile an entry to journal file's date-tree"
         (interactive)
         (require 'org-datetree)
-        (let ((journal "/data/life-in-plain-text/journal.org")
+        (let ((journal "journal.org")
               post-date)
           (setq post-date (or (org-entry-get (point) "TIMESTAMP_IA")
                               (org-entry-get (point) "TIMESTAMP")))
@@ -272,10 +272,10 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            "|%^{To/From}|%^{Detail}|%^{Amount}|%u|" :immediate-finish t)
           ("b" "book" entry
            (file+headline "books.org" "Book List")
-           "%[/data/life-in-plain-text/template-books]" :immediate-finish t)
+           "%[template-books]" :immediate-finish t)
           ("c" "contacts" entry
            (file+headline "contacts.org" "Contacts")
-           "%[/data/life-in-plain-text/template-contacts]" :immediate-finish t)
+           "%[template-contacts]" :immediate-finish t)
           ("n" "note" entry
            (file+headline "refile.org" "Notes")
            "* %^{About} :note: \n\n  %U\n\n  %?" :clock-in t :clock-resume t)           
