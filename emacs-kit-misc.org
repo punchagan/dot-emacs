@@ -96,6 +96,7 @@ Set this to whatever browser you use e.g...
 ** Display time
 #+begin_src emacs-lisp
 (setq display-time-day-and-date nil)
+(setq display-time-24hr-format t)
 (display-time)
 #+end_src
 ** Faces
