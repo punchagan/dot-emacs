@@ -1,12 +1,9 @@
-[submodule "elisp/color-theme"]
-	path = elisp/color-theme
-	url = http://github.com/emacsmirror/color-theme.git
 [submodule "elisp/dictem"]
 	path = elisp/dictem
 	url = http://github.com/emacsmirror/dictem.git
 [submodule "elisp/identica-mode"]
 	path = elisp/identica-mode
-	url = http://git.sv.gnu.org/r/identica-mode.git
+	url = http://github.com/emacsmirror/identica-mode.git
 [submodule "elisp/magit"]
 	path = elisp/magit
 	url = http://github.com/philjackson/magit.git
@@ -28,3 +25,6 @@
 [submodule "elisp/pastebin"]
 	path = elisp/pastebin
 	url = http://github.com/emacsmirror/pastebin.git
+[submodule "elisp/color-theme"]
+	path = elisp/color-theme
+	url = http://github.com/haxney/color-theme.git
