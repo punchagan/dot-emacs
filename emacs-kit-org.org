@@ -15,6 +15,9 @@ For more information on org-mode check out [[http://orgmode.org/worg/][worg]], a
 which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 
 * Loading stuff
+  :PROPERTIES:
+  :ID:       e3162d81-2e83-430f-b3b6-bca87ba2cc10
+  :END:
 #+begin_src emacs-lisp
   (add-to-list 'load-path (expand-file-name
                            "lisp" (expand-file-name
@@ -26,6 +29,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+end_src
 
 * Keybindings
+  :PROPERTIES:
+  :ID:       0c36320b-8323-46f2-be37-7ede76d19422
+  :END:
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
@@ -33,6 +39,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+end_src
 
 * Auto mode and hooks
+  :PROPERTIES:
+  :ID:       f46b6f11-a9c5-492e-bac0-05ab170ea58f
+  :END:
 #+begin_src emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
@@ -41,6 +50,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+end_src
 
 * Miscellaneous
+  :PROPERTIES:
+  :ID:       ccf92ab7-e9b5-4022-bb94-43fc6e47ab36
+  :END:
 #+begin_src emacs-lisp
   (setq org-startup-folded t)
   (setq org-cycle-separator-lines 0) ; leave no empty line in collapsed view
@@ -55,6 +67,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 
 
 * List demote modify bullet
+  :PROPERTIES:
+  :ID:       98342890-a963-421a-bc47-8772fc17efe9
+  :END:
   #+begin_src emacs-lisp
     (setq org-list-demote-modify-bullet
           '(("+" . "-") 
@@ -64,16 +79,25 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
             ("1)" . "1.")))
   #+end_src
 * Add final new line when saving files
+  :PROPERTIES:
+  :ID:       a0c886ce-4b7c-48cb-a8df-8821a5c61077
+  :END:
 #+begin_src emacs-lisp
   (setq require-final-newline t)
 #+end_src 
 
 * save all org buffers every hour
+  :PROPERTIES:
+  :ID:       7cdf7319-98c6-4f2f-bbf8-d694c87f4581
+  :END:
 #+begin_src emacs-lisp
   (run-at-time "00:59" 3600 'org-save-all-org-buffers)
 #+end_src 
 
 * TODO Stuff
+  :PROPERTIES:
+  :ID:       4811896b-c85e-4ffb-844f-1c30ab626d92
+  :END:
 #+begin_src emacs-lisp
   (setq org-todo-keywords 
         (quote (
@@ -96,23 +120,38 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 
 * Agenda Stuff
 *** agenda will always contain all TODO entries.
+    :PROPERTIES:
+    :ID:       070eab9f-b2d7-43e3-a4ff-5aadfaac927e
+    :END:
     #+begin_src emacs-lisp
       (setq org-agenda-include-all-todo t)
     #+end_src 
 *** don't show scheduled and deadline items when done
+    :PROPERTIES:
+    :ID:       a7986ac6-f292-4629-be88-f3116a1c5a84
+    :END:
     #+begin_src emacs-lisp
       (setq org-agenda-skip-scheduled-if-done t
             org-agenda-skip-deadline-if-done t)
     #+end_src
 *** do not include diary entries
+    :PROPERTIES:
+    :ID:       c3cba288-758c-4b5d-ac07-e143cfd4e843
+    :END:
     #+begin_src emacs-lisp
       (setq org-agenda-include-diary nil)
     #+end_src
 *** Number of days to include in overview display.
+    :PROPERTIES:
+    :ID:       9a362cdb-93da-4799-b74c-8fdaed1e375e
+    :END:
     #+begin_src emacs-lisp
       (setq org-agenda-ndays 1)
     #+end_src
 *** Custom Agenda Keys
+    :PROPERTIES:
+    :ID:       09a85bb4-e61d-4509-bc28-2ab821c4575c
+    :END:
     #+begin_src emacs-lisp
       (setq org-agenda-custom-commands
             (quote (
@@ -122,6 +161,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
                       (org-agenda-todo-ignore-scheduled nil))))))
     #+end_src
 *** Jump to org-agenda after Idle time.
+    :PROPERTIES:
+    :ID:       09c76154-42aa-4fb9-b6eb-1d2d311f0b42
+    :END:
     #+begin_src emacs-lisp
       (defun jump-to-org-agenda ()
         (interactive)
@@ -149,12 +191,18 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
       (run-with-idle-timer 900 t 'jump-to-org-agenda)
     #+end_src
 *** Org agenda files
+    :PROPERTIES:
+    :ID:       b7ff7f3f-89c2-46f9-89b6-5708b07278a6
+    :END:
     #+begin_src emacs-lisp
       (setq org-agenda-files (expand-file-name "agenda-files.org" org-directory))
     #+end_src 
 
 * Reminders with appt
 *** Erase all reminders; Rebuilt reminders for today agenda
+    :PROPERTIES:
+    :ID:       b4e41265-3530-4f44-b35e-0eec288dc17c
+    :END:
     #+begin_src emacs-lisp
       (defun bh/org-agenda-to-appt ()
         (interactive)
@@ -163,11 +211,17 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     #+end_src
       
 *** Rebuild the reminders everytime the agenda is displayed
+    :PROPERTIES:
+    :ID:       2af03fa0-50e3-4307-b3a6-8217adc48da2
+    :END:
     #+begin_src emacs-lisp
       (add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt)
     #+end_src      
 
 *** Setup appointments
+    :PROPERTIES:
+    :ID:       993c6fdf-e03c-48f2-92e1-e76b9b480cd4
+    :END:
     #+begin_src emacs-lisp
       (bh/org-agenda-to-appt)
       
@@ -189,11 +243,17 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     #+end_src
 
 *** reset the appointments one minute after midnight
+    :PROPERTIES:
+    :ID:       e069f013-f865-42da-9bc1-ba4e42a6f22f
+    :END:
     #+begin_src emacs-lisp
       (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
     #+end_src
 * Refiling
 *** from doc.norang
+    :PROPERTIES:
+    :ID:       0e352805-ff1a-45db-ba30-f14b0326c6f7
+    :END:
   #+begin_src emacs-lisp
   ; Use IDO for target completion
   (setq org-completion-use-ido t)
@@ -257,6 +317,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
       (org-defkey org-mode-map (kbd "C-c C-S-w") 'my/org-refile-to-journal)
     #+end_src
 * Archiving
+  :PROPERTIES:
+  :ID:       ce71b551-3dca-42ec-a9ab-b448b11d52a1
+  :END:
 #+begin_src emacs-lisp
   ;; Donot change status of items when archiving.
   (setq org-archive-mark-done nil)
@@ -264,6 +327,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+end_src
 
 * org-capture stuff
+  :PROPERTIES:
+  :ID:       cc6cae19-f085-485a-8086-78a2ce6732b9
+  :END:
 #+begin_src emacs-lisp
   (require 'org-capture)
   (global-set-key (kbd "C-M-r") 'org-capture)
@@ -297,6 +363,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
          
 * Clocking stuff
 *** Misc
+    :PROPERTIES:
+    :ID:       073dabcb-36d6-46bc-811e-1a22c8408a00
+    :END:
 #+begin_src emacs-lisp
   ;; Resume clocking tasks when emacs is restarted
   (setq org-clock-persist 'history)
@@ -322,6 +391,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+end_src
 
 *** Removing empty clock drawers on clock out
+    :PROPERTIES:
+    :ID:       dd338080-1a41-4a09-92e6-4db7b3297a30
+    :END:
 #+begin_src emacs-lisp
   (defun bh/remove-empty-drawer-on-clock-out ()
     (interactive)
@@ -333,6 +405,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+end_src
 
 *** Change task state to NEXT from TODO when clocking in
+    :PROPERTIES:
+    :ID:       a152dabf-0db0-4593-9248-1bfa51f2f066
+    :END:
   #+begin_src emacs-lisp
   (defun bh/clock-in-to-next (kw)
     "Switch task from TODO to NEXT when clocking in.
@@ -353,45 +428,62 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   #+end_src 
 *** Effort Estimates
 ***** Column view headings
+      :PROPERTIES:
+      :ID:       15d7b402-c7aa-480b-a1cf-57644add06b5
+      :END:
       #+begin_src emacs-lisp
         (setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
       #+end_src
 ***** Effort Estimate Global Values
+      :PROPERTIES:
+      :ID:       c0649f3b-9be3-4778-923d-1c330d61ba06
+      :END:
       #+begin_src emacs-lisp
         (setq org-global-properties (quote (("Effort_ALL" . "0:10 0:30 1:00 2:00 3:00 4:00 5:00 6:00 7:00 8:00"))))
       #+end_src
 * org-publish
+  :PROPERTIES:
+  :ID:       c35ae38c-8381-4570-81f8-d3bf583ea25c
+  :END:
 #+begin_src emacs-lisp
-;; Exporting & Publishing
-(setq org-export-htmlize-output-type 'css)
-
-(require 'org-publish)
-(setq org-publish-project-alist
-      '(
-	("org-notes"
-	 :base-directory "~/Worg/"
-	 :base-extension "org"
-	 :publishing-directory "~/public_html/"
-	 :recursive t
-	 :publishing-function org-publish-org-to-html
-	 :headline-levels 4             ; Just the default for this project.
-	 :auto-preamble t
-	 )
-
-	("org-static"
-	 :base-directory "~/Worg/"
-	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-	 :publishing-directory "~/public_html/"
-	 :recursive t
-	 :publishing-function org-publish-attachment
-	 )
-
-	("Worg" :components ("org-notes" "org-static"))
-
-	))
+  (setq org-export-htmlize-output-type 'css)
+  
+  (require 'org-publish)
+  
+  (setq org-publish-project-alist
+        '(
+          ("org-notes"
+           :base-extension "org"
+           :base-directory "~/.life-in-plain-text/website/"
+           :publishing-directory "~/public_html/"
+           :blog-publishing-directory "~/tmp/blog/"
+           :site-root "http://punchagan.muse-amuse.in"
+           :hyde-sanitize-permalinks t
+           :recursive t
+           :publishing-function org-publish-org-to-html
+           :headline-levels 4             ; Just the default for this project.
+           :auto-postamble nil
+           :auto-preamble t
+           :exclude-tags ("blog" "noexport")
+           )
+  
+          ("org-static"
+           :base-directory "~/.life-in-plain-text/website/"
+           :publishing-directory "~/public_html/media/"
+           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+           :recursive t
+           :publishing-function org-publish-attachment
+           )
+  
+          ("org" :components ("org-notes" "org-static"))
+  
+          ))
 #+end_src
 
 * org-export-generic
+  :PROPERTIES:
+  :ID:       684a27ca-692a-41eb-875e-5defd0301590
+  :END:
 #+begin_src emacs-lisp
 (require 'org-export-generic)
 
@@ -473,6 +565,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+end_src
 
 * Org git documentation with info
+  :PROPERTIES:
+  :ID:       9d7426e7-1e2a-4b2f-9911-1e979583f8a1
+  :END:
 #+begin_src emacs-lisp
   (add-to-list 'Info-default-directory-list (expand-file-name
                                              "doc" (expand-file-name
@@ -481,6 +576,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+end_src
 * Babel
 *** Set languages
+    :PROPERTIES:
+    :ID:       ab78f0bc-301a-4456-914a-a5aef810ecb8
+    :END:
     #+begin_src emacs-lisp
       (org-babel-do-load-languages
        'org-babel-load-languages
@@ -488,3 +586,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
          (emacs-lisp . t)
          ))
     #+end_src
+* org export with listings
+  #+begin_src emacs-lisp
+  (setq org-export-latex-listings t)
+  #+end_src
