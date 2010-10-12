@@ -590,3 +590,8 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   #+begin_src emacs-lisp
   (setq org-export-latex-listings t)
   #+end_src
+* evaluating babel on exports
+  #+begin_src emacs-lisp
+    (unless (equal system-name "padma")
+      (setq org-export-babel-evaluate nil))
+  #+end_src
