@@ -456,7 +456,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            :base-extension "org"
            :base-directory "~/.life-in-plain-text/website/"
            :publishing-directory "~/public_html/"
-           :blog-publishing-directory "~/tmp/blog/"
+           :blog-publishing-directory "~/public_html/blog-files/"
            :site-root "http://punchagan.muse-amuse.in"
            :hyde-sanitize-permalinks t
            :recursive t
