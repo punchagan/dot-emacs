@@ -480,6 +480,14 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
           ))
 #+end_src
 
+*** A function to publish blog in batch mode
+    #+begin_src emacs-lisp
+      (defun publish-my-blog ()
+        (load-file "~/org-hyde.el")
+        (org-hyde-export-blog (expand-file-name "blog.org" 
+                                      (expand-file-name "website" org-directory))))
+      
+    #+end_src 
 * org-export-generic
   :PROPERTIES:
   :ID:       684a27ca-692a-41eb-875e-5defd0301590
