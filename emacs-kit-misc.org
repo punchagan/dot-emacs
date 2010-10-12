@@ -1,11 +1,11 @@
-#+TITLE: Emacs Kit Misc
+1;2600;0c#+TITLE: Emacs Kit Misc
 #+OPTIONS: toc:nil num:nil ^:nil
 
 This is part of the [[file:emacs-kit.org][Emacs Kit]].
 
 * Emacs Kit Misc
-Things that don't fit anywhere else.
 
+Things that don't fit anywhere else.
 ** Color Themes
 The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
 sharing Emacs color themes.  To view and apply color themes available
