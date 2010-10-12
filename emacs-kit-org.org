@@ -463,7 +463,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            :publishing-function org-publish-org-to-html
            :headline-levels 4             ; Just the default for this project.
            :auto-postamble nil
-           :postamble "</div><div id='footer'> <p> <img src='./blog/media/images/emacs.png'> <img src='./blog/media/images/org-mode.png'> <a rel='license' href='http://creativecommons.org/licenses/by-nc-sa/3.0/'><img alt='Creative Commons License' style='border-width:0' src='http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png' /></a></p>"
+           :postamble "</div><div id='footer'> <p> <a href='http://www.gnu.org/software/emacs/'><img src='./blog/media/images/emacs.png' alt='Emacs' /></a> <a href='http://orgmode.org'> <img src='./blog/media/images/org-mode.png' alt='Org-mode' /></a> <a href='http://ringce.com/hyde'> <img src='./blog/media/images/hyde.png' alt='Hyde' /></a> <a href='http://git-scm.com'> <img src='./blog/media/images/git-logo.png' alt='git!' /></a><a rel='license' href='http://creativecommons.org/licenses/by-nc-sa/3.0/'><img alt='Creative Commons License' style='border-width:0' src='http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png' /></a></p>"
            :auto-preamble t
            :exclude-tags ("blog" "noexport")
            )
