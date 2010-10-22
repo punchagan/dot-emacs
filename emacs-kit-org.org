@@ -348,8 +348,8 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            (file+headline "contacts.org" "Contacts")
            "%[template-contacts]" :immediate-finish t)
           ("l" "bLog" entry
-           (file+headline "website/blog.org" "Notes")
-           "* %^{Title} :blog:noexport: \n\n  %?" :clock-in t :clock-resume t)
+           (file+headline "refile.org" "Notes")
+           "* %^{Title} :blog:noexport: \n  :PROPERTIES:\n  :POST_DATE: %U\n  :END:\n\n  %?" :clock-in t :clock-resume t)
           ("n" "note" entry
            (file+headline "refile.org" "Notes")
            "* %^{About} :note: \n\n  %U\n\n  %?" :clock-in t :clock-resume t)           
@@ -494,6 +494,10 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
         (load-file "~/org-hyde.el")
         (org-hyde-export-blog (expand-file-name "blog.org" 
                                       (expand-file-name "website" org-directory))))
+      
+      (defun publish-my-website ()
+        (org-publish-all)
+        (publish-my-blog))
       
     #+end_src 
 * org-export-generic
