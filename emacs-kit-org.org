@@ -460,8 +460,8 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
           ("org-notes"
            :base-extension "org"
            :base-directory "~/.life-in-plain-text/website/"
-           :publishing-directory "~/public_html/"
-           :blog-publishing-directory "~/public_html/blog-files/"
+           :publishing-directory "~/html/"
+           :blog-publishing-directory "~/html/blog-files/"
            :site-root "http://punchagan.muse-amuse.in"
            :hyde-sanitize-permalinks t
            :recursive t
@@ -476,7 +476,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   
           ("org-static"
            :base-directory "~/.life-in-plain-text/website/"
-           :publishing-directory "~/public_html/media/"
+           :publishing-directory "~/html/media/"
            :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
            :recursive t
            :publishing-function org-publish-attachment
