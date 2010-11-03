@@ -349,10 +349,10 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            "%[template-contacts]" :immediate-finish t)
           ("l" "bLog" entry
            (file+headline "refile.org" "Notes")
-           "* %^{Title} :blog:noexport: \n  :PROPERTIES:\n  :POST_DATE: %U\n  :END:\n\n  %?" :clock-in t :clock-resume t)
+           "* %^{Title} :blog:noexport:%^G \n  :PROPERTIES:\n  :POST_DATE: %U\n  :END:\n\n  %?" :clock-in t :clock-resume t)
           ("n" "note" entry
            (file+headline "refile.org" "Notes")
-           "* %^{About} :note: \n\n  %U\n\n  %?" :clock-in t :clock-resume t)           
+           "* %^{About} :note:%^G \n\n  %U\n\n  %?" :clock-in t :clock-resume t)           
           ("t" "task" entry
            (file+headline "refile.org" "Tasks")
            "* TODO %? \n  " :clock-in t :clock-resume t)
