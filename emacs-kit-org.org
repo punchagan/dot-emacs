@@ -450,6 +450,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   :PROPERTIES:
   :ID:       c35ae38c-8381-4570-81f8-d3bf583ea25c
   :END:
+*** Blog Publish configuration
 #+begin_src emacs-lisp
   (setq org-export-htmlize-output-type 'css)
   
@@ -491,7 +492,6 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 *** A function to publish blog in batch mode
     #+begin_src emacs-lisp
       (defun publish-my-blog ()
-        (load-file "~/org-hyde.el")
         (org-hyde-export-blog (expand-file-name "blog.org" 
                                       (expand-file-name "website" org-directory))))
       
