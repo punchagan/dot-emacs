@@ -9,7 +9,7 @@
 	url = http://github.com/philjackson/magit.git
 [submodule "elisp/org2blog"]
 	path = elisp/org2blog
-	url = https://punchagan@github.com/punchagan/org2blog.git
+	url = git@github.com:punchagan/org2blog.git
 [submodule "elisp/org"]
 	path = elisp/org
 	url = http://repo.or.cz/r/org-mode.git
