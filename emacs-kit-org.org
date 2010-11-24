@@ -492,10 +492,12 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 *** A function to publish blog in batch mode
     #+begin_src emacs-lisp
       (defun publish-my-blog ()
+        (interactive)
         (org-hyde-export-blog (expand-file-name "blog.org" 
                                       (expand-file-name "website" org-directory))))
       
       (defun publish-my-website ()
+        (interactive)
         (org-publish-all)
         (publish-my-blog))
       
