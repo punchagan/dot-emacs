@@ -109,6 +109,16 @@ These sections pertain to specific languages or modes.
 #+end_src
 
 
+** Emacs kit rainbow-mode
+#+begin_src emacs-lisp
+  (add-to-list 'load-path (expand-file-name 
+                           "rainbow-mode" (expand-file-name
+                                           "elisp" dotfiles-dir)))
+  
+  (require 'rainbow-mode)
+#+end_src
+
+
 ** Emacs kit identica-mode
 #+begin_src emacs-lisp
   (add-to-list 'load-path (expand-file-name 

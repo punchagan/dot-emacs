@@ -34,3 +34,6 @@
 [submodule "elisp/haskell-mode"]
 	path = elisp/haskell-mode
 	url = https://github.com/emacsmirror/haskell-mode.git
+[submodule "elisp/rainbow-mode"]
+	path = elisp/rainbow-mode
+	url = https://github.com/emacsmirror/rainbow-mode.git
