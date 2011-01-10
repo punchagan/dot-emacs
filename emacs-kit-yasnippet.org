@@ -31,3 +31,8 @@ inspired by TextMate's templating syntax.
                                    yas/x-prompt 
                                    yas/no-prompt))
     #+end_src
+
+*** Enable yas/global-mode
+    #+begin_src emacs-lisp
+      (yas/global-mode 1)
+    #+end_src
