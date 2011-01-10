@@ -37,3 +37,6 @@
 [submodule "elisp/rainbow-mode"]
 	path = elisp/rainbow-mode
 	url = https://github.com/emacsmirror/rainbow-mode.git
+[submodule "snippets/org-mode"]
+	path = snippets/org-mode
+	url = https://punchagan@github.com/punchagan/yasnippet-org-mode.git
