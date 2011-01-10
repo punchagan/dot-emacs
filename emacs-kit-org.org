@@ -617,3 +617,19 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     (unless (equal system-name "padma")
       (setq org-export-babel-evaluate nil))
   #+end_src
+* Fix for YASnippet to work
+  #+begin_src emacs-lisp
+  (defun yas/org-very-safe-expand ()
+    (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+  #+end_src
+
+  #+begin_src emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              ;; yasnippet (using the new org-cycle hooks)
+              (make-variable-buffer-local 'yas/trigger-key)
+              (setq yas/trigger-key [tab])
+              (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+              (define-key yas/keymap [tab] 'yas/next-field)
+              ))
+  #+end_src
