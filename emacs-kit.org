@@ -99,6 +99,16 @@ These sections pertain to specific languages or modes.
 #+end_src
 
 
+** Emacs kit haskell-mode
+#+begin_src emacs-lisp
+  (load (expand-file-name "haskell-site-file"
+                          (expand-file-name "haskell-mode"
+                                            (expand-file-name
+                                             "elisp" dotfiles-dir))))
+  (require 'haskell-mode)
+#+end_src
+
+
 ** Emacs kit identica-mode
 #+begin_src emacs-lisp
   (add-to-list 'load-path (expand-file-name 
