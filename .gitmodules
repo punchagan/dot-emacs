@@ -40,3 +40,6 @@
 [submodule "snippets/org-mode"]
 	path = snippets/org-mode
 	url = https://punchagan@github.com/punchagan/yasnippet-org-mode.git
+[submodule "elisp/color-theme-tangotango"]
+	path = elisp/color-theme-tangotango
+	url = https://github.com/juba/color-theme-tangotango.git
