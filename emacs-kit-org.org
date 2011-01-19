@@ -34,8 +34,17 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   :END:
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c l") 'org-store-link)
-  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "<f12>") 'org-agenda)
   (global-set-key (kbd "C-c b") 'org-iswitchb)
+    
+  (global-set-key (kbd "<f9> i") 'bh/org-info)
+    
+  (global-set-key (kbd "<f9> I") 'org-clock-in)
+  (global-set-key (kbd "<f9> O") 'org-clock-out)
+  (global-set-key (kbd "<f9> J") 'org-clock-goto)
+    
+  (global-set-key (kbd "<f9> s") 'bh/switch-to-org-scratch)
+  
 #+end_src
 
 * Auto mode and hooks
@@ -392,7 +401,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-clock-out-when-done nil)
   ;; Disable auto clock resolution
   (setq org-clock-auto-clock-resolution nil)
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  
 #+end_src
 
 *** Removing empty clock drawers on clock out
@@ -591,10 +600,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   :ID:       9d7426e7-1e2a-4b2f-9911-1e979583f8a1
   :END:
 #+begin_src emacs-lisp
-  (add-to-list 'Info-default-directory-list (expand-file-name
-                                             "doc" (expand-file-name
-                                                    "org" (expand-file-name
-                                                           "elisp" dotfiles-dir))))
+  (defun bh/org-info ()
+    (interactive)
+    (info "~/.emacs.d/elisp/org/doc/org.info"))
 #+end_src
 * Babel
 *** Set languages
@@ -633,3 +641,20 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
               (define-key yas/keymap [tab] 'yas/next-field)
               ))
   #+end_src
+* org-scratch buffer
+  :PROPERTIES:
+  :ID:       86f54e89-2ed4-4d0b-bfcd-36c4f247ade0
+  :END:
+#+begin_src emacs-lisp
+  (defun bh/switch-to-org-scratch ()
+    "Switch to a temp Org buffer.
+    If the region is active, insert it."
+    (interactive)
+    (let ((contents
+           (and (region-active-p)
+                (buffer-substring (region-beginning)
+                                  (region-end)))))
+      (find-file "/tmp/org-scratch.org")
+      (if contents (insert contents))))
+#+end_src
+
