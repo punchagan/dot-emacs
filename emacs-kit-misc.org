@@ -1,4 +1,4 @@
-1;2600;0c#+TITLE: Emacs Kit Misc
+#+TITLE: Emacs Kit Misc
 #+OPTIONS: toc:nil num:nil ^:nil
 
 This is part of the [[file:emacs-kit.org][Emacs Kit]].
@@ -7,6 +7,9 @@ This is part of the [[file:emacs-kit.org][Emacs Kit]].
 
 Things that don't fit anywhere else.
 ** Color Themes
+   :PROPERTIES:
+   :ID:       b4545145-f42e-4f37-be70-f0c150fa59b8
+   :END:
 The [[http://www.nongnu.org/color-theme/][Color Themes]] package provides support for changing, saving,
 sharing Emacs color themes.  To view and apply color themes available
 on your system run =M-x color-theme-select=.  See the color theme
@@ -20,16 +23,62 @@ This following loads color-theme so that it is available by default.
                (expand-file-name "color-theme"
                                  (expand-file-name "elisp" dotfiles-dir)))
   (require 'color-theme)
+  (setq color-theme-load-all-themes nil)
   (eval-after-load "color-theme"
     '(progn
        (color-theme-initialize)))
 #+end_src
 
 #+begin_src emacs-lisp 
-  (color-theme-clarity)
+  (add-to-list 'load-path
+               (expand-file-name 
+                "color-theme-tangotango"
+                  (expand-file-name 
+                   "elisp" 
+                   dotfiles-dir)))
+  
+  (require 'color-theme-tangotango)
+  
+  ;; select theme - first list element is for windowing system, second is for console/terminal
+  ;; Source : http://www.emacswiki.org/emacs/ColorTheme#toc9
+  (setq color-theme-choices 
+        '(color-theme-tangotango color-theme-tangotango))
+  
+  ;; default-start
+  (funcall (lambda (cols)
+             (let ((color-theme-is-global nil))
+               (eval 
+                (append '(if (window-system))
+                        (mapcar (lambda (x) (cons x nil)) 
+                                cols)))))
+           color-theme-choices)
+  
+  ;; test for each additional frame or console
+  (require 'cl)
+  (fset 'test-win-sys 
+        (funcall (lambda (cols)
+                   (lexical-let ((cols cols))
+                     (lambda (frame)
+                       (let ((color-theme-is-global nil))
+                         ;; must be current for local ctheme
+                         (select-frame frame)
+                         ;; test winsystem
+                         (eval 
+                          (append '(if (window-system frame)) 
+                                  (mapcar (lambda (x) (cons x nil)) 
+                                          cols)))))))
+                 color-theme-choices ))
+  ;; hook on after-make-frame-functions
+  (add-hook 'after-make-frame-functions 'test-win-sys)
+  
+  (color-theme-tangotango)
+  
 #+end_src
 
 ** Window system stuff
+   :PROPERTIES:
+   :ID:       afd0bfc2-2ed9-4ba9-953a-4b1030677645
+   :END:
 #+srcname: emacs-kit-window-view-stuff
 #+begin_src emacs-lisp 
 (when window-system
@@ -61,22 +110,34 @@ This following loads color-theme so that it is available by default.
 #+end_src
 
 ** Set browser
+   :PROPERTIES:
+   :ID:       ef412dfb-efcd-4036-8b11-d32dbb1bff6b
+   :END:
 Set this to whatever browser you use e.g...
 #+begin_src emacs-lisp
 (setq browse-url-browser-function 'browse-url-firefox)
 (global-set-key (kbd "C-s-f") 'browse-url-firefox)
 #+end_src
 ** Transparently open compressed files
+   :PROPERTIES:
+   :ID:       9c310b24-1f06-4aff-9231-1e4ca1153e44
+   :END:
 #+begin_src emacs-lisp
 (auto-compression-mode t)
 #+end_src
 
 ** Enable syntax highlighting for older Emacsen that have it off
+   :PROPERTIES:
+   :ID:       29c1b7d3-faa4-4b3f-831b-979933948a35
+   :END:
 #+begin_src emacs-lisp
 (global-font-lock-mode t)
 #+end_src
 
 ** No Menu Bar, Scroll Bar, Tool Bar
+   :PROPERTIES:
+   :ID:       9ef33876-3fe3-41e5-9e22-2e0ec52e3c7f
+   :END:
 #+srcname: emacs-kit-no-menu
 #+begin_src emacs-lisp 
 (menu-bar-mode -1)
@@ -85,63 +146,102 @@ Set this to whatever browser you use e.g...
 #+end_src
 
 ** Copy from and to x-clipboard
+   :PROPERTIES:
+   :ID:       b3a2f648-0482-4e44-a2ae-a93dd024529b
+   :END:
 #+begin_src emacs-lisp 
 (setq x-select-enable-clipboard t)
 #+end_src
 
 ** Column number mode enabled
+   :PROPERTIES:
+   :ID:       3034eed8-ea1f-4756-a1ae-aecf689568d7
+   :END:
 #+begin_src emacs-lisp
 (column-number-mode t)
 #+end_src
 ** Display time
+   :PROPERTIES:
+   :ID:       2f897200-acc1-4f16-83aa-2fbe7f2fcd18
+   :END:
 #+begin_src emacs-lisp
 (setq display-time-day-and-date nil)
 (setq display-time-24hr-format t)
 (display-time)
 #+end_src
 ** Faces
+   :PROPERTIES:
+   :ID:       0dacc16a-2344-4fd9-8994-1ed86f2e2996
+   :END:
 #+begin_src emacs-lisp
 (custom-set-faces
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 #+end_src
 ** Fill column
+   :PROPERTIES:
+   :ID:       d06df438-e110-4203-bf2f-72b5dc3f1bb4
+   :END:
 #+begin_src emacs-lisp :tangle
 (setq fill-column 79)
 #+end_src
    
 ** Use socks proxy
+   :PROPERTIES:
+   :ID:       18bbc834-4a8f-47ee-a6d7-129421a5f419
+   :END:
 #+begin_src emacs-lisp
   (setq url-gateway-method (quote socks))
 #+end_src 
 ** Start server
+   :PROPERTIES:
+   :ID:       31253276-1506-48ef-817d-57740860111c
+   :END:
 #+begin_src emacs-lisp
 (server-start)
 #+end_src 
 ** Default Major Mode
+   :PROPERTIES:
+   :ID:       aa4107ca-4063-4dc5-84bc-b89c1294c6d8
+   :END:
    #+begin_src emacs-lisp
      (setq default-major-mode 'org-mode)
    #+end_src
 
 ** Global auto revert mode
+   :PROPERTIES:
+   :ID:       0e79362a-931f-4518-890b-cab88ebff83e
+   :END:
    #+begin_src emacs-lisp
      (setq global-auto-revert-mode t)
    #+end_src
 ** Add new line at end of file
+   :PROPERTIES:
+   :ID:       70c23f78-d97f-499a-8904-ab32c6c1664c
+   :END:
    #+begin_src emacs-lisp
      (setq require-final-newline t)
    #+end_src
 ** Save a list of recent files visited.
+   :PROPERTIES:
+   :ID:       7d76921a-035f-4cba-9aa7-284e9b3fcdbd
+   :END:
    #+begin_src emacs-lisp 
      (recentf-mode 1)
    #+end_src
 
 ** Highlight matching parentheses when the point is on them.
+   :PROPERTIES:
+   :ID:       4d2d75ec-fcac-4f69-9a1d-3036527a2b70
+   :END:
    #+srcname: emacs-kit-match-parens
    #+begin_src emacs-lisp 
      (show-paren-mode 1)
    #+end_src
 
 ** ido mode
+   :PROPERTIES:
+   :ID:       61eeaa13-61b0-4bbd-9e06-ee16323a50d7
+   :END:
    ido-mode is like magic pixie dust!
    #+srcname: emacs-kit-loves-ido-mode
    #+begin_src emacs-lisp 
@@ -155,6 +255,9 @@ Set this to whatever browser you use e.g...
     #+end_src
 
 ** Other
+   :PROPERTIES:
+   :ID:       8c990c60-4967-4fdc-9074-fa3d877c4d00
+   :END:
 
    #+begin_src emacs-lisp 
        (set-default 'indent-tabs-mode nil)
@@ -197,24 +300,36 @@ it's possible aspell isn't in your path
 #+end_src
 
 ** Hippie expand: at times perhaps too hip
+   :PROPERTIES:
+   :ID:       00d10c5f-9213-4e81-a1db-b06e8b4a2603
+   :END:
    #+begin_src emacs-lisp
      (delete 'try-expand-line hippie-expand-try-functions-list)
      (delete 'try-expand-list hippie-expand-try-functions-list)
    #+end_src
 
 ** Default bookmark file
+   :PROPERTIES:
+   :ID:       89bc5b6c-fa90-49e2-93ea-f8fe6b6c25a1
+   :END:
 #+begin_src emacs-lisp
 (setq bookmark-default-file (expand-file-name 
                              ".emacs.bmk" dotfiles-dir))
 #+end_src
 
 ** Don't clutter up directories with files~
+   :PROPERTIES:
+   :ID:       a43943ca-a300-4ae5-b953-63034e331614
+   :END:
 #+begin_src emacs-lisp
 (setq backup-directory-alist `(("." . ,(expand-file-name
                                         (concat dotfiles-dir "backups")))))
 #+end_src
 
 ** Associate modes with file extensions
+   :PROPERTIES:
+   :ID:       665afbbf-8e82-46f6-a909-82005638ec39
+   :END:
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("COMMIT_EDITMSG$" . diff-mode))
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
@@ -227,11 +342,17 @@ it's possible aspell isn't in your path
 #+end_src
 
 ** Default to unified diffs
+   :PROPERTIES:
+   :ID:       be6c80f7-c576-4647-92a8-1cbbebd77277
+   :END:
 #+begin_src emacs-lisp
 (setq diff-switches "-u")
 #+end_src
 
 ** Cosmetics
+   :PROPERTIES:
+   :ID:       2a7aad64-eb78-4e62-879f-5bafbbfbfd22
+   :END:
 
 #+begin_src emacs-lisp
 (eval-after-load 'diff-mode
