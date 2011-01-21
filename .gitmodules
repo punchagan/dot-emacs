@@ -22,9 +22,6 @@
 [submodule "elisp/yasnippet"]
 	path = elisp/yasnippet
 	url = http://github.com/emacsmirror/yasnippet.git
-[submodule "elisp/pastebin"]
-	path = elisp/pastebin
-	url = http://github.com/emacsmirror/pastebin.git
 [submodule "elisp/color-theme"]
 	path = elisp/color-theme
 	url = http://github.com/haxney/color-theme.git
@@ -43,3 +40,6 @@
 [submodule "elisp/color-theme-tangotango"]
 	path = elisp/color-theme-tangotango
 	url = https://github.com/juba/color-theme-tangotango.git
+[submodule "elisp/pastebin"]
+	path = elisp/pastebin
+	url = http://github.com/emacsmirror/pastebin.git
