@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: In-line code
+# --
+\`\`$1\`\` $0
