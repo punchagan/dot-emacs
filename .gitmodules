@@ -12,7 +12,7 @@
 	url = git@github.com:punchagan/org2blog.git
 [submodule "elisp/org"]
 	path = elisp/org
-	url = http://repo.or.cz/r/org-mode.git
+	url = git://orgmode.org/org-mode.git
 [submodule "elisp/python-mode"]
 	path = elisp/python-mode
 	url = http://github.com/emacsmirror/python-mode.git
