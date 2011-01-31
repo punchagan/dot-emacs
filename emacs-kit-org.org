@@ -212,6 +212,10 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-agenda-log-mode-items '(clock))
 #+end_src
 
+*** Window settings for agenda
+    #+begin_src emacs-lisp
+      (setq org-agenda-restore-windows-after-quit t)
+    #+end_src
 * Reminders with appt
 *** Erase all reminders; Rebuilt reminders for today agenda
     :PROPERTIES:
