@@ -367,7 +367,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            "%[template-contacts]" :immediate-finish t)
           ("l" "bLog" entry
            (file+headline "refile.org" "Notes")
-           "* %^{Title} :blog:noexport:%^G \n  :PROPERTIES:\n  :POST_DATE: %U\n  :END:\n\n  %?" :clock-in t :clock-resume t)
+           "* %^{Title} :ol:noexport:%^G \n  :PROPERTIES:\n  :POST_DATE: %U\n  :WEB_CAT: %^{Category} :END:\n\n  %?" :clock-in t :clock-resume t)
           ("n" "note" entry
            (file+headline "refile.org" "Notes")
            "* %^{About} :note:%^G \n\n  %U\n\n  %?" :clock-in t :clock-resume t)           
@@ -383,7 +383,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     
   
 #+end_src
-         
+
 * Clocking stuff
 *** Misc
     :PROPERTIES:
