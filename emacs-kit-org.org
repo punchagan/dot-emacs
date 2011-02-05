@@ -379,7 +379,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            "+ [[%:link][%:description]]" :immediate-finish t)
           ("w" "org-protocol bookmarks" entry
            (file+headline "refile.org" "Links")
-           "* %:description %^G:\n  %u\n  %:link\n  %i" :immediate-finish t)))
+           "* %:description %^G:\n  %u\n  %:link\n\n  %:initial" :immediate-finish t)))
     
   
 #+end_src
