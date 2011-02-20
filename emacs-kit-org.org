@@ -103,7 +103,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (run-at-time "00:59" 3600 'org-save-all-org-buffers)
 #+end_src 
 
-* TODO Stuff
+* TO-DO Stuff
   :PROPERTIES:
   :ID:       4811896b-c85e-4ffb-844f-1c30ab626d92
   :END:
@@ -576,6 +576,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
        'org-babel-load-languages
        '((python . t)
          (emacs-lisp . t)
+         (sh . t)
          ))
     #+end_src
 * org export with listings
