@@ -380,7 +380,6 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
           ("w" "org-protocol bookmarks" entry
            (file+headline "refile.org" "Links")
            "* %:description %^G:\n  %u\n  %:link\n\n  %:initial" :immediate-finish t)))
-    
   
 #+end_src
 
@@ -621,3 +620,11 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
       (if contents (insert contents))))
 #+end_src
 
+* default apps
+  #+begin_src emacs-lisp
+    (setq org-file-apps 
+          '((auto-mode . emacs)
+            ("\\.mm\\'" . default)
+            ("\\.x?html?\\'" . "chromium-dev %s")
+            ("\\.pdf\\'" . "okular %s")))
+  #+end_src
