@@ -115,8 +115,8 @@ This following loads color-theme so that it is available by default.
    :END:
 Set this to whatever browser you use e.g...
 #+begin_src emacs-lisp
-(setq browse-url-browser-function 'browse-url-firefox)
-(global-set-key (kbd "C-s-f") 'browse-url-firefox)
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "chromium-dev")
 #+end_src
 ** Transparently open compressed files
    :PROPERTIES:
