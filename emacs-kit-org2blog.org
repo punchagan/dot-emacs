@@ -7,5 +7,5 @@ This is part of the [[file:emacs-kit.org][Emacs Kit]].
 *** Load org2blog
 #+begin_src emacs-lisp
 (setq load-path (cons "~/.emacs.d/elisp/org2blog/" load-path))
-(require 'org2blog)
+(require 'org2blog-autoloads)
 #+end_src
