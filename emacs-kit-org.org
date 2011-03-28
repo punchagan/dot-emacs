@@ -299,7 +299,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
         "Refile an entry to journal file's date-tree"
         (interactive)
         (require 'org-datetree)
-        (let ((journal "journal.org")
+        (let ((journal (expand-file-name "journal.org" org-directory))
               post-date)
           (setq post-date (or (org-entry-get (point) "TIMESTAMP_IA")
                               (org-entry-get (point) "TIMESTAMP")))
@@ -309,7 +309,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
                                 (caddr post-date)))
           (org-cut-subtree)
           (with-current-buffer (or (find-buffer-visiting journal)
-                                   (find-file-noselect file))
+                                   (find-file-noselect journal))
             (save-excursion
               (org-datetree-file-entry-under (current-kill 0) post-date)
               (bookmark-set "org-refile-last-stored")))
