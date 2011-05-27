@@ -571,12 +571,13 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     :ID:       ab78f0bc-301a-4456-914a-a5aef810ecb8
     :END:
     #+begin_src emacs-lisp
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((python . t)
-         (emacs-lisp . t)
-         (sh . t)
-         ))
+            (org-babel-do-load-languages
+             'org-babel-load-languages
+             '((python . t)
+               (emacs-lisp . t)
+               (ditaa . t)
+               (sh . t)
+               ))
     #+end_src
 * org export with listings
   #+begin_src emacs-lisp
