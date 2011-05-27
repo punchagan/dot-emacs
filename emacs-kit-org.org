@@ -627,5 +627,5 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
           '((auto-mode . emacs)
             ("\\.mm\\'" . default)
             ("\\.x?html?\\'" . "chromium-dev %s")
-            ("\\.pdf\\'" . "okular %s")))
+            ("\\.pdf\\'" . "evince %s")))
   #+end_src
