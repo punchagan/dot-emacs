@@ -190,7 +190,7 @@ Set this to whatever browser you use e.g...
    :ID:       18bbc834-4a8f-47ee-a6d7-129421a5f419
    :END:
 #+begin_src emacs-lisp
-  (setq url-gateway-method (quote socks))
+  (setq url-gateway-method (quote native))
 #+end_src 
 ** Start server
    :PROPERTIES:
