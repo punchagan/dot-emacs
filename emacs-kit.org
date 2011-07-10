@@ -191,15 +191,6 @@ Located in [[file:emacs-kit-gnus.org][emacs-kit-gnus]]
   (require 'pastebin)
 #+end_src
 
-** Emacs kit org-hyde
-   #+begin_src emacs-lisp
-     (add-to-list 'load-path (expand-file-name 
-                              "org-hyde" (expand-file-name
-                                          "elisp" dotfiles-dir)))
-     
-     (require 'org-hyde)
-   #+end_src
-
 * Load the rest of the emacs kit core
 The following files contain the remainder of the core of the Emacs
 Emacs Kit.  All of the code in this section should be loaded by
