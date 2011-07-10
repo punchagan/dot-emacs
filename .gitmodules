@@ -25,9 +25,6 @@
 [submodule "elisp/color-theme"]
 	path = elisp/color-theme
 	url = http://github.com/haxney/color-theme.git
-[submodule "elisp/org-hyde"]
-	path = elisp/org-hyde
-	url = git@github.com:punchagan/org-hyde.git
 [submodule "elisp/haskell-mode"]
 	path = elisp/haskell-mode
 	url = https://github.com/emacsmirror/haskell-mode.git
