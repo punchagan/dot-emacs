@@ -29,33 +29,33 @@ This following loads color-theme so that it is available by default.
        (color-theme-initialize)))
 #+end_src
 
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
   (add-to-list 'load-path
-               (expand-file-name 
+               (expand-file-name
                 "color-theme-tangotango"
-                  (expand-file-name 
-                   "elisp" 
+                  (expand-file-name
+                   "elisp"
                    dotfiles-dir)))
-  
+
   (require 'color-theme-tangotango)
-  
+
   ;; select theme - first list element is for windowing system, second is for console/terminal
   ;; Source : http://www.emacswiki.org/emacs/ColorTheme#toc9
-  (setq color-theme-choices 
+  (setq color-theme-choices
         '(color-theme-tangotango color-theme-tangotango))
-  
+
   ;; default-start
   (funcall (lambda (cols)
              (let ((color-theme-is-global nil))
-               (eval 
+               (eval
                 (append '(if (window-system))
-                        (mapcar (lambda (x) (cons x nil)) 
+                        (mapcar (lambda (x) (cons x nil))
                                 cols)))))
            color-theme-choices)
-  
+
   ;; test for each additional frame or console
   (require 'cl)
-  (fset 'test-win-sys 
+  (fset 'test-win-sys
         (funcall (lambda (cols)
                    (lexical-let ((cols cols))
                      (lambda (frame)
@@ -63,16 +63,16 @@ This following loads color-theme so that it is available by default.
                          ;; must be current for local ctheme
                          (select-frame frame)
                          ;; test winsystem
-                         (eval 
-                          (append '(if (window-system frame)) 
-                                  (mapcar (lambda (x) (cons x nil)) 
+                         (eval
+                          (append '(if (window-system frame))
+                                  (mapcar (lambda (x) (cons x nil))
                                           cols)))))))
                  color-theme-choices ))
   ;; hook on after-make-frame-functions
   (add-hook 'after-make-frame-functions 'test-win-sys)
-  
+
   (color-theme-tangotango)
-  
+
 #+end_src
 
 ** Window system stuff
@@ -80,7 +80,7 @@ This following loads color-theme so that it is available by default.
    :ID:       afd0bfc2-2ed9-4ba9-953a-4b1030677645
    :END:
 #+srcname: emacs-kit-window-view-stuff
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
   (tooltip-mode -1)
@@ -139,7 +139,7 @@ Set this to whatever browser you use e.g...
    :ID:       9ef33876-3fe3-41e5-9e22-2e0ec52e3c7f
    :END:
 #+srcname: emacs-kit-no-menu
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
 (menu-bar-mode -1)
 (set-scroll-bar-mode nil)
 (tool-bar-mode -1)
@@ -149,7 +149,7 @@ Set this to whatever browser you use e.g...
    :PROPERTIES:
    :ID:       b3a2f648-0482-4e44-a2ae-a93dd024529b
    :END:
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
 (setq x-select-enable-clipboard t)
 #+end_src
 
@@ -184,21 +184,21 @@ Set this to whatever browser you use e.g...
 #+begin_src emacs-lisp :tangle
 (setq fill-column 79)
 #+end_src
-   
+
 ** Use socks proxy
    :PROPERTIES:
    :ID:       18bbc834-4a8f-47ee-a6d7-129421a5f419
    :END:
 #+begin_src emacs-lisp
   (setq url-gateway-method (quote native))
-#+end_src 
+#+end_src
 ** Start server
    :PROPERTIES:
    :ID:       31253276-1506-48ef-817d-57740860111c
    :END:
 #+begin_src emacs-lisp
 (server-start)
-#+end_src 
+#+end_src
 ** Default Major Mode
    :PROPERTIES:
    :ID:       aa4107ca-4063-4dc5-84bc-b89c1294c6d8
@@ -225,7 +225,7 @@ Set this to whatever browser you use e.g...
    :PROPERTIES:
    :ID:       7d76921a-035f-4cba-9aa7-284e9b3fcdbd
    :END:
-   #+begin_src emacs-lisp 
+   #+begin_src emacs-lisp
      (recentf-mode 1)
    #+end_src
 
@@ -234,7 +234,7 @@ Set this to whatever browser you use e.g...
    :ID:       4d2d75ec-fcac-4f69-9a1d-3036527a2b70
    :END:
    #+srcname: emacs-kit-match-parens
-   #+begin_src emacs-lisp 
+   #+begin_src emacs-lisp
      (show-paren-mode 1)
    #+end_src
 
@@ -244,7 +244,7 @@ Set this to whatever browser you use e.g...
    :END:
    ido-mode is like magic pixie dust!
    #+srcname: emacs-kit-loves-ido-mode
-   #+begin_src emacs-lisp 
+   #+begin_src emacs-lisp
      (when (> emacs-major-version 21)
        (ido-mode t)
        (setq ido-enable-prefix nil
@@ -259,17 +259,17 @@ Set this to whatever browser you use e.g...
    :ID:       8c990c60-4967-4fdc-9074-fa3d877c4d00
    :END:
 
-   #+begin_src emacs-lisp 
+   #+begin_src emacs-lisp
        (set-default 'indent-tabs-mode nil)
      ;;(set-default 'indicate-empty-lines t)
        (set-default 'imenu-auto-rescan t)
-       
+
        (add-hook 'text-mode-hook 'turn-on-auto-fill)
        (add-hook 'text-mode-hook 'turn-on-flyspell)
-       
+
        (defvar coding-hook nil
          "Hook that gets run on activation of any programming mode.")
-       
+
        (defalias 'yes-or-no-p 'y-or-n-p)
        (random t) ;; Seed the random-number generator
    #+end_src
@@ -313,7 +313,7 @@ it's possible aspell isn't in your path
    :ID:       89bc5b6c-fa90-49e2-93ea-f8fe6b6c25a1
    :END:
 #+begin_src emacs-lisp
-(setq bookmark-default-file (expand-file-name 
+(setq bookmark-default-file (expand-file-name
                              ".emacs.bmk" dotfiles-dir))
 #+end_src
 
