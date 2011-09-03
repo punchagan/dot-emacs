@@ -366,3 +366,7 @@ it's possible aspell isn't in your path
      (set-face-foreground 'magit-diff-del "red3")))
 #+end_src
 
+** Delete trailing white-spaces before saving
+   #+begin_src emacs-lisp
+     (add-hook 'before-save-hook 'delete-trailing-whitespace)
+   #+end_src
