@@ -66,12 +66,16 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-startup-folded t)
   (setq org-cycle-separator-lines 0) ; leave no empty line in collapsed view
   (setq org-directory "~/.life-in-plain-text/")
+  (setq org-mobile-inbox-for-pull (expand-file-name
+                                   "phone.org" org-directory))
+  (setq org-mobile-directory "~/Dropbox/.life-in-plain-text/")
   (setq org-default-notes-file (expand-file-name "refile.org" org-directory))
   (setq org-hide-leading-stars t)
   (setq org-odd-levels-only t)
   (setq org-popup-calendar-for-date-prompt nil)
   (setq org-return-follows-link t)
   (setq org-log-done 'time)
+
 #+end_src
 
 
