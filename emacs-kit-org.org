@@ -36,15 +36,15 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "<f12>") 'org-agenda)
   (global-set-key (kbd "C-c b") 'org-iswitchb)
-    
+
   (global-set-key (kbd "<f9> i") 'bh/org-info)
-    
+
   (global-set-key (kbd "<f9> I") 'org-clock-in)
   (global-set-key (kbd "<f9> O") 'org-clock-out)
   (global-set-key (kbd "<f9> J") 'org-clock-goto)
-    
+
   (global-set-key (kbd "<f9> s") 'bh/switch-to-org-scratch)
-  
+
 #+end_src
 
 * Auto mode and hooks
@@ -85,8 +85,8 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   :END:
   #+begin_src emacs-lisp
     (setq org-list-demote-modify-bullet
-          '(("+" . "-") 
-            ("-" . "+") 
+          '(("+" . "-")
+            ("-" . "+")
             ("*" . "+")
             ("1." . "1)")
             ("1)" . "1.")))
@@ -97,7 +97,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   :END:
 #+begin_src emacs-lisp
   (setq require-final-newline t)
-#+end_src 
+#+end_src
 
 * save all org buffers every hour
   :PROPERTIES:
@@ -105,28 +105,28 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   :END:
 #+begin_src emacs-lisp
   (run-at-time "00:59" 3600 'org-save-all-org-buffers)
-#+end_src 
+#+end_src
 
 * TO-DO Stuff
   :PROPERTIES:
   :ID:       4811896b-c85e-4ffb-844f-1c30ab626d92
   :END:
 #+begin_src emacs-lisp
-  (setq org-todo-keywords 
+  (setq org-todo-keywords
         (quote (
                 (sequence "TODO(t)" "NEXT(n!)" "|" "DONE(d!/!)")
                 (sequence "WAITING(w!)" "SOMEDAY(S)" "|" "DELEGATED(D)" "CANCELLED(c@/!)")
                 (sequence "TOREAD(o)" "FOUND(f)" "READING(r)" "|" "DONE(d!/!)" ))))
-  
-  
-  (setq org-todo-keyword-faces 
+
+
+  (setq org-todo-keyword-faces
         (quote (("TODO" :foreground "red" :weight bold)
                 ("NEXT" :foreground "blue" :weight bold)
                 ("DONE" :foreground "forest green" :weight bold)
                 ("WAITING" :foreground "orange" :weight bold)
                 ("SOMEDAY" :foreground "magenta" :weight bold)
                 ("CANCELLED" :foreground "forest green" :weight bold))))
-  
+
   (setq org-use-fast-todo-selection t)
   (setq org-treat-S-cursor-todo-selection-as-state-change nil)
 #+end_src
@@ -138,7 +138,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     :END:
     #+begin_src emacs-lisp
       (setq org-agenda-include-all-todo t)
-    #+end_src 
+    #+end_src
 *** don't show scheduled and deadline items when done
     :PROPERTIES:
     :ID:       a7986ac6-f292-4629-be88-f3116a1c5a84
@@ -200,7 +200,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
         ;;  (unless (get-buffer-window buf)
         ;;    (org-agenda-goto-calendar)))
         )
-      
+
       (run-with-idle-timer 900 t 'jump-to-org-agenda)
     #+end_src
 *** Org agenda files
@@ -209,7 +209,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     :END:
     #+begin_src emacs-lisp
       (setq org-agenda-files (expand-file-name "agenda-files.org" org-directory))
-    #+end_src 
+    #+end_src
 
 *** Items to show in org-agenda-log-mode
 #+begin_src emacs-lisp
@@ -231,14 +231,14 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
         (setq appt-time-msg-list nil)
         (org-agenda-to-appt))
     #+end_src
-      
+
 *** Rebuild the reminders everytime the agenda is displayed
     :PROPERTIES:
     :ID:       2af03fa0-50e3-4307-b3a6-8217adc48da2
     :END:
     #+begin_src emacs-lisp
       (add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt)
-    #+end_src      
+    #+end_src
 
 *** Setup appointments
     :PROPERTIES:
@@ -246,19 +246,19 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     :END:
     #+begin_src emacs-lisp
       (bh/org-agenda-to-appt)
-      
+
       (appt-activate t)
-      
+
       ;; (when window-system
-        
+
       ;;   (setq appt-display-format 'window)
-      
+
       ;;   (defun org-osd-display (min-to-app new-time msg)
       ;;     (save-window-excursion
       ;;       (shell-command (format "notify-send %s" msg))))
-        
+
       ;;   (setq appt-disp-window-function (function org-osd-display))
-        
+
       ;;   ;; Run once, activate and schedule refresh
       ;;   (run-at-time nil 3600 'bh/org-agenda-to-appt)
       ;;   (appt-activate t))
@@ -297,7 +297,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     :END:
     Useful to refile notes to the journal file, which is a
     date-tree. =org-refile= isn't convenient to refile stuff to a
-    date-tree. 
+    date-tree.
     #+begin_src emacs-lisp
       (defun my/org-refile-to-journal ()
         "Refile an entry to journal file's date-tree"
@@ -308,8 +308,8 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
           (setq post-date (or (org-entry-get (point) "TIMESTAMP_IA")
                               (org-entry-get (point) "TIMESTAMP")))
           (setq post-date (nthcdr 3 (parse-time-string post-date)))
-          (setq post-date (list (cadr post-date) 
-                                (car post-date) 
+          (setq post-date (list (cadr post-date)
+                                (car post-date)
                                 (caddr post-date)))
           (org-cut-subtree)
           (with-current-buffer (or (find-buffer-visiting journal)
@@ -318,7 +318,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
               (org-datetree-file-entry-under (current-kill 0) post-date)
               (bookmark-set "org-refile-last-stored")))
           (message "Refiled to %s" journal)))
-      
+
       (defun my/org-agenda-refile-to-journal ()
         "Refile the item at point to journal."
         (interactive)
@@ -334,7 +334,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
                 (org-remove-subtree-entries-from-agenda)
                 (my/org-refile-to-journal)))))
         (org-agenda-redo))
-      
+
       (org-defkey org-agenda-mode-map (kbd "C-c C-S-w") 'my/org-agenda-refile-to-journal)
       (org-defkey org-mode-map (kbd "C-c C-S-w") 'my/org-refile-to-journal)
     #+end_src
@@ -355,10 +355,10 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+begin_src emacs-lisp
   (require 'org-capture)
   (global-set-key (kbd "C-M-r") 'org-capture)
-  
+
   ;; org-protocol
   (require 'org-protocol)
-  
+
   (setq org-capture-templates
         '(("a" "accounts" table-line
            (file+headline "accounts.org" "Expenses")
@@ -374,7 +374,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            "* %^{Title} :ol:noexport:%^G \n  :PROPERTIES:\n  :POST_DATE: %U\n  :WEB_CAT: %^{Category} \n  :END:\n\n  %?" :clock-in t :clock-resume t)
           ("n" "note" entry
            (file+headline "refile.org" "Notes")
-           "* %^{About} :note:%^G \n\n  %U\n\n  %?" :clock-in t :clock-resume t)           
+           "* %^{About} :note:%^G \n\n  %U\n\n  %?" :clock-in t :clock-resume t)
           ("t" "task" entry
            (file+headline "refile.org" "Tasks")
            "* TODO %? \n  " :clock-in t :clock-resume t)
@@ -384,7 +384,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
           ("w" "org-protocol bookmarks" entry
            (file+headline "refile.org" "Links")
            "* %:description %^G:\n  %u\n  %:link\n\n  %:initial" :immediate-finish t)))
-  
+
 #+end_src
 
 * Clocking stuff
@@ -402,7 +402,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   ;; Change task state to STARTED when clocking in
   (setq org-clock-in-switch-to-state (quote bh/clock-in-to-next))
   ;;Resolving idle time
-  (setq org-clock-idle-time 5)
+  (setq org-clock-idle-time nil)
   ;; Separate drawers for clocking and logs
   (setq org-drawers (quote ("PROPERTIES" "LOGBOOK" "CLOCK")))
   ;; Save clock data in the CLOCK drawer and state changes and notes in the LOGBOOK drawer
@@ -413,7 +413,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
   (setq org-clock-out-when-done nil)
   ;; Disable auto clock resolution
   (setq org-clock-auto-clock-resolution nil)
-  
+
 #+end_src
 
 *** Removing empty clock drawers on clock out
@@ -426,7 +426,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
     (save-excursion
       (beginning-of-line 0)
       (org-remove-empty-drawer-at "CLOCK" (point))))
-  
+
   (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
 #+end_src
 
@@ -451,7 +451,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
                 (setq has-subtask t))))
           (when (not has-subtask)
             "NEXT"))))
-  #+end_src 
+  #+end_src
 *** Effort Estimates
 ***** Column view headings
       :PROPERTIES:
@@ -483,9 +483,9 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 #+begin_src emacs-lisp
 (require 'org-export-generic)
 
-;; Org to rst export 
+;; Org to rst export
 (org-set-generic-type
- "restructured-text" 
+ "restructured-text"
  '(:file-suffix  ".rst"
    :key-binding  ?R
 
@@ -495,7 +495,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 
    :body-header-section-numbers nil	; t = all, nil = none
    :body-section-header-format  "%s\n"
-   :body-section-header-suffix  (?= ?- ?~ 
+   :body-section-header-suffix  (?= ?- ?~
    				 ?+ ?^)
    :body-section-prefix         "\n"
    :body-section-suffix         "\n"
@@ -503,7 +503,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
    :body-list-prefix             "<list>\n\n"
    :body-list-suffix             "</list>\n"
    :body-list-format             "+ %s\n"
-   
+
    :body-number-list-prefix       "\n\n"
    :body-number-list-suffix       "\n"
    :body-number-list-format       "%s\n"
@@ -519,7 +519,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 
 ;;   :body-text-prefix 	       "<p>\n"
 ;;   :body-text-suffix 	       "</p>\n"
-  
+
    ))
 
 ;; #+LaTeX_CLASS: beamer in org files
@@ -549,11 +549,11 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 ;;         showstringspaces=false,
 ;;         keywordstyle=\\color{blue}\\bfseries}\n
 ;;       \\usepackage{verbatim}\n
-;;       \\institute{{{{beamerinstitute}}}}\n          
+;;       \\institute{{{{beamerinstitute}}}}\n
 ;;        \\subject{{{{beamersubject}}}}\n"
 
 ;;      ("\\section{%s}" . "\\section*{%s}")
-     
+
 ;;      ("\\begin{frame}[fragile]\\frametitle{%s}"
 ;;        "\\end{frame}"
 ;;        "\\begin{frame}[fragile]\\frametitle{%s}"
@@ -627,7 +627,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
 
 * default apps
   #+begin_src emacs-lisp
-    (setq org-file-apps 
+    (setq org-file-apps
           '((auto-mode . emacs)
             ("\\.mm\\'" . default)
             ("\\.x?html?\\'" . "chromium-dev %s")
