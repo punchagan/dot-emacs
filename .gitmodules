@@ -40,3 +40,6 @@
 [submodule "elisp/pastebin"]
 	path = elisp/pastebin
 	url = http://github.com/emacsmirror/pastebin.git
+[submodule "elisp/artbollocks"]
+	path = elisp/artbollocks
+	url = git://gitorious.org/robmyers/scripts.git

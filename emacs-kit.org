@@ -3,7 +3,7 @@
 #+OPTIONS: H:2 num:nil toc:t
 #+STARTUP: oddeven
 
-#+begin_quote 
+#+begin_quote
 Emacs outshines all other editing software in approximately the same
 way that the noonday sun does the stars. It is not just bigger and
 brighter; it simply makes everything else vanish.
@@ -14,10 +14,10 @@ brighter; it simply makes everything else vanish.
 * Emacs kit basics
 ** Load path etc.
 #+srcname: emacs-kit-load-paths
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
   (setq dotfiles-dir (file-name-directory
                       (or load-file-name (buffer-file-name))))
-  
+
   (add-to-list 'load-path dotfiles-dir)
 #+end_src
 
@@ -27,7 +27,7 @@ These should be loaded on startup rather than autoloaded on demand
 since they are likely to be used in every session
 
 #+srcname: emacs-kit-load-on-startup
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
   (require 'cl)
   (require 'saveplace)
   (require 'ffap)
@@ -38,7 +38,7 @@ since they are likely to be used in every session
 
 ** Function for loading emacs-kit-*
 #+srcname: emacs-kit-load
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
   (defun emacs-kit-load (file)
     "This function is to be used to load emacs-kit-*.org files."
     (org-babel-load-file (expand-file-name file
@@ -52,7 +52,7 @@ raw emacs-lisp files or as embedded elisp in org-mode files (as done
 in this document).
 
 #+srcname: emacs-kit-user/system-setup
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp
   (setq system-specific-config (concat dotfiles-dir system-name ".el")
         system-specific-literate-config (concat dotfiles-dir system-name ".org")
         user-specific-config (concat dotfiles-dir user-login-name ".el")
@@ -73,7 +73,7 @@ project is not in elpa.
 #+end_src
 
 * Language/Mode Specific Files
-These sections pertain to specific languages or modes.  
+These sections pertain to specific languages or modes.
 
 ** Emacs kit yasnippet
    Located in [[file:emacs-kit-yasnippet.org][emacs-kit-yasnippet]]
@@ -83,7 +83,7 @@ These sections pertain to specific languages or modes.
 
 ** Emacs kit xml-rpc
 #+begin_src emacs-lisp
-  (add-to-list 'load-path (expand-file-name 
+  (add-to-list 'load-path (expand-file-name
                            "xml-rpc" (expand-file-name
 			                "elisp" dotfiles-dir)))
 
@@ -92,7 +92,7 @@ These sections pertain to specific languages or modes.
 
 ** Emacs kit python-mode
 #+begin_src emacs-lisp
-  (add-to-list 'load-path (expand-file-name 
+  (add-to-list 'load-path (expand-file-name
                            "python-mode" (expand-file-name
 			                "elisp" dotfiles-dir)))
   (require 'python-mode)
@@ -111,17 +111,17 @@ These sections pertain to specific languages or modes.
 
 ** Emacs kit rainbow-mode
 #+begin_src emacs-lisp
-  (add-to-list 'load-path (expand-file-name 
+  (add-to-list 'load-path (expand-file-name
                            "rainbow-mode" (expand-file-name
                                            "elisp" dotfiles-dir)))
-  
+
   (require 'rainbow-mode)
 #+end_src
 
 
 ** Emacs kit identica-mode
 #+begin_src emacs-lisp
-  (add-to-list 'load-path (expand-file-name 
+  (add-to-list 'load-path (expand-file-name
                            "identica-mode" (expand-file-name
 			                "elisp" dotfiles-dir)))
   (require 'identica-mode)
@@ -185,11 +185,19 @@ Located in [[file:emacs-kit-gnus.org][emacs-kit-gnus]]
 
 ** Emacs kit pastebin
 #+begin_src emacs-lisp
-  (add-to-list 'load-path (expand-file-name 
+  (add-to-list 'load-path (expand-file-name
                            "pastebin" (expand-file-name
 			                "elisp" dotfiles-dir)))
   (require 'pastebin)
 #+end_src
+
+** Emacs kit artbollocks
+   #+begin_src emacs-lisp
+     (add-to-list 'load-path (expand-file-name
+                              "artbollocks" (expand-file-name
+                                           "elisp" dotfiles-dir)))
+     (require 'artbollocks-mode)
+    #+end_src
 
 * Load the rest of the emacs kit core
 The following files contain the remainder of the core of the Emacs
