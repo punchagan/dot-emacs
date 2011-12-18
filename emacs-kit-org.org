@@ -385,7 +385,7 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
            (file+headline "refile.org" "Links")
            "* %:description %^G:\n  %u\n  %:link\n\n  %:initial" :immediate-finish t)))
 
-  (add-hook 'org-capture-mode-hook 'writegood-mode)
+  (add-hook 'org-capture-mode-hook 'artbollocks-mode)
 
 #+end_src
 
