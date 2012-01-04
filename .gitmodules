@@ -25,9 +25,6 @@
 [submodule "elisp/color-theme"]
 	path = elisp/color-theme
 	url = http://github.com/haxney/color-theme.git
-[submodule "elisp/haskell-mode"]
-	path = elisp/haskell-mode
-	url = https://github.com/emacsmirror/haskell-mode.git
 [submodule "elisp/rainbow-mode"]
 	path = elisp/rainbow-mode
 	url = https://github.com/emacsmirror/rainbow-mode.git

@@ -338,6 +338,36 @@ which is also *implemented using* Org-mode and [[http://git-scm.com/][git]].
       (org-defkey org-agenda-mode-map (kbd "C-c C-S-w") 'my/org-agenda-refile-to-journal)
       (org-defkey org-mode-map (kbd "C-c C-S-w") 'my/org-refile-to-journal)
     #+end_src
+*** Refile for blog
+    #+begin_src emacs-lisp
+      (defun my/refile-for-blog ()
+        (interactive "P")
+        (let* ((marker (or (org-get-at-bol 'org-hd-marker)
+                           (org-agenda-error)))
+               (buffer (marker-buffer marker))
+               (rfloc (or rfloc
+                          (org-refile-get-location
+                           "Refile to" buffer
+                           org-refile-allow-creating-parent-nodes)))
+               tags)
+          (with-current-buffer buffer
+            (save-excursion
+              (save-restriction
+                (widen)
+                (goto-char marker)
+                (org-remove-subtree-entries-from-agenda)
+                (org-back-to-heading t)
+                (org-set-property "WEB_CAT"
+                                  (org-icompleting-read
+                                   "Category: "
+                                   '("links" "blog" "quotes")))
+                (setq tags (org-get-tags))
+                (if (not (member "ol" tags))
+                    (progn
+                      (setq tags (cons "ol" tags))
+                      (org-set-tags-to tags)))
+                (org-refile nil buffer rfloc))))))
+    #+end_src
 * Archiving
   :PROPERTIES:
   :ID:       ce71b551-3dca-42ec-a9ab-b448b11d52a1
