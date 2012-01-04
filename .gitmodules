@@ -40,3 +40,6 @@
 [submodule "elisp/artbollocks"]
 	path = elisp/artbollocks
 	url = git://gitorious.org/robmyers/scripts.git
+[submodule "elisp/haskell-mode"]
+        path = elisp/haskell-mode
+        url = https://github.com/emacsmirror/haskell-mode.git
