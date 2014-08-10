@@ -10,6 +10,7 @@ backup
 places
 ac-comphist.dat
 recentf
+el-get
 
 # Org-mode
 .org-id-locations
