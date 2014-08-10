@@ -73,6 +73,8 @@
                     (mapcar (lambda (elt) (symbol-name (car elt)))
                             package-alist)
                     nil t)))))
-  (package-delete (cadr (assq package package-alist))))
+  (package-delete (cadr (assq package package-alist)))
+  (package-initialize t))
+
 
 (provide 'setup-package)
