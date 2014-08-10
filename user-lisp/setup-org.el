@@ -16,4 +16,10 @@
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cl" 'org-store-link)
 
+;; Fontify code in blocks
+(setq org-src-fontify-natively t)
+
+;; Tabs in src blocks are as if tabs in that mode...
+(setq org-src-tab-acts-natively t)
+
 (provide 'setup-org)
