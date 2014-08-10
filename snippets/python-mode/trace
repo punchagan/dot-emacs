@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: trace
+# key: trace
+# binding: direct-keybinding
+# --
+from IPython.core.debugger import Tracer; Tracer()()
