@@ -32,6 +32,6 @@
                                     "%b"))))
 
 ;; use zenburn as the default theme
-(load-theme 'zenburn t)
+(load-theme 'wombat t)
 
 (provide 'setup-appearance)
