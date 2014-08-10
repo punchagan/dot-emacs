@@ -24,7 +24,7 @@
 
 ;; Setup appearance
 (require 'setup-appearance)
- 
+
 ;; Load user specific configuration
 (when (file-exists-p user-lisp-dir)
   (mapc 'load (directory-files user-lisp-dir nil "^[^#].*el$")))
