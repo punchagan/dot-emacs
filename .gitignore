@@ -8,6 +8,8 @@ auto-save-list
 tramp
 .\#*
 backup
+places
+ac-comphist.dat
 
 # Org-mode
 .org-id-locations
