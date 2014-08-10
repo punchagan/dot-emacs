@@ -1,3 +1,5 @@
+;;; Contains general editing related config.
+
 ;; Allow pasting selection outside of Emacs
 (setq x-select-enable-clipboard t)
 

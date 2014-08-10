@@ -1,11 +1,9 @@
 (require 'cl)
-;; (require 'saveplace)
-;; (require 'ffap)
-;; (require 'uniquify)
-;; (require 'ansi-color)
 
 (require 'server)
 (unless (server-running-p)
   (server-start))
+
+(require 'setup-defuns)
 
 (provide 'setup-load-first)
