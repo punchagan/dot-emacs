@@ -10,6 +10,7 @@ tramp
 backup
 places
 ac-comphist.dat
+recentf
 
 # Org-mode
 .org-id-locations
