@@ -19,8 +19,14 @@
 ;; Setup packages to load first
 (require 'setup-load-first)
 
-;; Setup package
+;; Setup packages
 (require 'setup-package)
+(require 'setup-el-get)
+(require 'setup-package-list)
+;; Install any of my missing packages
+(pc/packages-install my-packages)
+;; Add any installed packages missing from the list to it.
+(pc/add-installed-packages-to-my-packages)
 
 ;; Setup appearance
 (require 'setup-appearance)

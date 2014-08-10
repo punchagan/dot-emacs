@@ -8,10 +8,6 @@
 ;; Links
 (setq org-return-follows-link t)
 
-;; Org-tree-slide
-;; (require 'org-tree-slide)
-;; (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
-
 ;; Keybindings
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cl" 'org-store-link)
@@ -21,5 +17,9 @@
 
 ;; Tabs in src blocks are as if tabs in that mode...
 (setq org-src-tab-acts-natively t)
+
+;; Org-tree-slide
+(require 'org-tree-slide)
+(global-set-key (kbd "<f8>") 'org-tree-slide-mode)
 
 (provide 'setup-org)

@@ -1,4 +1,5 @@
-;; Custom functions used for various things in the setup.
+;; My defuns
+(require 'find-func)
 
 ;; Advice package-install to update the package list in the config.
 (defadvice package-install (after install-update-package-list (pkg))
@@ -16,13 +17,37 @@
 (defun pc/add-installed-packages-to-my-packages ()
   "Add any installed packages not in my-packages list, to it."
   (let ((missing))
+
+    ;; package-install
     (dolist (package package-alist)
       (let ((package-name (package-desc-name (cadr package))))
 	(unless (member package-name my-packages)
 	  (setq missing t)
 	  (add-to-list 'my-packages package-name))))
+
+    ;; el-get-install
+    (let ((el-packages (el-get-list-package-names-with-status "installed")))
+      (dolist (package el-packages)
+        (unless (member package (mapcar 'symbol-name my-packages))
+          (setq missing t)
+          (add-to-list 'my-packages (make-symbol package)))))
+
     (when missing
       (pc/write-packages-to-config))))
+
+(defun pc/el-get-post-install-hook (package)
+  "Hook to run after a package has been removed"
+  (add-to-list 'my-packages package)
+  (pc/write-packages-to-config))
+
+(defun pc/el-get-post-remove-hook (package)
+  "Hook to run after a package has been removed"
+  (setq my-packages (remove package my-packages))
+  (pc/write-packages-to-config))
+
+(defun pc/install (&optional package)
+  (unless (ignore-errors (package-install package))
+    (el-get-install package)))
 
 (defun pc/nikola--tags-get ()
   "Get the current tags in the site, given the site path."
@@ -65,8 +90,9 @@
 (defun pc/packages-install (packages)
   "Install any packages that are missing."
   (dolist (package my-packages)
-    (unless (package-installed-p package)
-      (package-install package))))
+    (unless (or (package-installed-p package)
+                (el-get-package-installed-p package))
+      (pc/install package))))
 
 (defun pc/remove-elc-on-save ()
   "Remove the .elc files when saving a .el file."
