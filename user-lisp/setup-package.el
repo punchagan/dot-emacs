@@ -1,5 +1,6 @@
 (require 'package)
 (require 'setup-package-list)
+(require 'find-func)
 
 ;; Add repos
 (setq package-archives
@@ -14,10 +15,10 @@
 
 (defun pc/write-packages-to-config ()
   "Update my-packages in the config, based on the current-value."
-  (delete-dups my-packages)
+  (sort (delete-dups my-packages) string<)
   (find-function-do-it 'my-packages 'defvar 'switch-to-buffer)
   (kill-sexp)
-  (insert (format "(defvar my-packages \n\n'%s)" my-packages))
+  (insert (format "(defvar my-packages \n  '%s)" my-packages))
   (backward-sexp)
   (fill-paragraph)
   (save-buffer)

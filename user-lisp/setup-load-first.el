@@ -1,5 +1,8 @@
 (require 'cl)
-(require 'find-func)
+;; (require 'saveplace)
+;; (require 'ffap)
+;; (require 'uniquify)
+;; (require 'ansi-color)
 
 (require 'server)
 (unless (server-running-p)
