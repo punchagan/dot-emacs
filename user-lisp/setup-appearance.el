@@ -31,7 +31,9 @@
                                       (abbreviate-file-name (buffer-file-name))
                                     "%b"))))
 
-;; use zenburn as the default theme
+;; use wombat theme
 (load-theme 'wombat t)
+;; the cursor is too dark, though...
+(set-cursor-color "#cccccc")
 
 (provide 'setup-appearance)
