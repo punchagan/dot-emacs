@@ -31,9 +31,6 @@
                                       (abbreviate-file-name (buffer-file-name))
                                     "%b"))))
 
-;; use wombat theme
-(load-theme 'wombat t)
-;; the cursor is too dark, though...
-(set-cursor-color "#cccccc")
+(load-theme 'wheatgrass t)
 
 (provide 'setup-appearance)
