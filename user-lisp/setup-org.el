@@ -1,3 +1,6 @@
+;; Org-directory
+(setq org-directory "~/.life-in-plain-text/")
+
 ;; Babel setup
 (org-babel-do-load-languages 'org-babel-load-languages
 			     '((emacs-lisp . t)
@@ -9,8 +12,8 @@
 (setq org-return-follows-link t)
 
 ;; Keybindings
-(define-key global-map "\C-ca" 'org-agenda)
-(define-key global-map "\C-cl" 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c l") 'org-store-link)
 
 ;; Fontify code in blocks
 (setq org-src-fontify-natively t)
@@ -21,5 +24,31 @@
 ;; Org-tree-slide
 (require 'org-tree-slide)
 (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
+
+
+;; Capture related stuff
+(require 'org-capture)
+(global-set-key (kbd "C-M-r") 'org-capture)
+
+;; org-protocol
+(require 'org-protocol)
+
+(setq org-capture-templates
+      '(
+        ("w" "org-protocol bookmarks" item
+         (file "bookmarks.org")
+         "- [[%:link][%:description]]\n\n  %:initial"
+         :empty-lines 1)
+        ("q" "org-protocol quotes" item
+         (file "quotes.org")
+         "- %:initial"
+         :empty-lines 1)
+        )
+      )
+
+;; Encrypted org buffers
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
+(require 'org-element)
 
 (provide 'setup-org)
