@@ -14,6 +14,13 @@
   (setq my-packages (remove (package-desc-name pkg) my-packages))
   (pc/write-packages-to-config))
 
+(defmacro pc/after (mode &rest body)
+  "After MODE loads, evaluate BODY."
+  (declare (indent defun))
+  `(eval-after-load ,mode
+     '(progn ,@body)))
+
+
 (defun pc/add-installed-packages-to-my-packages ()
   "Add any installed packages not in my-packages list, to it."
   (let ((missing))
