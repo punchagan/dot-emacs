@@ -6,6 +6,7 @@
   (if imenu? (helm-imenu) (helm-mini)))
 
 ;; Why you look so ugly, helm!
+(require 'color-theme)
 (pc/after 'helm
   (load "color")
 
