@@ -6,6 +6,9 @@
 (venv-initialize-eshell) ;; if you want eshell support
 (setq venv-location "~/.virtualenvs")
 
+;; Use hs venv by default.
+(venv-workon "hs")
+
 ;; Pyflakes
 (require 'flycheck-pyflakes)
 (add-hook 'python-mode-hook 'flycheck-mode)
