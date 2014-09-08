@@ -25,7 +25,6 @@
 (require 'org-tree-slide)
 (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
 
-
 ;; Capture related stuff
 (require 'org-capture)
 (global-set-key (kbd "C-M-r") 'org-capture)
@@ -50,5 +49,8 @@
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
 (require 'org-element)
+
+;; Org-drill
+(require 'org-drill)
 
 (provide 'setup-org)
