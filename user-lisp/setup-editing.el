@@ -85,4 +85,8 @@
 ;; Swap windows
 (define-key global-map "\C-cs" 'pc/swap-windows)
 
+;; Dictionary
+(define-key global-map "\C-cd" 'dictionary-search)
+
+
 (provide 'setup-editing)
