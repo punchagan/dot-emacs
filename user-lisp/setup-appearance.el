@@ -1,9 +1,7 @@
-;; Put at the beginning to avoid momentary display
-(when window-system
-  (scroll-bar-mode -1)
-  (mouse-wheel-mode -1)
-  (tool-bar-mode -1)
-  (tooltip-mode -1))
+(scroll-bar-mode -1)
+(mouse-wheel-mode -1)
+(tool-bar-mode -1)
+(tooltip-mode -1)
 
 ;; No menubar
 (menu-bar-mode -1)
