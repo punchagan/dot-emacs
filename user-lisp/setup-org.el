@@ -53,4 +53,8 @@
 ;; Org-drill
 (require 'org-drill)
 
+;; Org-agenda
+(setq org-agenda-files
+      (expand-file-name "agenda-files.org" org-directory))
+
 (provide 'setup-org)
