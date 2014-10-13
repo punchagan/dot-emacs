@@ -57,4 +57,7 @@
 (setq org-agenda-files
       (expand-file-name "agenda-files.org" org-directory))
 
+(global-set-key (kbd "<f12>") 'org-agenda)
+(setq org-agenda-sticky t)
+
 (provide 'setup-org)
