@@ -88,5 +88,7 @@
 ;; Dictionary
 (define-key global-map "\C-cd" 'dictionary-search)
 
+;; Recursive mini buffers
+(setq enable-recursive-minibuffers t)
 
 (provide 'setup-editing)
