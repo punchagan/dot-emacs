@@ -1,3 +1,5 @@
+(require 'org-element)
+
 ;; Org-directory
 (setq org-directory "~/.life-in-plain-text/")
 
@@ -48,7 +50,11 @@
 ;; Encrypted org buffers
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
-(require 'org-element)
+
+;; Org-passwords
+(require 'org-passwords)
+(setq org-passwords-file (expand-file-name "passwords.gpg" org-directory))
+(setq org-passwords-random-words-dictionary "/etc/dictionaries-common/words")
 
 ;; Org-drill
 (require 'org-drill)
@@ -56,8 +62,22 @@
 ;; Org-agenda
 (setq org-agenda-files
       (expand-file-name "agenda-files.org" org-directory))
-
 (global-set-key (kbd "<f12>") 'org-agenda)
-(setq org-agenda-sticky t)
+
+(setq org-agenda-sticky t
+      org-agenda-compact-blocks t
+      org-agenda-include-diary t
+      org-agenda-span 'day)
+
+;;; Custom agenda command definitions
+(setq org-agenda-custom-commands
+      (quote ((" " "ZTD Agenda"
+               ((agenda "" nil)
+                (tags "bigrock"
+                      ((org-agenda-overriding-header "Big Rocks")
+                       (org-tags-match-list-sublevels 'indented)
+                       (org-agenda-sorting-strategy
+                        '(category-keep))))
+                )))))
 
 (provide 'setup-org)
