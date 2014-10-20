@@ -36,6 +36,8 @@
 
 (setq org-capture-templates
       '(
+        ("t" "todo" entry (file+headline "todo.org" "Miscellaneous")
+         "* TODO %?\n")
         ("w" "org-protocol bookmarks" item
          (file "bookmarks.org")
          "- [[%:link][%:description]]\n\n  %:initial"
@@ -59,6 +61,10 @@
 ;; Org-drill
 (require 'org-drill)
 
+;; Org todo
+;;; defaults to TODO, DONE.  Can add more
+;;; http://doc.norang.ca/org-mode.html#TodoKeywords
+
 ;; Org-agenda
 (setq org-agenda-files
       (expand-file-name "agenda-files.org" org-directory))
@@ -67,7 +73,10 @@
 (setq org-agenda-sticky t
       org-agenda-compact-blocks t
       org-agenda-include-diary t
-      org-agenda-span 'day)
+      org-agenda-span 'day
+      org-enforce-todo-dependencies t
+      org-enforce-todo-checkbox-dependencies t
+      org-agenda-start-with-log-mode t)
 
 ;;; Custom agenda command definitions
 (setq org-agenda-custom-commands
@@ -79,5 +88,8 @@
                        (org-agenda-sorting-strategy
                         '(category-keep))))
                 )))))
+
+;; org-habits
+(require 'org-habit)
 
 (provide 'setup-org)
