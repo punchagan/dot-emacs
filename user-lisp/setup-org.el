@@ -83,7 +83,24 @@
       org-agenda-span 'day
       org-enforce-todo-dependencies t
       org-enforce-todo-checkbox-dependencies t
-      org-agenda-start-with-log-mode t)
+      org-agenda-start-with-log-mode t
+      org-clock-persist t)
+
+;;; Clocking
+(bind-keys
+ :prefix "<f9>"
+ :prefix-map pc/clock
+ ;; except org-clock-in, everything is useful globally...
+ ("i" . org-clock-in)
+ ("l" . org-clock-in-last)
+ ("o" . org-clock-out)
+ ("x" . org-clock-cancel)
+ ("j" . org-clock-goto)
+ ("e" . org-set-effort))
+;;; The keybindings are similar to what org-agenda already has. I, O, X, J, e.
+
+;;; What to do with dangling clocks?
+(org-clock-persistence-insinuate)
 
 ;;; Custom agenda command definitions
 (setq org-agenda-custom-commands
@@ -91,12 +108,13 @@
                ((agenda "" nil)
                 (tags "bigrock"
                       ((org-agenda-overriding-header "Big Rocks")
-                       (org-tags-match-list-sublevels 'indented)
+                       (org-tags-match-list-sublevels nil)
                        (org-agenda-sorting-strategy
                         '(category-keep))))
                 )))))
 
 ;; org-habits
 (require 'org-habit)
+
 
 (provide 'setup-org)
