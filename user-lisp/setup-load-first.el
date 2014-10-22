@@ -1,4 +1,5 @@
 (require 'cl)
+(require 'dbus)
 
 (require 'server)
 (unless (server-running-p)

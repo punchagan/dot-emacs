@@ -14,6 +14,28 @@
   (setq my-packages (remove (package-desc-name pkg) my-packages))
   (pc/write-packages-to-config))
 
+
+;; Advice org-clock-in, org-clock-out
+(defadvice org-clock-in (after pc/org-clock-in (&optional select start-time))
+  "Turn gnome notifications off."
+  (dbus-send-signal
+   :session
+   "org.gnome.SessionManager"
+   "/org/gnome/SessionManager/Presence"
+   "org.gnome.SessionManager.Presence"
+   "SetStatus" 2)
+  (shell-command "purple-remote setstatus?status=unavailable"))
+
+(defadvice org-clock-out (after pc/org-clock-out (&optional switch-to-state fail-quietly at-time))
+  "Turn gnome notifications back on."
+  (dbus-send-signal
+   :session
+   "org.gnome.SessionManager"
+   "/org/gnome/SessionManager/Presence"
+   "org.gnome.SessionManager.Presence"
+   "SetStatus" 0)
+  (shell-command "purple-remote setstatus?status=available"))
+
 (defmacro pc/after (mode &rest body)
   "After MODE loads, evaluate BODY."
   (declare (indent defun))
