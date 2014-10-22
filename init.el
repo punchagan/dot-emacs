@@ -30,6 +30,7 @@
 
 ;; Setup appearance
 (require 'setup-appearance)
+(require 'use-package)
 
 ;; Load user specific configuration
 (when (file-exists-p user-lisp-dir)

@@ -1,6 +1,4 @@
 (require 'cl)
-(require 'bind-key)
-(require 'use-package)
 
 (require 'server)
 (unless (server-running-p)
