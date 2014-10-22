@@ -116,5 +116,8 @@
 ;; org-habits
 (require 'org-habit)
 
+;; Export
+(setq org-use-sub-superscripts '{})
+
 
 (provide 'setup-org)
