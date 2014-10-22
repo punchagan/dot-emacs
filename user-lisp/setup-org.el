@@ -62,8 +62,15 @@
 (require 'org-drill)
 
 ;; Org todo
-;;; defaults to TODO, DONE.  Can add more
-;;; http://doc.norang.ca/org-mode.html#TodoKeywords
+;;; Taken from http://doc.norang.ca/org-mode.html#TodoKeywords
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)" "|" "DONE(d)")
+              (sequence "|" "CANCELLED(c@/!)"))))
+
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "red" :weight bold)
+              ("DONE" :foreground "forest green" :weight bold)
+              ("CANCELLED" :foreground "forest green" :weight bold))))
 
 ;; Org-agenda
 (setq org-agenda-files
