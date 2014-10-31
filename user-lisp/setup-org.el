@@ -86,6 +86,10 @@
 
 ;; Org-drill
 (require 'org-drill)
+(setq org-drill-scope
+      `("/media/punchagan/f9213ab4-a7aa-40c0-91c0-a3d60af751f3/videos/technical/CS_1156x_Learning_from_data/notes.org"
+        "/media/punchagan/f9213ab4-a7aa-40c0-91c0-a3d60af751f3/videos/technical/mmds-001/notes.org"
+        ,(expand-file-name "notes.org" org-directory)))
 
 ;; Org todo
 ;;; Taken from http://doc.norang.ca/org-mode.html#TodoKeywords
