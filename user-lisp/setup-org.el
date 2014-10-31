@@ -36,9 +36,17 @@
 
 (setq org-capture-templates
       '(
+        ;; General
         ("t" "todo" entry (file+headline "todo.org" "Miscellaneous")
-         "* TODO %?\n")
-        ("w" "org-protocol bookmarks" item
+         "* TODO %?\n\n"
+         :empty-lines 1)
+        ("c" "org-protocol links under clock item" item
+         (clock)
+         "- [[%:link][%:description]]\n\n  %:initial"
+         :immediate-finish t :empty-lines 1)
+
+        ;; Blog related
+        ("b" "org-protocol bookmarks" item
          (file "bookmarks.org")
          "- [[%:link][%:description]]\n\n  %:initial"
          :empty-lines 1)
@@ -46,6 +54,24 @@
          (file "quotes.org")
          "- %:initial"
          :empty-lines 1)
+
+        ;; Incremental reading
+        ("u"
+         "Task: Read this URL"
+         entry
+         (file+headline "todo.org" "Articles To Read")
+         "* TODO Read article: [[%:link][%:description]]\n\n  %:initial\n\n"
+         :empty-lines 1
+         :immediate-finish t)
+        ("w"
+         "Capture web snippet"
+         entry
+         (file+headline "notes.org" "Web notes")
+         "%(concat  \"* Fact: '%:description'        :\"
+         (format \"%s\" org-drill-question-tag)
+         \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_URL %:link\n:END:\n\n%:initial\n%?\n\n\")"
+         :empty-lines 1
+         )
         )
       )
 
