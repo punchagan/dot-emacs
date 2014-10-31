@@ -123,6 +123,29 @@
                 (el-get-package-installed-p package))
       (pc/install package))))
 
+(defun pc/read-random-article ()
+  "Jump to and open a random article.  The way the function is
+  currently written requires read articles to be archived."
+  (interactive)
+  (save-excursion
+    (save-restriction
+
+      ;; find all articles, headline
+      (org-goto-marker-or-bmk
+       (org-find-exact-heading-in-directory "Articles To Read" org-directory))
+      (org-narrow-to-subtree)
+      (org-show-subtree)
+      (org-clock-in)
+
+      ;; jump to a random subtree
+      (org-goto-first-child)
+      (forward-line (random (count-lines (point) (buffer-end 1))))
+      (org-back-to-heading)
+
+      ;; open the link
+      (org-next-link)
+      (org-return))))
+
 (defun pc/remove-elc-on-save ()
   "Remove the .elc files when saving a .el file."
   (make-local-variable 'after-save-hook)
