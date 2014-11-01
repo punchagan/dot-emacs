@@ -15,34 +15,6 @@
   (pc/write-packages-to-config))
 
 
-;; Advice org-clock-in, org-clock-out
-(defadvice org-clock-in (after pc/org-clock-in (&optional select start-time))
-  "Turn gnome notifications off."
-  (dbus-send-signal
-   :session
-   "org.gnome.SessionManager"
-   "/org/gnome/SessionManager/Presence"
-   "org.gnome.SessionManager.Presence"
-   "SetStatus" 2)
-  (shell-command "purple-remote setstatus?status=unavailable"))
-
-(defadvice org-clock-out (after pc/org-clock-out (&optional switch-to-state fail-quietly at-time))
-  "Turn gnome notifications back on."
-  (dbus-send-signal
-   :session
-   "org.gnome.SessionManager"
-   "/org/gnome/SessionManager/Presence"
-   "org.gnome.SessionManager.Presence"
-   "SetStatus" 0)
-  (shell-command "purple-remote setstatus?status=available"))
-
-(defmacro pc/after (mode &rest body)
-  "After MODE loads, evaluate BODY."
-  (declare (indent defun))
-  `(eval-after-load ,mode
-     '(progn ,@body)))
-
-
 (defun pc/add-installed-packages-to-my-packages ()
   "Add any installed packages not in my-packages list, to it."
   (let ((missing))
@@ -68,6 +40,12 @@
   "Hook to run after a package has been removed"
   (add-to-list 'my-packages package)
   (pc/write-packages-to-config))
+
+(defmacro pc/after (mode &rest body)
+  "After MODE loads, evaluate BODY."
+  (declare (indent defun))
+  `(eval-after-load ,mode
+     '(progn ,@body)))
 
 (defun pc/el-get-post-remove-hook (package)
   "Hook to run after a package has been removed"
@@ -200,10 +178,30 @@
       (set-window-start w2 s1)))
   (other-window 1))
 
+(defun pc/turn-off-notifications ()
+  "Turn gnome notifications off."
+  (dbus-send-signal
+   :session
+   "org.gnome.SessionManager"
+   "/org/gnome/SessionManager/Presence"
+   "org.gnome.SessionManager.Presence"
+   "SetStatus" 2)
+  (shell-command "purple-remote setstatus?status=unavailable"))
+
 (defun pc/turn-on-line-and-column-numbering ()
   (make-local-variable 'column-number-mode)
   (set (make-local-variable 'comment-auto-fill-only-comments) t)
   (auto-fill-mode t))
+
+(defun pc/turn-on-notifications ()
+  "Turn gnome notifications back on."
+  (dbus-send-signal
+   :session
+   "org.gnome.SessionManager"
+   "/org/gnome/SessionManager/Presence"
+   "org.gnome.SessionManager.Presence"
+   "SetStatus" 0)
+  (shell-command "purple-remote setstatus?status=available"))
 
 (defun pc/turn-on-paredit ()
   (require 'paredit)

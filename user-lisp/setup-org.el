@@ -132,6 +132,10 @@
 ;;; What to do with dangling clocks?
 (org-clock-persistence-insinuate)
 
+;; Clocking and notifications
+(add-hook 'org-clock-in-hook 'pc/turn-off-notifications)
+(add-hook 'org-clock-out-hook 'pc/turn-on-notifications)
+
 ;;; Custom agenda command definitions
 (setq org-agenda-custom-commands
       (quote ((" " "ZTD Agenda"
