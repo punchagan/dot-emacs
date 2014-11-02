@@ -11,7 +11,7 @@
   (load "color")
 
   (set-face-attribute 'helm-selection nil
-                      :background (cdr (assoc 'cursor-color (color-theme-get-params)))
+                      :background (cdr (assoc 'background-color (color-theme-get-params)))
                       :foreground (cdr (assoc 'foreground-color (color-theme-get-params))))
 
   (set-face-attribute 'helm-source-header nil
