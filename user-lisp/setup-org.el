@@ -69,7 +69,7 @@
          (file+headline "notes.org" "Web notes")
          "%(concat  \"* Fact: '%:description'        :\"
          (format \"%s\" org-drill-question-tag)
-         \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_URL %:link\n:END:\n\n%:initial\n%?\n\n\")"
+         \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
          :empty-lines 1
          )
         )
