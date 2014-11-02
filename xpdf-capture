@@ -1,0 +1,27 @@
+#!/home/punchagan/.virtualenvs/hs/bin/python
+
+from __future__ import print_function
+
+from urllib import quote
+from subprocess import check_call
+
+
+def _get_title(path):
+    from pdfminer.pdfparser import PDFParser
+    from pdfminer.pdfdocument import PDFDocument
+
+    with open(path, 'rb') as fp:
+        parser = PDFParser(fp)
+        doc = PDFDocument(parser)
+
+    return doc.info[0].get('Title', path)
+
+def capture(path):
+    title = quote(_get_title(path), safe='')
+    link = quote(path, safe='')
+    check_call(['emacsclient', "org-protocol://capture://w/%s/%s" % (link, title)])
+
+if __name__ == '__main__':
+    import sys
+    full_path = sys.argv[1]
+    capture(full_path)
