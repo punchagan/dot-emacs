@@ -153,5 +153,12 @@
 ;; Export
 (setq org-use-sub-superscripts '{})
 
+;; org-file apps
+(setq org-file-apps
+      '((auto-mode . emacs)
+        ("\\.mm\\'" . default)
+        ("\\.x?html?\\'" . default)
+        ("\\.pdf\\'" . "~/bin/xpdf %s")
+        ("\\.pdf::\\([0-9]+\\)\\'" . "~/bin/xpdf \"%s\" %1")))
 
 (provide 'setup-org)
