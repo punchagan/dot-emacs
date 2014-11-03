@@ -161,4 +161,10 @@
         ("\\.pdf\\'" . "~/bin/xpdf %s")
         ("\\.pdf::\\([0-9]+\\)\\'" . "~/bin/xpdf \"%s\" %1")))
 
+;; clip2org
+(require 'clip2org)
+(setq clip2org-include-date t)
+(setq clip2org-clippings-file "/media/punchagan/Kindle/documents/My Clippings.txt")
+
+
 (provide 'setup-org)

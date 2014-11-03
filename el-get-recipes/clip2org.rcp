@@ -1,0 +1,5 @@
+(:name clip2org
+       :description "Kindle clippings to org tree."
+       :website "https://github.com/punchagan/clip2org"
+       :type github
+       :pkgname "punchagan/clip2org")
