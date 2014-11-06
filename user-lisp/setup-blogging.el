@@ -5,9 +5,6 @@
 (require 'auth-source)
 (require 'org2blog-autoloads)
 
-(setq blog nil)
-
-
 (let ((credentials (auth-source-user-and-password "org2blog")))
   (setq org2blog/wp-blog-alist
         `(("lafootrix"
@@ -16,7 +13,7 @@
            :default-title "Hello World"
            :default-categories ("org2blog" "emacs")
            :tags-as-categories nil)
-          ("org2blog"
+          ("test"
            :url "http://testorg2blog.wordpress.com/xmlrpc.php"
            :username ,(car credentials)
            :password ,(cadr credentials)
