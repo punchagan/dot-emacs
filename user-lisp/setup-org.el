@@ -114,6 +114,7 @@
       org-enforce-todo-dependencies t
       org-enforce-todo-checkbox-dependencies t
       org-agenda-start-with-log-mode t
+      org-agenda-skip-scheduled-if-done t
       org-clock-persist t)
 
 ;;; Clocking
