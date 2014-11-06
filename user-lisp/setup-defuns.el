@@ -180,13 +180,17 @@
 
 (defun pc/turn-off-notifications ()
   "Turn gnome notifications off."
+  ;; gnome notifications
   (dbus-send-signal
    :session
    "org.gnome.SessionManager"
    "/org/gnome/SessionManager/Presence"
    "org.gnome.SessionManager.Presence"
    "SetStatus" 2)
-  (shell-command "purple-remote setstatus?status=unavailable"))
+  ;; pidgin status
+  (shell-command "purple-remote setstatus?status=unavailable")
+  ;; turn off tracking mode
+  (erc-track-disable))
 
 (defun pc/turn-on-line-and-column-numbering ()
   (make-local-variable 'column-number-mode)
@@ -195,13 +199,17 @@
 
 (defun pc/turn-on-notifications ()
   "Turn gnome notifications back on."
+  ;; gnome notifications
   (dbus-send-signal
    :session
    "org.gnome.SessionManager"
    "/org/gnome/SessionManager/Presence"
    "org.gnome.SessionManager.Presence"
    "SetStatus" 0)
-  (shell-command "purple-remote setstatus?status=available"))
+  ;; pidgin status
+  (shell-command "purple-remote setstatus?status=available")
+  ;; turn on tracking mode
+  (erc-track-enable))
 
 (defun pc/turn-on-paredit ()
   (require 'paredit)
