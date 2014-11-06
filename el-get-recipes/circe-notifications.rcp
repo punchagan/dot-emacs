@@ -1,0 +1,5 @@
+(:name circe-notifications
+       :description "Desktop notifications for Circe."
+       :website "https://github.com/eqyiel/circe-notifications"
+       :type github
+       :pkgname "eqyiel/circe-notifications")
