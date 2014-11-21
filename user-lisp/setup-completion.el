@@ -11,3 +11,5 @@
         try-expand-line
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
+
+(provide 'setup-completion)
