@@ -91,7 +91,11 @@
 (setq org-drill-scope
       `("/media/punchagan/f9213ab4-a7aa-40c0-91c0-a3d60af751f3/videos/technical/CS_1156x_Learning_from_data/notes.org"
         "/media/punchagan/f9213ab4-a7aa-40c0-91c0-a3d60af751f3/videos/technical/mmds-001/notes.org"
+        "/media/punchagan/f9213ab4-a7aa-40c0-91c0-a3d60af751f3/videos/technical/stat-110/notes.org"
         ,(expand-file-name "notes.org" org-directory)))
+
+(setq org-drill-maximum-items-per-session 40)
+
 
 ;; Org todo
 ;;; Taken from http://doc.norang.ca/org-mode.html#TodoKeywords
@@ -168,6 +172,7 @@
 (require 'clip2org)
 (setq clip2org-include-date t)
 (setq clip2org-clippings-file "/media/punchagan/Kindle/documents/My Clippings.txt")
+(setq clip2org-clipping-tags ":drill:")
 
 
 (provide 'setup-org)
