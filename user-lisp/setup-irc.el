@@ -12,14 +12,17 @@
       erc-port 6667
       erc-nick "punchagan"
       erc-prompt-for-password t
-      erc-prompt ">"
+      erc-prompt (lambda () (concat "[" (buffer-name) "]"))
       erc-kill-buffer-on-part t
       erc-kill-queries-on-quit t
       erc-kill-server-buffer-on-quit t
-      erc-query-display 'buffer)
+      erc-query-display 'buffer
+      erc-notifications-icon notifications-application-icon)
 
 (setq erc-autojoin-channels-alist
-      '(("freenode.net" "#emacs" "#emacs-circe" "#emacs-in" "##encamp" "#fossee" "#ipython" "#git" "#github")))
+      '(("freenode.net"
+         "#emacs" "#org-mode" "#emacs-in" "##encamp" "#fossee" "#ipython" "#git" "#github"
+         "#scikit-learn" "#scikit-image")))
 
 ;; track
 (erc-track-mode t)
@@ -61,7 +64,6 @@
 (defun start-irc ()
   "Connect to IRC."
   (interactive)
-  (when (y-or-n-p "Do you want to start IRC? ")
-    (erc :server erc-server :port erc-port :nick erc-nick :password (password-read "ERC password: "))))
+  (erc :server erc-server :port erc-port :nick erc-nick :password (password-read "ERC password: ")))
 
 (provide 'setup-irc)
