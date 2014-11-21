@@ -143,6 +143,23 @@
 (add-hook 'org-clock-in-hook 'pc/turn-off-notifications)
 (add-hook 'org-clock-out-hook 'pc/turn-on-notifications)
 
+;; Appointments and notifications
+(setq
+ appt-message-warning-time 10
+ appt-display-mode-line t
+ appt-display-format 'window
+ ;; Display messages, until the actual appointment time.
+ appt-display-duration (* appt-message-warning-time 60))
+
+(appt-activate 1) ;; active appt (appointment notification)
+(display-time)    ;; time display is required for this...? really?
+
+;;; Keybinding to close the appointment reminder window
+(bind-key "<f4>" '(lambda () (interactive) (appt-delete-window)))
+
+;;; update appt each time agenda opened
+(add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
+
 ;;; Custom agenda command definitions
 (setq org-agenda-custom-commands
       (quote ((" " "ZTD Agenda"
