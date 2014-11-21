@@ -188,7 +188,7 @@
    "org.gnome.SessionManager.Presence"
    "SetStatus" 2)
   ;; pidgin status
-  (shell-command "purple-remote setstatus?status=unavailable")
+  (shell-command "/usr/bin/python /usr/bin/purple-remote setstatus?status=unavailable")
   ;; turn off tracking mode
   (erc-track-disable))
 
@@ -207,7 +207,7 @@
    "org.gnome.SessionManager.Presence"
    "SetStatus" 0)
   ;; pidgin status
-  (shell-command "purple-remote setstatus?status=available")
+  (shell-command "/usr/bin/python /usr/bin/purple-remote setstatus?status=available")
   ;; turn on tracking mode
   (erc-track-enable))
 
