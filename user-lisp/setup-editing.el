@@ -92,4 +92,11 @@
 ;; Recursive mini buffers
 ;; (setq enable-recursive-minibuffers nil)
 
+;; Buffer list
+(define-key global-map "\C-x\C-b" 'ibuffer-list-buffers)
+
+;; Switch buffer
+(define-key global-map "\C-xb" 'ido-switch-buffer)
+
+
 (provide 'setup-editing)
