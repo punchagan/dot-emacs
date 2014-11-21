@@ -86,6 +86,7 @@
 (define-key global-map "\C-cs" 'pc/swap-windows)
 
 ;; Dictionary
+(setq dictionary-server "127.0.0.1")
 (define-key global-map "\C-cd" 'dictionary-search)
 
 ;; Recursive mini buffers
