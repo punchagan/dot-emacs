@@ -174,6 +174,8 @@
 ;; org-habits
 (require 'org-habit)
 
+;; org-checklist
+(require 'org-checklist)
 ;; Export
 (setq org-use-sub-superscripts '{})
 
