@@ -10,6 +10,8 @@
 			       (python . t)
 			       (sh . t)))
 
+(setq org-babel-sh-command "bash")
+
 ;; Links
 (setq org-return-follows-link t)
 
