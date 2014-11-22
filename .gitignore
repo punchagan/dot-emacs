@@ -31,3 +31,5 @@ el-get
 
 # AUCTeX auto folder
 /auto/
+/bookmarks
+/clip2org-persist.txt
