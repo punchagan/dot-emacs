@@ -155,7 +155,7 @@
 (display-time)    ;; time display is required for this...? really?
 
 ;;; Keybinding to close the appointment reminder window
-(bind-key "<f4>" '(lambda () (interactive) (appt-delete-window)))
+(bind-key "<f5>" '(lambda () (interactive) (appt-delete-window)))
 
 ;;; update appt each time agenda opened
 (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
