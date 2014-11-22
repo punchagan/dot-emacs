@@ -67,5 +67,7 @@
 ;;; org-mode compose
 (add-hook 'mu4e-compose-mode-hook 'org-mu4e-compose-org-mode)
 
+;; Disable auto signature
+(setq mu4e-compose-signature-auto-include nil)
 
 (provide 'setup-email)
