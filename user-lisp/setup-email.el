@@ -54,6 +54,9 @@
 
 ;; Dealing with html email
 (setq mu4e-html2text-command "/home/punchagan/.cabal/bin/pandoc -r html -w plain")
+;; view email in browser
+(add-to-list 'mu4e-view-actions
+             '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 
 ;; Add manual to info
 (add-to-list 'Info-directory-list  (file-name-directory (symbol-file 'mu4e-maildir)))
