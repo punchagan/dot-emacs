@@ -65,6 +65,7 @@
 ;;; org-link creation support
 (require 'org-mu4e)
 ;;; org-mode compose
+(add-hook 'mu4e-compose-mode-hook 'org-mu4e-compose-org-mode)
 
 
 (provide 'setup-email)
