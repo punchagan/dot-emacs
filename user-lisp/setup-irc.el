@@ -22,7 +22,7 @@
 (setq erc-autojoin-channels-alist
       '(("freenode.net"
          "#emacs" "#org-mode" "#emacs-in" "##encamp" "#fossee" "#ipython" "#git" "#github"
-         "#scikit-learn" "#scikit-image")))
+         "#scikit-learn" "#scikit-image" "#nikola")))
 
 ;; track
 (erc-track-mode t)
