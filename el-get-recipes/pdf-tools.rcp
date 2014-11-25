@@ -1,0 +1,8 @@
+(:name pdf-tools
+       :description "Emacs support library for PDF files."
+       :website "https://github.com/politza/pdf-tools"
+       :type github
+       :build `("./autogen.sh" "./configure"
+                ,(concat "make EMACS=" el-get-emacs)
+                ,(concat "make EMACS=" el-get-emacs "install-package"))
+       :pkgname "politza/pdf-tools")

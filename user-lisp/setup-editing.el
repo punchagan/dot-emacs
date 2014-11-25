@@ -104,4 +104,12 @@
 ;; Confirmation on exit
 (setq confirm-kill-emacs 'yes-or-no-p)
 
+;; Enable pdf tools
+(pdf-tools-install)
+;; Copy the pdf region, so that it can be used in capture templates.
+(add-hook 'pdf-misc-minor-mode-hook
+          (lambda ()
+            (add-hook 'activate-mark-hook 'pdf-misc-copy-region nil t)))
+
+
 (provide 'setup-editing)
