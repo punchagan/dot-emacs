@@ -98,5 +98,10 @@
 ;; Switch buffer
 (define-key global-map "\C-xb" 'ido-switch-buffer)
 
+;; Debug on error
+(setq debug-on-error t)
+
+;; Confirmation on exit
+(setq confirm-kill-emacs 'yes-or-no-p)
 
 (provide 'setup-editing)
