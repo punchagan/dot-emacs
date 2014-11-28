@@ -121,7 +121,9 @@
       org-enforce-todo-checkbox-dependencies t
       org-agenda-start-with-log-mode t
       org-agenda-skip-scheduled-if-done t
-      org-clock-persist t)
+      org-clock-persist t
+      org-log-into-drawer t
+      org-clock-into-drawer t)
 
 ;;; Clocking
 (bind-keys
