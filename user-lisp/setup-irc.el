@@ -5,13 +5,13 @@
 (require 'erc-autoaway)
 (require 'erc-desktop-notifications)
 
+(require 'tls)
+(setq tls-program '("gnutls-cli --priority secure256 -p %p %h"))
+
 ;; Interpret mIRC-style color commands in IRC chats
 (setq erc-interpret-mirc-color t)
 
-(setq erc-server "irc.freenode.net"
-      erc-port 6667
-      erc-nick "punchagan"
-      erc-prompt-for-password t
+(setq erc-prompt-for-password t
       erc-prompt (lambda () (concat "[" (buffer-name) "]"))
       erc-kill-buffer-on-part t
       erc-kill-queries-on-quit t
@@ -21,7 +21,7 @@
 
 (setq erc-autojoin-channels-alist
       '(("freenode.net"
-         "#emacs" "#org-mode" "#emacs-in" "##encamp" "#fossee" "#ipython" "#git" "#github"
+         "#emacs" "#org-mode" "#emacs-in" "#fossee" "#ipython" "#git" "#github"
          "#scikit-learn" "#scikit-image" "#nikola")))
 
 ;; track
@@ -64,6 +64,7 @@
 (defun start-irc ()
   "Connect to IRC."
   (interactive)
-  (erc :server erc-server :port erc-port :nick erc-nick :password (password-read "ERC password: ")))
+  (erc :server "irc.freenode.net" :port 6667 :nick "punchagan" :password (password-read "Freenode password: "))
+  (erc-tls :server "kanjar.irc.slack.com" :port 6667 :nick "punchagan" :password (cadr (auth-source-user-and-password "kanjar"))))
 
 (provide 'setup-irc)
