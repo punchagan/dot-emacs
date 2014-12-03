@@ -10,6 +10,9 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+;; Don't bind dired-jump
+(setq dired-bind-jump nil)
+
 ;; Write backup files to own directory
 (setq backup-directory-alist
       `(("." . ,(expand-file-name
