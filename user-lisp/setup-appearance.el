@@ -29,6 +29,6 @@
                                       (abbreviate-file-name (buffer-file-name))
                                     "%b"))))
 
-(load-theme 'wheatgrass t)
+(load-theme 'soothe t)
 
 (provide 'setup-appearance)
