@@ -81,11 +81,6 @@
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
 
-;; Org-passwords
-(require 'org-passwords)
-(setq org-passwords-file (expand-file-name "passwords.gpg" org-directory))
-(setq org-passwords-random-words-dictionary "/etc/dictionaries-common/words")
-
 ;; Org-drill
 (require 'org-drill)
 (setq org-drill-scope
@@ -195,5 +190,7 @@
 (setq clip2org-clippings-file "/media/punchagan/Kindle/documents/My Clippings.txt")
 (setq clip2org-clipping-tags ":drill:")
 
+;; Buggy org-eldoc?
+(remove-hook 'org-mode-hook 'org-eldoc-load)
 
 (provide 'setup-org)

@@ -28,8 +28,7 @@
 (setq
  mu4e-get-mail-command "offlineimap"
  mu4e~get-mail-password-regexp "^Enter password for account '.*?': $"
- ;; Download mail manually.
- mu4e-update-interval nil)
+ mu4e-update-interval 3600)
 
 ;; general emacs mail settings; used when composing e-mail
 ;; the non-mu4e-* stuff is inherited from emacs/message-mode
@@ -72,5 +71,25 @@
 
 ;; Disable auto signature
 (setq mu4e-compose-signature-auto-include nil)
+
+;; Smart refiling
+(setq mu4e-refile-folder 'pc/mu4e-refile-messages)
+
+(defun pc/mu4e-refile-messages (msg)
+  "Rules for smartly refiling messages."
+  (let ((mailing-list (or (mu4e-message-field msg :mailing-list) "")))
+    (cond
+
+     ;; Nikola project
+     ((or (string-match "nikola.getnikola.github.com" mailing-list)
+          (string-match "nikola-discuss.googlegroups.com" mailing-list))
+      "/muse-amuse/Nikola")
+
+     ;; org2blog
+     ((string-match "org2blog.punchagan.github.com" mailing-list)
+      "/muse-amuse/org2blog")
+
+     ;; Catch all
+     (t  "/muse-amuse/INBOX"))))
 
 (provide 'setup-email)
