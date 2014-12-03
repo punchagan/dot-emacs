@@ -36,6 +36,13 @@
     (when missing
       (pc/write-packages-to-config))))
 
+(defun pc/get-drill-files ()
+  "Get the list of drill files from drill-files.org."
+  (with-temp-buffer
+    (insert-file-contents (expand-file-name "drill-files.org" org-directory))
+    (mapcar (lambda (s) (expand-file-name s org-directory))
+            (split-string (buffer-string) nil t))))
+
 (defun pc/el-get-post-install-hook (package)
   "Hook to run after a package has been removed"
   (add-to-list 'my-packages package)
