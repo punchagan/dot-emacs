@@ -190,7 +190,9 @@
   ;; pidgin status
   (shell-command "/usr/bin/python /usr/bin/purple-remote setstatus?status=unavailable")
   ;; turn off tracking mode
-  (erc-track-disable))
+  (erc-track-disable)
+  ;; turn off jabber activity in mode line
+  (jabber-activity-mode 0))
 
 (defun pc/turn-on-line-and-column-numbering ()
   (make-local-variable 'column-number-mode)
@@ -209,7 +211,9 @@
   ;; pidgin status
   (shell-command "/usr/bin/python /usr/bin/purple-remote setstatus?status=available")
   ;; turn on tracking mode
-  (erc-track-enable))
+  (erc-track-enable)
+  ;; turn on jabber activity in mode line
+  (jabber-activity-mode 1))
 
 (defun pc/turn-on-paredit ()
   (require 'paredit)
