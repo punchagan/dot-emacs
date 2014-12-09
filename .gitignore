@@ -33,3 +33,4 @@ el-get
 /auto/
 /bookmarks
 /clip2org-persist.txt
+/.jabber-message-queue.json
