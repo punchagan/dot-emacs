@@ -21,8 +21,8 @@
 
 (setq erc-autojoin-channels-alist
       '(("freenode.net"
-         "#emacs" "#emacs-social" "#org-mode" "#emacs-in" "#fossee" "#ipython"
-         "#scikit-learn" "#scikit-image" "#nikola")))
+         "#emacs" "#org-mode" "#emacs-in" "#fossee" "#ipython"
+         "#elm" "#scikit-learn" "#scikit-image" "#nikola")))
 
 ;; track
 (erc-track-mode t)
