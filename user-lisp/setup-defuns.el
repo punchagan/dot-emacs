@@ -143,11 +143,14 @@
 (defun pc/save-visible-windows ()
   "Function to save all the buffers in visible windows in the
   current frame."
-  (dolist (window (window-list))
-    (let ((buffer (window-buffer window)))
-      (when (and (buffer-modified-p buffer)
-                 (buffer-file-name buffer))
-        (save-buffer)))))
+  (let ((sw (selected-window)))
+    (dolist (window (window-list))
+      (let ((buffer (window-buffer window)))
+        (when (and (buffer-modified-p buffer)
+                   (buffer-file-name buffer))
+          (select-window window)
+          (save-buffer))))
+    (select-window sw)))
 
 (defun pc/sort--end-record ()
   (forward-sexp))
