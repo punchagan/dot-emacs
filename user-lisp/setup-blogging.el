@@ -66,7 +66,7 @@
    (call-process-shell-command
     (format
      "export EDITOR=\"/home/punchagan/bin/emacsclient -n\" && cd %s && nikola new_post -e -t \"%s\"&"
-     pc/nikola-site title))))f
+     pc/nikola-site title))))
 
 (defun pc/nikola-tags-insert ()
   "Insert a nikola tag at point."
