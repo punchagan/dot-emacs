@@ -71,20 +71,21 @@
 
 (defun pc/jabber-flush-queue (jc)
   "Send all queued messages and empty queue."
-  (let ((data (or (ignore-errors (json-read-file pc/jabber-message-queue-file)) '())))
-    ;; Send messages
-    (mapcar
-     (lambda (x) (let ((to (cdr (assoc 'to x)))
-                       (body (cdr (assoc 'body x))))
-                   (message (format "Sent message to %s: %s" to body))
-                   (jabber-send-message jc to nil body "chat")))
-     data)
+  (ignore-errors
+    (let ((data (or (ignore-errors (json-read-file pc/jabber-message-queue-file)) '())))
+      ;; Send messages
+      (mapcar
+       (lambda (x) (let ((to (cdr (assoc 'to x)))
+                         (body (cdr (assoc 'body x))))
+                     (message (format "Sent message to %s: %s" to body))
+                     (jabber-send-message jc to nil body "chat")))
+       data)
 
-    ;; Delete queue file
-    (delete-file pc/jabber-message-queue-file)
+      ;; Delete queue file
+      (delete-file pc/jabber-message-queue-file)
 
-    ;; Restore keymap
-    (define-key jabber-chat-mode-map (kbd "RET") 'jabber-chat-buffer-send)))
+      ;; Restore keymap
+      (define-key jabber-chat-mode-map (kbd "RET") 'jabber-chat-buffer-send))))
 
 (add-hook 'jabber-post-connect-hooks 'pc/jabber-flush-queue)
 
