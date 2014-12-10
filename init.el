@@ -1,6 +1,11 @@
 ;;; Code:
 
 ;; Set path to dependencies
+(setq el-get-dir
+      (expand-file-name
+       "el-get"
+       (expand-file-name "el-get" user-emacs-directory)))
+
 (setq site-lisp-dir
       (expand-file-name "site-lisp" user-emacs-directory))
 
@@ -9,6 +14,7 @@
       (expand-file-name "user-lisp" user-emacs-directory))
 
 ;; Setup load path
+(add-to-list 'load-path el-get-dir)
 (add-to-list 'load-path user-lisp-dir)
 (add-to-list 'load-path site-lisp-dir)
 
@@ -20,9 +26,10 @@
 (require 'setup-load-first)
 
 ;; Setup packages
-(require 'setup-package)
 (require 'setup-el-get)
+(require 'setup-package)
 (require 'setup-package-list)
+
 ;; Install any of my missing packages
 (pc/packages-install my-packages)
 ;; Add any installed packages missing from the list to it.
