@@ -188,4 +188,9 @@
 ;; Buggy org-eldoc?
 (remove-hook 'org-mode-hook 'org-eldoc-load)
 
+;; Buffer switching
+(setq org-completion-use-ido t)
+(bind-key "C-c b" 'org-switchb)
+
+
 (provide 'setup-org)
