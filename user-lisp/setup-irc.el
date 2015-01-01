@@ -13,6 +13,7 @@
 
 (setq erc-prompt-for-password t
       erc-prompt (lambda () (concat "[" (buffer-name) "]"))
+      erc-join-buffer 'bury
       erc-kill-buffer-on-part t
       erc-kill-queries-on-quit t
       erc-kill-server-buffer-on-quit t
