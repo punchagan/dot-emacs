@@ -34,3 +34,13 @@ el-get
 /bookmarks
 /clip2org-persist.txt
 /.jabber-message-queue.json
+
+#sessions
+session.*
+
+url/
+var/
+/jabber-avatar-cache/
+/jabber-history/
+/emms/
+/network-security.data
