@@ -1,0 +1,179 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: hnt
+# key: hnt
+# binding: direct-keybinding
+# expand-env: ((yas-indent-line 'fixed))
+# --
+* Hack and Tell: $3                                         :hnt:meetup:
+  SCHEDULED: <${1:2015-01-01 15:30}>
+  :PROPERTIES:
+  :MEETUP_TITLE: ${3:The First One}
+  :SIGNUP_URL:   ${4:http://github.com/papers-we-love}
+  :VENUE:        ${5:Collab House, Hyderabad}
+  :VENUE_URL:    ${7:https://goo.gl/maps/pybQr}
+  :EVENT_URL:    ${6:http://meetup.com}
+  :END:
+
+** Sign up to present reminder
+   SCHEDULED: ${1:$(pc/org-time-stamp-change-by-days yas-text -9)}
+
+   Subject: Hack and Tell - $3 - Signup!
+
+   #+BEGIN_SRC mu4e-compose
+     Hello Hackers!
+
+     I'm getting really excited about the upcoming meet-up, and hope that you
+     are too!
+
+     If you have a hack that you'd like to show off, and haven't yet signed up,
+     sign up here, now! $4
+
+     If you really want to present, but don't have a project yet, make the best
+     of this weekend! Make time to work on that nagging idea, you haven't yet
+     made the time to work on! Or clean up and polish that old project of
+     yours, and show it to us!
+
+     If you have some ideas, that you'd like to discuss and need help with, use
+     this mailing list!
+
+     Looking forward to a super-fun meet-up on ${1:$(pc/org-time-stamp-humanize
+     yas-text)}
+
+     RSVP here:: $6
+
+     Cheers!
+     Puneeth
+   #+END_SRC
+
+** Hack and Tell, RSVP Reminder
+   SCHEDULED: ${1:$(pc/org-time-stamp-change-by-days yas-text -2)}
+
+   #+BEGIN_SRC mu4e-compose
+     Hello Hackers!
+
+     I'm quite excited about the upcoming meet-up, $3. Looking forward to a
+     bunch of awesome demos!
+
+     - Time: ${1:$(pc/org-time-stamp-humanize yas-text)}
+     - Venue: $5 ($7)
+     - Meetup url: $6
+
+     Thanks to all the folks at $5 for hosting the meet-up!
+
+     Please update your RSVPs so that we can have a good estimate of the
+     number of people attending the meet-up, and can plan accordingly.
+
+     Cheers!
+     Puneeth
+     9967576569
+   #+END_SRC
+
+** Hack and Tell, Venue Confirmation
+   SCHEDULED: ${1:$(pc/org-time-stamp-change-by-days yas-text -2)}
+
+   Subject: Hack and Tell Meetup at $5
+
+   #+BEGIN_SRC mu4e-compose
+     Hello XXX,
+
+     I just wanted to remind you that we have a meetup up planned at $5, on
+     ${1:$(pc/org-time-stamp-humanize yas-text)} and confirm that the space is
+     available. I'm looking forward to an exciting meet-up!
+
+     Thanks again for making the space available!
+
+     Best,
+     Puneeth
+
+     PS - Meetup details are here: $6
+   #+END_SRC
+
+** Hack and Tell, Speaker Confirmation
+
+    #+BEGIN_SRC python :results output replace
+      from textwrap import wrap
+
+      TEMPLATE = """
+      Hi {name},
+
+      Hope you are doing well, and are gearing up to present your hack at
+      $3 on ${1:$(pc/org-time-stamp-humanize yas-text)}
+
+      You signed up to present, with the following description:
+
+      ---
+      {description}
+      ---
+
+      Please reply to this email, at your earliest convenience, and confirm
+      that you will be able to attend the meetup and present!
+
+      Looking forward to your presentation,
+      Puneeth
+      9967576569
+      """
+
+      with open('/home/punchagan/tmp/signups-hnt.tsv') as f:
+          for line in f.readlines()[1:]:
+              _, name, email, _, description, _, _, _ = line.split('\t')
+              print email
+              print TEMPLATE.format(
+                  name=name, description='\n'.join(wrap(description))
+              )
+              print '-' * 10
+    #+END_SRC
+
+
+** Wrap-up -- $3
+   SCHEDULED: ${1:$(pc/org-time-stamp-change-by-days yas-text 1)}
+
+    #+BEGIN_SRC python :results output replace
+      from textwrap import wrap
+
+      TEMPLATE = """
+      Hi {name},
+
+      Hope you are doing well, and are gearing up to present your hack at
+      $3 on ${1:$(pc/org-time-stamp-humanize yas-text)}
+
+      You signed up to present, with the following description:
+
+      ---
+      {description}
+      ---
+
+      """
+
+      with open('/home/punchagan/tmp/signups-hnt.tsv') as f:
+          for line in f.readlines()[1:]:
+              _, name, email, _, description, _, _, _ = line.split('\t')
+              print email
+              print TEMPLATE.format(
+                  name=name, description='\n'.join(wrap(description))
+              )
+              print '-' * 10
+    #+END_SRC
+
+   Subject: Wrap-up -- $3
+   #+BEGIN_SRC mu4e-compose
+     Hello Hackers!
+
+     Thank you every one for the wonderful meet-up, and special thanks to
+     everyone who presented!
+
+     Thanks to $5 for hosting the meet-up!
+
+     Projects presented: XXXX
+
+     Looking forward to the next meet-up,
+     Puneeth
+   #+END_SRC
+
+   #+BEGIN_SRC org
+     ,#+STARTUP: indent
+
+     ,* ${3}
+     - Venue: $5
+     - Date: ${1:$(pc/org-time-stamp-humanize yas-text)}
+     - Meet-up URL: $6
+   #+END_SRC

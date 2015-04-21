@@ -1,0 +1,99 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: pwl
+# key: pwl
+# binding: direct-keybinding
+# expand-env: ((yas-indent-line 'fixed))
+# --
+* $2: $3                                                         :pwl:meetup:
+  SCHEDULED:    <${1:2015-01-01 15:30}>
+  :PROPERTIES:
+  :SPEAKER:     ${2:Speaker}
+  :PAPER_TITLE: ${3:Paper}
+  :PAPER_URL:   ${4:http://github.com/papers-we-love}
+  :VENUE:       ${5:Collab House, Hyderabad}
+  :VENUE_URL:   ${7:https://goo.gl/maps/pybQr}
+  :EVENT_URL:   ${6:http://meetup.com}
+  :END:
+
+** Read Paper Reminder
+   SCHEDULED: ${1:$(pc/org-time-stamp-change-by-days yas-text -9)}
+
+   #+BEGIN_SRC mu4e-compose
+     Hello Readers!
+
+     I'm writing to remind all of you that $2 is presenting the paper $3 ( $4 )
+     on ${1:$(pc/org-time-stamp-humanize yas-text)}.  If you haven't yet found
+     time to read the paper, this weekend may be a good time to do so!
+
+     Also, if you have papers that you love and would like to present in future
+     meet-ups, let us know!
+
+     Cheers!
+     Puneeth
+   #+END_SRC
+
+** Papers We Love, RSVP Reminder
+   SCHEDULED: ${1:$(pc/org-time-stamp-change-by-days yas-text -2)}
+
+   #+BEGIN_SRC mu4e-compose
+     Hello Readers!
+
+     I'm quite excited about the upcoming meet-up.  If you haven't yet found
+     time to read the paper, I highly recommend that you do so, now! :)
+
+     - Paper: $3 ( $4 )
+     - Speaker: $2
+     - Time: ${1:$(pc/org-time-stamp-humanize yas-text)}
+     - Venue: $5 ($7)
+     - Meetup url: $6
+
+     Thanks to all the folks at $5 for hosting the meet-up!
+
+     Please update your RSVPs so that we can have a good estimate of the
+     number of people attending the meet-up, and can plan accordingly.
+
+     Also, if you have papers that you love and would like to present in future
+     meet-ups, let us know!
+
+     Cheers!
+     Puneeth
+   #+END_SRC
+
+** Papers We Love, Venue Confirmation
+   SCHEDULED: ${1:$(pc/org-time-stamp-change-by-days yas-text -2)}
+
+   Subject: Papers We Love Meetup at $5
+
+   #+BEGIN_SRC mu4e-compose
+     Hello XXX,
+
+     I just wanted to remind you that we have a meetup up planned at $5, on
+     ${1:$(pc/org-time-stamp-humanize yas-text)} and confirm that the space is
+     available. I'm looking forward to an exciting meetup!
+
+     Thanks again for making the space available!
+
+     Best,
+     Puneeth
+
+     PS: Meetup details are here: $6
+   #+END_SRC
+
+** Wrap-up -- $2: $3
+   SCHEDULED: ${1:$(pc/org-time-stamp-change-by-days yas-text 1)}
+
+   Subject: Wrap-up -- $2: $3
+   #+BEGIN_SRC mu4e-compose
+     Hello Readers!
+
+     Thank you every one for the wonderful meet-up, and special thanks to $2
+     for the great presentation and initiating a great discussion!
+
+     The slides and paper for this presentation have been uploaded here:
+     https://github.com/punchagan/papers-we-love-hyd
+
+     Also, thanks once again to $5 for hosting the meetup!
+
+     Looking forward to the next meetup,
+     Puneeth
+   #+END_SRC
