@@ -12,7 +12,6 @@ Everything else tries to use ~use-package~.  So, we try to load it first.
 # FIXME: Currently, it is installed using package, and we call
 # ~package-initialize~.  This is not the best setup, when moving config to a
 # new machine.
-
 #+BEGIN_SRC emacs-lisp
   (package-initialize)
   (require 'use-package)
@@ -83,89 +82,27 @@ stuff into it...
   (load-theme 'wombat t)
 #+END_SRC
 
-* Everything else
+* Setup package.el
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+
+  ;; Add repos
+  (setq package-archives
+        '(("gnu" . "http://elpa.gnu.org/packages/")
+          ("melpa" . "http://melpa.milkbox.net/packages/")
+          ("marmalade" . "http://marmalade-repo.org/packages/")
+          ("org" . "http://orgmode.org/elpa/")))
+
+  (package-initialize)
+
+  (unless package-archive-contents
+    (package-refresh-contents))
+#+END_SRC
+
+* Hippie expand
 
 #+BEGIN_SRC emacs-lisp
-  ;; (provide 'setup-appearance)
-  ;; (require 'setup-python)
 
-  ;; org2blog
-  ;; (require 'org2blog-autoloads)
-  (require 'auth-source)
-
-  (let ((credentials (auth-source-user-and-password "org2blog")))
-    (setq org2blog/wp-blog-alist
-          `(("lafootrix"
-             :url "http://lafootrix.wordpress.com/xmlrpc.php"
-             :username "punchagan"
-             :default-title "Hello World"
-             :default-categories ("org2blog" "emacs")
-             :tags-as-categories nil)
-            ("test"
-             :url "http://testorg2blog.wordpress.com/xmlrpc.php"
-             :username ,(car credentials)
-             :password ,(cadr credentials)
-             :default-title "Hello World"
-             :default-categories ("org2blog" "emacs")
-             :tags-as-categories nil
-             :wp-code t))))
-
-  (setq org2blog/wp-use-sourcecode-shortcode t)
-
-
-      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Blogging related functions ;;
-      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-  (defconst pc/nikola-site
-    (expand-file-name "~/software/my-repos/muse-amuse.in/")
-    "Path to the default nikola site.")
-
-  (defmacro pc/with-nikola-venv (&rest body)
-    "Activate nikola venv, evaluate BODY, restore old venv."
-    nil
-    `(let ((old-venv venv-current-name) result)
-       (venv-workon "nikola")
-       (setq result (progn ,@body))
-       (venv-workon old-venv)
-       result))
-
-  (defun pc/nikola--tags-get ()
-    "Get the current tags in the site, given the site path."
-    (let* ((nikola-site (file-name-directory
-                         (directory-file-name
-                          (file-name-directory
-                           (or (buffer-file-name (current-buffer)) "/")))))
-           tags)
-      (pc/with-nikola-venv
-       (setq tags (shell-command-to-string
-                   (format "cd %s && nikola tags -l" nikola-site)))
-       (unless (search "ERROR" tags)
-         (cdr (split-string tags "\n" t "\s+"))))))
-
-  (defun pc/nikola-deploy ()
-    (interactive)
-    (pc/with-nikola-venv
-     (async-shell-command (format "cd %s && nikola deploy" pc/nikola-site))))
-
-  (defun pc/nikola-new-post (title)
-    (interactive "MTitle: ")
-    (pc/with-nikola-venv
-     (call-process-shell-command
-      (format
-       "export EDITOR=\"/home/punchagan/bin/emacsclient -n\" && cd %s && nikola new_post -e -t \"%s\"&"
-       pc/nikola-site title))))
-
-  (defun pc/nikola-tags-insert ()
-    "Insert a nikola tag at point."
-    (interactive)
-    (let* ((word-match (or (current-word t) ""))
-           (tags (completing-read-multiple "Tag: " (pc/nikola--tags-get) nil nil word-match)))
-      (when (and word-match tags)
-        (delete-backward-char (length word-match)))
-      (mapc (lambda (tag) (insert (format "%s, " tag))) tags)))
-
-  ;; (provide 'setup-blogging)
   ;; Use hippie expand
   (define-key global-map "\M-/" 'hippie-expand)
   (setq hippie-expand-try-functions-list
@@ -179,68 +116,16 @@ stuff into it...
           try-expand-line
           try-complete-lisp-symbol-partially
           try-complete-lisp-symbol))
+#+END_SRC
 
-  ;; (provide 'setup-completion)
-  ;; My defuns
-  (require 'find-func)
-
-  ;; Advice package-install to update the package list in the config.
-  (defadvice package-install (after install-update-package-list (pkg))
-    "Update the my-packages variable in the config."
-    (add-to-list 'my-packages (if (package-desc-p pkg)
-                                  (package-desc-name pkg) pkg))
-    (pc/write-packages-to-config))
-
-  ;; Advice package-delete to update the package list in the config.
-  (defadvice package-delete (after delete-update-package-list (pkg))
-    "Update the my-packages variable in the config."
-    (setq my-packages (remove (package-desc-name pkg) my-packages))
-    (pc/write-packages-to-config))
-
-
-  (defun pc/add-installed-packages-to-my-packages ()
-    "Add any installed packages not in my-packages list, to it."
-    (let ((missing))
-
-      ;; package-install
-      (dolist (package package-alist)
-        (let ((package-name (package-desc-name (cadr package))))
-          (unless (member package-name my-packages)
-            (setq missing t)
-            (add-to-list 'my-packages package-name))))
-
-      ;; el-get-install
-      (let ((el-packages (el-get-list-package-names-with-status "installed")))
-        (dolist (package el-packages)
-          (unless (member package (mapcar 'symbol-name my-packages))
-            (setq missing t)
-            (add-to-list 'my-packages (make-symbol package)))))
-
-      (when missing
-        (pc/write-packages-to-config))))
-
-  (defun pc/el-get-post-install-hook (package)
-    "Hook to run after a package has been removed"
-    (add-to-list 'my-packages package)
-    (pc/write-packages-to-config))
-
-  (defun pc/el-get-post-remove-hook (package)
-    "Hook to run after a package has been removed"
-    (setq my-packages (remove package my-packages))
-    (pc/write-packages-to-config))
-
+* My defuns
+# FIXME: Move the functions to where they are used...
+#+BEGIN_SRC emacs-lisp
   (defmacro pc/after (mode &rest body)
     "After MODE loads, evaluate BODY."
     (declare (indent defun))
     `(eval-after-load ,mode
        '(progn ,@body)))
-
-  (defun pc/get-drill-files ()
-    "Get the list of drill files from drill-files.org."
-    (with-temp-buffer
-      (insert-file-contents (expand-file-name "drill-files.org" org-directory))
-      (mapcar (lambda (s) (expand-file-name s org-directory))
-              (split-string (buffer-string) nil t))))
 
   (defun pc/install (&optional package)
     (unless (ignore-errors (package-install package))
@@ -282,7 +167,7 @@ stuff into it...
 
   (defun pc/read-random-article ()
     "Jump to and open a random article.  The way the function is
-        currently written requires read articles to be archived."
+          currently written requires read articles to be archived."
     (interactive)
     (save-excursion
       (save-restriction
@@ -314,7 +199,7 @@ stuff into it...
 
   (defun pc/save-visible-windows ()
     "Function to save all the buffers in visible windows in the
-        current frame."
+          current frame."
     (let ((sw (selected-window)))
       (dolist (window (window-list))
         (let ((buffer (window-buffer window)))
@@ -401,20 +286,10 @@ stuff into it...
     (require 'paredit)
     (paredit-mode +1))
 
-  (defun pc/write-packages-to-config ()
-    "Update my-packages in the config, based on the current-value."
-    (sort (delete-dups my-packages) 'string<)
-    (find-function-do-it 'my-packages 'defvar 'switch-to-buffer)
-    (kill-sexp)
-    (insert (format "(defvar my-packages \n  '%s)" my-packages))
-    (backward-sexp)
-    (fill-paragraph)
-    (save-buffer)
-    (kill-buffer))
+#+END_SRC
 
-  ;; (provide 'setup-defuns)
-      ;;; Contains general editing related config.
-
+* General editor tweaks
+#+BEGIN_SRC emacs-lisp
   ;; Allow pasting selection outside of Emacs
   (setq x-select-enable-clipboard t)
 
@@ -532,108 +407,10 @@ stuff into it...
 
   ;; Add ~/bin dir to path
   (setenv "PATH" (format "/home/punchagan/bin:%s" (getenv "PATH")))
+#+END_SRC
 
-
-  ;; (provide 'setup-editing)
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/mu/mu4e/")
-  (require 'mu4e)
-
-  ;; All maildirs are here in ~/.maildirs but I just use one, as of now.
-  (setq mu4e-maildir "~/.maildirs/")
-  ;; Multiple accounts can be configured, later
-  ;; See http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html
-
-  ;; Path to mu binary
-  (setq mu4e-mu-binary "~/bin/mu")
-
-  ;; these paths are relative to `mu4e-maildir'
-  ;; set http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html
-  (setq mu4e-sent-folder   "/muse-amuse/Sent"
-        mu4e-drafts-folder "/muse-amuse/Drafts"
-        mu4e-trash-folder  "/muse-amuse/Trash")
-
-  ;; a  list of user's e-mail addresses
-  (setq mu4e-user-mail-address-list '("punchagan@muse-amuse.in"))
-
-  ;; the headers to show in the headers list -- a pair of a field
-  ;; and its width, with `nil' meaning 'unlimited'
-  ;; (better only use that for the last field.
-  ;; These are the defaults:
-  (setq mu4e-headers-fields
-        '( (:date          .  25)
-           (:flags         .   6)
-           (:from          .  22)
-           (:subject       .  nil)))
-
-  ;; program to get mail;
-  (setq
-   mu4e-get-mail-command "offlineimap"
-   mu4e~get-mail-password-regexp "^Enter password for account '.*?': $"
-   mu4e-update-interval 3600)
-
-  ;; general emacs mail settings; used when composing e-mail
-  ;; the non-mu4e-* stuff is inherited from emacs/message-mode
-  (setq mu4e-reply-to-address "punchagan@muse-amuse.in"
-        user-mail-address "punchagan@muse-amuse.in"
-        user-full-name  "Puneeth Chaganti")
-
-  ;; smtp mail setting
-  (setq
-   message-send-mail-function 'smtpmail-send-it
-   smtpmail-default-smtp-server "muse-amuse.in"
-   smtpmail-smtp-server "muse-amuse.in"
-   smtpmail-local-domain "muse-amuse.in"
-
-   ;; if you need offline mode, set these -- and create the queue dir
-   ;; with 'mu mkdir', i.e.. mu mkdir /home/user/Maildir/queue
-   smtpmail-queue-mail t
-   smtpmail-queue-dir (expand-file-name "queue/cur" mu4e-maildir))
-
-  ;; don't keep message buffers around
-  (setq message-kill-buffer-on-exit t)
-
-  ;; Dealing with html email
-  (setq mu4e-html2text-command "/home/punchagan/.cabal/bin/pandoc -r html -w plain")
-  ;; view email in browser
-  (add-to-list 'mu4e-view-actions
-               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-
-  ;; Add manual to info
-  (add-to-list 'Info-directory-list  (file-name-directory (symbol-file 'mu4e-maildir)))
-
-  ;; Global keybinding for email
-  (bind-key "<XF86Calculator>" 'mu4e)
-
-  ;; Enable org-mu4e
-      ;;; org-link creation support
-  (require 'org-mu4e)
-      ;;; org-mode compose
-  (add-hook 'mu4e-compose-mode-hook 'org-mu4e-compose-org-mode)
-
-  ;; Disable auto signature
-  (setq mu4e-compose-signature-auto-include nil)
-
-  ;; Smart refiling
-  (setq mu4e-refile-folder 'pc/mu4e-refile-messages)
-
-  (defun pc/mu4e-refile-messages (msg)
-    "Rules for smartly refiling messages."
-    (let ((mailing-list (or (mu4e-message-field msg :mailing-list) "")))
-      (cond
-
-       ;; Nikola project
-       ((or (string-match "nikola.getnikola.github.com" mailing-list)
-            (string-match "nikola-discuss.googlegroups.com" mailing-list))
-        "/muse-amuse/Nikola")
-
-       ;; org2blog
-       ((string-match "org2blog.punchagan.github.com" mailing-list)
-        "/muse-amuse/org2blog")
-
-       ;; Catch all
-       (t  "/muse-amuse/INBOX"))))
-
-  ;; (provide 'setup-email)
+* Magit
+#+BEGIN_SRC emacs-lisp
   (require 'magit)
 
   ;; Global keybinding for magit status
@@ -643,7 +420,10 @@ stuff into it...
   (setq magit-repo-dirs
         '("~/software/my-repos/" "~/software/random/" "~/.emacs.d"))
 
-  ;; (provide 'setup-git)
+#+END_SRC
+
+* Helm
+#+BEGIN_SRC emacs-lisp
   (require 'helm)
   (require 'helm-themes)
 
@@ -670,191 +450,10 @@ stuff into it...
   (global-set-key (kbd "M-X") 'execute-extended-command)
   (global-set-key (kbd "M-x") 'helm-M-x)
 
-  ;; (provide 'setup-helm)
-  (require 'erc)
-  (require 'erc-log)
-  (require 'erc-notify)
-  (require 'erc-spelling)
-  (require 'erc-autoaway)
-  (require 'erc-desktop-notifications)
+#+END_SRC
 
-  (require 'tls)
-  (setq tls-program '("gnutls-cli --priority secure256 -p %p %h"))
-
-  ;; Interpret mIRC-style color commands in IRC chats
-  (setq erc-interpret-mirc-color t)
-
-  (setq erc-prompt-for-password t
-        erc-prompt (lambda () (concat "[" (buffer-name) "]"))
-        erc-join-buffer 'bury
-        erc-kill-buffer-on-part t
-        erc-kill-queries-on-quit t
-        erc-kill-server-buffer-on-quit t
-        erc-query-display 'buffer
-        erc-notifications-icon notifications-application-icon)
-
-  (setq erc-autojoin-channels-alist
-        '(("freenode.net"
-           "#emacs" "#org-mode" "#emacs-in" "#fossee" "#ipython"
-           "#elm" "#scikit-learn" "#scikit-image" "#nikola")))
-
-  ;; track
-  (erc-track-mode t)
-  (setq erc-track-enable-keybindings t)
-  (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
-                                  "324" "329" "332" "333" "353" "477"))
-
-  ;; Logging
-  (setq erc-log-channels-directory "~/.erc/logs/")
-  (if (not (file-exists-p erc-log-channels-directory))
-      (mkdir erc-log-channels-directory t))
-  (setq erc-save-buffer-on-part t)
-
-  ;; enable spell checking
-  (erc-spelling-mode 1)
-
-  ;; autoaway setup
-  (setq erc-auto-discard-away t)
-  (setq erc-autoaway-idle-seconds 600)
-  (setq erc-autoaway-use-emacs-idle t)
-
-  ;; notifications
-  (add-to-list 'erc-modules 'notifications)
-  (erc-notifications-mode)
-  (add-hook 'focus-out-hook 'erc-notifications-enable)
-  (add-hook 'focus-in-hook 'erc-notifications-disable)
-
-  ;; /SLAP command
-  (defun erc-cmd-SLAP (&rest nick)
-    (erc-send-action
-     (erc-default-target)
-     (concat "slaps " (car nick) " around the solar system "
-             "-- just out of spite!")))
-
-  ;; disable yasnippet
-  (add-hook 'erc-mode-hook (lambda () (yas-minor-mode -1)))
-
-  ;; start and stop commands
-  (defun start-irc ()
-    "Connect to IRC."
-    (interactive)
-    (erc :server "irc.freenode.net" :port 6667 :nick "punchagan" :password (password-read "Freenode password: "))
-    (erc-tls :server "kanjar.irc.slack.com" :port 6667 :nick "punchagan" :password (cadr (auth-source-user-and-password "kanjar"))))
-
-  ;; (provide 'setup-irc)
-  (require 'jabber)
-
-  (setq jabber-account-list `(
-
-                              ;; Gmail
-                              (,(format "punchagan@gmail.com/Emacs-%s-Jabber-%s" emacs-version jabber-version)
-                               (:network-server . "talk.google.com")
-                               (:connection-type . starttls))
-
-                              ))
-
-  ;; Alerts
-  (setq jabber-alert-presence-hooks nil)
-  (setq jabber-alert-message-hooks '(jabber-message-scroll jabber-message-notifications))
-
-      ;;; Enable alerts when focussed out of  emacs
-  (add-hook 'focus-out-hook
-            (lambda () (add-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
-
-      ;;; Disable alerts when focussed in emacs
-  (add-hook 'focus-in-hook
-            (lambda () (remove-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
-
-  ;; History
-  (setq
-   jabber-history-enabled t
-   jabber-use-global-history nil
-   jabber-backlog-number 40
-   jabber-backlog-days 30)
-
-  ;; make URLs clickable
-  (add-hook 'jabber-chat-mode-hook 'goto-address)
-
-
-      ;;;; Jabber Message Queue stuff ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (require 'json)
-
-  (defconst pc/jabber-message-queue-file
-    (expand-file-name ".jabber-message-queue.json" user-emacs-directory)
-    "The file where jabber messages are queued")
-
-  (defun pc/jabber-add-message-to-queue (to body)
-    "Queue up messages when offline, and send on connect."
-    (interactive (list
-                  (read-string "message: ")))
-    (let ((data (append
-                 (or (ignore-errors (json-read-file pc/jabber-message-queue-file)) '())
-                 `(((to . ,to) (body . ,body))))))
-
-      (with-temp-buffer
-        (insert (json-encode data))
-        (write-file pc/jabber-message-queue-file nil))))
-
-  (defun pc/jabber-chat-buffer-send ()
-    "Send the message in the chat buffer to the queue."
-    (interactive)
-    (let ((body (delete-and-extract-region jabber-point-insert (point-max))))
-      (funcall 'pc/jabber-add-message-to-queue jabber-chatting-with body)))
-
-  (defun pc/jabber-chat-with ()
-    "Queue messages if not connected, else normal chat."
-    (interactive)
-    (if (ignore-errors (jabber-read-account))
-        (call-interactively 'jabber-chat-with)
-      (let ((to (completing-read
-                 "chat with: "
-                 ;; yes, that's right! we use mu4e contact list!
-                 (mapcar (lambda (x) (plist-get x :mail)) mu4e~contact-list))))
-        (switch-to-buffer (jabber-chat-create-buffer nil to))
-        (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))))
-
-  (defun pc/jabber-flush-queue (jc)
-    "Send all queued messages and empty queue."
-    (ignore-errors
-      (let ((data (or (ignore-errors (json-read-file pc/jabber-message-queue-file)) '())))
-        ;; Send messages
-        (mapcar
-         (lambda (x) (let ((to (cdr (assoc 'to x)))
-                           (body (cdr (assoc 'body x))))
-                       (message (format "Sent message to %s: %s" to body))
-                       (jabber-send-message jc to nil body "chat")))
-         data)
-
-        ;; Delete queue file
-        (delete-file pc/jabber-message-queue-file)
-
-        ;; Restore keymap
-        (define-key jabber-chat-mode-map (kbd "RET") 'jabber-chat-buffer-send))))
-
-  (add-hook 'jabber-post-connect-hooks 'pc/jabber-flush-queue)
-
-  ;; Bind key to our chat function
-  (global-set-key (kbd "C-x C-j C-j") 'pc/jabber-chat-with)
-
-  ;; (provide 'setup-jabber)
-      ;;; Lisp mode configuration
-
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'emacs-lisp-mode-hook 'pc/remove-elc-on-save)
-  (add-hook 'emacs-lisp-mode-hook 'pc/turn-on-paredit)
-
-  (define-key emacs-lisp-mode-map (kbd "C-c v") 'eval-buffer)
-
-  ;; (provide 'setup-emacs-lisp)
-  (require 'cl)
-  (require 'dbus)
-
-  (require 'server)
-  (unless (server-running-p)
-    (server-start))
-
-  ;; (require 'setup-defuns)
-
+* Org-mode config
+#+BEGIN_SRC emacs-lisp
   ;; (provide 'setup-load-first)
   (add-to-list 'load-path "~/.emacs.d/site-lisp/org-mode/lisp/")
   (add-to-list 'load-path "~/.emacs.d/site-lisp/org-mode/contrib/lisp/")
@@ -863,15 +462,6 @@ stuff into it...
 
   ;; Org-directory
   (setq org-directory "~/.life-in-plain-text/")
-
-  ;; Babel setup
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((emacs-lisp . t)
-                                 (ditaa . t)
-                                 (python . t)
-                                 (sh . t)))
-
-  (setq org-babel-sh-command "bash")
 
   ;; Links
   (setq org-return-follows-link t)
@@ -930,8 +520,8 @@ stuff into it...
            entry
            (file+headline "notes.org" "Web notes")
            "%(concat  \"* Fact: '%:description'        :\"
-               (format \"%s\" org-drill-question-tag)
-               \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
+                 (format \"%s\" org-drill-question-tag)
+                 \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_TITLE: %:description\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
            :empty-lines 1
            )
           )
@@ -941,14 +531,8 @@ stuff into it...
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
 
-  ;; Org-drill
-  (require 'org-drill)
-  (setq org-drill-scope (pc/get-drill-files))
-  (setq org-drill-maximum-items-per-session 40)
-
-
   ;; Org todo
-      ;;; Taken from http://doc.norang.ca/org-mode.html#TodoKeywords
+        ;;; Taken from http://doc.norang.ca/org-mode.html#TodoKeywords
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "|" "DONE(d)")
                 (sequence "|" "CANCELLED(c@/!)"))))
@@ -977,7 +561,7 @@ stuff into it...
         org-log-into-drawer t
         org-clock-into-drawer t)
 
-      ;;; Clocking
+        ;;; Clocking
   (bind-keys
    :prefix "<f9>"
    :prefix-map pc/clock
@@ -988,9 +572,9 @@ stuff into it...
    ("x" . org-clock-cancel)
    ("j" . org-clock-goto)
    ("e" . org-set-effort))
-      ;;; The keybindings are similar to what org-agenda already has. I, O, X, J, e.
+        ;;; The keybindings are similar to what org-agenda already has. I, O, X, J, e.
 
-      ;;; What to do with dangling clocks?
+        ;;; What to do with dangling clocks?
   (org-clock-persistence-insinuate)
 
   ;; Clocking and notifications
@@ -1008,13 +592,13 @@ stuff into it...
   (appt-activate 1) ;; active appt (appointment notification)
   (display-time)    ;; time display is required for this...? really?
 
-      ;;; Keybinding to close the appointment reminder window
+        ;;; Keybinding to close the appointment reminder window
   (bind-key "<f5>" '(lambda () (interactive) (appt-delete-window)))
 
-      ;;; update appt each time agenda opened
+        ;;; update appt each time agenda opened
   (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
 
-      ;;; Custom agenda command definitions
+        ;;; Custom agenda command definitions
   (setq org-agenda-custom-commands
         (quote ((" " "ZTD Agenda"
                  ((agenda "" nil)
@@ -1055,31 +639,132 @@ stuff into it...
   (setq org-completion-use-ido t)
   (bind-key "C-c b" 'org-switchb)
 
+#+END_SRC
 
-  ;; (provide 'setup-org)
-  (require 'package)
+*** Org date-tree refile
+#+BEGIN_SRC emacs-lisp
+  (require 'org-datetree)
+  (defun pc/org-refile-to-datetree (journal)
+    "Refile an entry to journal file's date-tree"
+    (interactive "fRefile to: ")
+    (let* ((journal (expand-file-name journal org-directory))
+           (date-string (or (org-entry-get (point) "TIMESTAMP_IA")
+                            (org-entry-get (point) "TIMESTAMP")))
+           (dct (decode-time (or (and date-string (org-time-string-to-time date-string))
+                                 (current-time))))
+           (date (list (nth 4 dct) (nth 3 dct) (nth 5 dct))))
+      (org-cut-subtree)
+      (with-current-buffer (or (find-buffer-visiting journal)
+                               (find-file-noselect journal))
+        (org-mode)
+        (save-excursion
+          (org-datetree-file-entry-under (current-kill 0) date)
+          (bookmark-set "org-refile-last-stored")))
+      (message "Refiled to %s" journal)))
 
-  ;; Add repos
-  (setq package-archives
-        '(("gnu" . "http://elpa.gnu.org/packages/")
-          ("melpa" . "http://melpa.milkbox.net/packages/")
-          ("marmalade" . "http://marmalade-repo.org/packages/")
-          ("org" . "http://orgmode.org/elpa/")))
+#+END_SRC
+*** Org Drill
+#+BEGIN_SRC emacs-lisp
+  (require 'org-drill)
+  (setq org-drill-maximum-items-per-session 40
+        org-drill-maximum-duration 40)
+#+END_SRC
+***** Scope
+All my drill files are listed in a separate file, and this function reads the
+file and returns the list of files.  This is used to set the scope for drills.
 
-  (package-initialize)
+#+BEGIN_SRC emacs-lisp
+  (defun pc/get-drill-files ()
+    "Get the list of drill files from drill-files.org."
+    (with-temp-buffer
+      (insert-file-contents (expand-file-name "drill-files.org" org-directory))
+      (mapcar (lambda (s) (expand-file-name s org-directory))
+              (split-string (buffer-string) nil t))))
+  (setq org-drill-scope (pc/get-drill-files))
 
-  (unless package-archive-contents
-    (package-refresh-contents))
+#+END_SRC
+***** Hacks to capture answers
+#+BEGIN_SRC emacs-lisp
+  (defun pc/org-drill-presentation-prompt (old-fun &rest fmt-and-args)
+    "A presentation prompt that allows capturing answers."
 
-  (ad-activate 'package-install)
-  (ad-activate 'package-delete)
+    (let ((cb (current-buffer))
+          (heading (nth 4 (org-heading-components)))
+          (entry-id (org-entry-get (point) "ID"))
+          (input "")
+          (split-width-threshold 9999))
+      (switch-to-buffer-other-window "*org-capture-drill-answer*" t)
+      (org-mode)
+      (insert "# Hit C-c C-c once you are done answering!\n")
+      (org-insert-heading-respect-content)
+      (insert (format "Answer: %s" heading))
+      (org-entry-put (point) "QUESTION_ID" entry-id)
+      (goto-char (point-max))
+      (insert "  ")
+      (org-time-stamp-inactive '(16))
+      (insert "\n\n  ")
+      (while (not (and input (equal input "")))
+        (ignore-errors
+          (execute-kbd-macro input))
+        (setq input (read-key-sequence nil)))
+      (switch-to-buffer-other-window cb t)
+      (apply old-fun fmt-and-args)))
 
-  ;; (provide 'setup-package)
-  ;; CAUTION: Do not edit by hand, unless you know what you are doing!
-  (defvar my-packages '(edit-server virtualenvwrapper web xml-rpc
-                                    xml-rpc-el yasnippet))
+  (defun pc/org-drill-reschedule (old-fun)
+    "Calls the original reschedule, but also archives the answer"
+    (prog1 (funcall old-fun)
+      (let ((cb (current-buffer))
+            (split-width-threshold 9999))
+        (switch-to-buffer-other-window "*org-capture-drill-answer*" t)
+        (pc/org-refile-to-datetree "drill.org_archive")
+        (message (buffer-name))
+        (switch-to-buffer-other-window cb t)
+        (kill-buffer "*org-capture-drill-answer*"))))
 
-  ;; (provide 'setup-package-list)
+  (advice-add 'org-drill-presentation-prompt :around 'pc/org-drill-presentation-prompt)
+  (advice-add 'org-drill-reschedule :around 'pc/org-drill-reschedule)
+
+#+END_SRC
+*** Org Babel
+***** Enable Languages
+#+BEGIN_SRC emacs-lisp
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((emacs-lisp . t)
+                                 (ditaa . t)
+                                 (python . t)
+                                 (sh . t)))
+#+END_SRC
+***** sh customizations
+#+BEGIN_SRC emacs-lisp
+  (setq org-babel-sh-command "bash")
+#+END_SRC
+
+***** python customizations
+The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-03/msg00405.html][Arun Persaud]]
+
+******* Use IPython interpreter
+- Set command to IPython.
+- ~--classic~ changes prompts to be classic. org-babel seems to use some kind
+  of regexps to figure out what the prompt is.
+#+BEGIN_SRC emacs-lisp
+  (setq org-babel-python-command "ipython --no-banner --classic --no-confirm-exit")
+#+END_SRC
+
+******* Use %cpaste magic to send code
+#+BEGIN_SRC emacs-lisp
+  (defun pc/ipython-use-cpaste (args)
+    "Add a %cpaste and '--' to the body, for IPython magic!."
+    (let ((body (nth 1 args)))
+      (setcar (cdr args) (format "%%cpaste -q\n%s\n--\n" body))))
+
+  (advice-add 'org-babel-python-evaluate-session
+              :filter-args 'pc/ipython-use-cpaste)
+#+END_SRC
+
+* Language modes
+
+*** Python mode
+#+BEGIN_SRC emacs-lisp
   ;; Virtual environments
   (setq python-environment-directory "~/.virtualenvs/")
 
@@ -1106,9 +791,524 @@ stuff into it...
   (require 'jedi)
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t)
+#+END_SRC
 
-  ;; (provide 'setup-python)
+*** Emacs Lisp mode
+#+BEGIN_SRC emacs-lisp
+  ;; (provide 'setup-jabber)
+        ;;; Lisp mode configuration
+
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'emacs-lisp-mode-hook 'pc/remove-elc-on-save)
+  (add-hook 'emacs-lisp-mode-hook 'pc/turn-on-paredit)
+
+  (define-key emacs-lisp-mode-map (kbd "C-c v") 'eval-buffer)
+
+  ;; (provide 'setup-emacs-lisp)
+  (require 'cl)
+  (require 'dbus)
+
+  (require 'server)
+  (unless (server-running-p)
+    (server-start))
+
+#+END_SRC
+* Yasnippet
+#+BEGIN_SRC emacs-lisp
   (require 'yasnippet)
   (yas-global-mode 1)
-  ;; (provide 'setup-yasnippet)
+#+END_SRC
+* Blogging
+*** org2blog
+
+#+BEGIN_SRC emacs-lisp
+  ;; org2blog
+  (require 'org2blog-autoloads)
+  (require 'auth-source)
+
+  (let ((credentials (auth-source-user-and-password "org2blog")))
+    (setq org2blog/wp-blog-alist
+          `(("lafootrix"
+             :url "https://lafootrix.wordpress.com/xmlrpc.php"
+             :username "punchagan"
+             :default-title "Hello World"
+             :default-categories ("org2blog" "emacs")
+             :tags-as-categories nil)
+            ("test"
+             :url "https://testorg2blog.wordpress.com/xmlrpc.php"
+             :username ,(car credentials)
+             :password ,(cadr credentials)
+             :default-title "Hello World"
+             :default-categories ("org2blog" "emacs")
+             :tags-as-categories nil
+             :wp-code t))))
+
+  (setq org2blog/wp-use-sourcecode-shortcode t)
+
+#+END_SRC
+*** Nikola stuff
+#+BEGIN_SRC emacs-lisp
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Blogging related functions ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  (defconst pc/nikola-site
+    (expand-file-name "~/software/my-repos/muse-amuse.in/")
+    "Path to the default nikola site.")
+
+  (defmacro pc/with-nikola-venv (&rest body)
+    "Activate nikola venv, evaluate BODY, restore old venv."
+    nil
+    `(let ((old-venv venv-current-name) result)
+       (venv-workon "nikola")
+       (setq result (progn ,@body))
+       (venv-workon old-venv)
+       result))
+
+  (defun pc/nikola--tags-get ()
+    "Get the current tags in the site, given the site path."
+    (let* ((nikola-site (file-name-directory
+                         (directory-file-name
+                          (file-name-directory
+                           (or (buffer-file-name (current-buffer)) "/")))))
+           tags)
+      (pc/with-nikola-venv
+       (setq tags (shell-command-to-string
+                   (format "cd %s && nikola tags -l" nikola-site)))
+       (unless (search "ERROR" tags)
+         (cdr (split-string tags "\n" t "\s+"))))))
+
+  (defun pc/nikola-deploy ()
+    (interactive)
+    (pc/with-nikola-venv
+     (async-shell-command (format "cd %s && nikola deploy" pc/nikola-site))))
+
+  (defun pc/nikola-new-post (title)
+    (interactive "MTitle: ")
+    (pc/with-nikola-venv
+     (call-process-shell-command
+      (format
+       "export EDITOR=\"/home/punchagan/bin/emacsclient -n\" && cd %s && nikola new_post -e -t \"%s\"&"
+       pc/nikola-site title))))
+
+  (defun pc/nikola-tags-insert ()
+    "Insert a nikola tag at point."
+    (interactive)
+    (let* ((word-match (or (current-word t) ""))
+           (tags (completing-read-multiple "Tag: " (pc/nikola--tags-get) nil nil word-match)))
+      (when (and word-match tags)
+        (delete-backward-char (length word-match)))
+      (mapc (lambda (tag) (insert (format "%s, " tag))) tags)))
+
+#+END_SRC
+* ERC
+
+*** Initial setup + miscellaneous
+
+#+BEGIN_SRC emacs-lisp
+  (require 'erc)
+  (require 'erc-log)
+  (require 'erc-notify)
+  (require 'erc-spelling)
+  (require 'erc-autoaway)
+  (require 'erc-desktop-notifications)
+
+  (require 'tls)
+  (setq tls-program '("gnutls-cli --priority secure256 -p %p %h"))
+
+  ;; Interpret mIRC-style color commands in IRC chats
+  (setq erc-interpret-mirc-color t)
+
+  (setq erc-prompt-for-password t
+        erc-prompt (lambda () (concat "[" (buffer-name) "]"))
+        erc-join-buffer 'bury
+        erc-kill-buffer-on-part t
+        erc-kill-queries-on-quit t
+        erc-kill-server-buffer-on-quit t
+        erc-query-display 'buffer
+        erc-notifications-icon notifications-application-icon
+        ;; default nick to use when one is not provided
+        erc-nick "punchagan")
+
+  ;; disable yasnippet
+  (add-hook 'erc-mode-hook (lambda () (yas-minor-mode -1)))
+
+  ;; enable spell checking
+  (erc-spelling-mode 1)
+
+  ;; autoaway setup
+  (setq erc-auto-discard-away t)
+  (setq erc-autoaway-idle-seconds 600)
+  (setq erc-autoaway-use-emacs-idle t)
+
+#+END_SRC
+
+*** Channels to connect to
+#+BEGIN_SRC emacs-lisp
+  (setq erc-autojoin-channels-alist
+        '(("freenode.net"
+           "#emacs" "#org-mode" "#emacs-in" "#fossee" "#ipython"
+           "#elm" "#scikit-learn" "#scikit-image" "#nikola")))
+#+END_SRC
+
+*** Tracking
+#+BEGIN_SRC emacs-lisp
+  ;; track
+  (erc-track-mode t)
+  (setq erc-track-enable-keybindings t)
+  (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
+                                  "324" "329" "332" "333" "353" "477"))
+
+#+END_SRC
+
+*** Logging
+#+BEGIN_SRC emacs-lisp
+  ;; Logging
+  (setq erc-log-channels-directory "~/.erc/logs/")
+  (if (not (file-exists-p erc-log-channels-directory))
+      (mkdir erc-log-channels-directory t))
+  (setq erc-save-buffer-on-part t)
+
+  (defun pc/erc-save-logs ()
+    (dolist (channel erc-modified-channels-alist)
+      (let ((buffer (car channel)))
+        (erc-save-buffer-in-logs buffer))))
+
+  (add-hook 'erc-track-list-changed-hook 'pc/erc-save-logs)
+
+#+END_SRC
+
+*** Notifications
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'erc-modules 'notifications)
+  (erc-notifications-mode)
+  (add-hook 'focus-out-hook 'erc-notifications-enable)
+  (add-hook 'focus-in-hook 'erc-notifications-disable)
+#+END_SRC
+
+*** Custom commands
+#+BEGIN_SRC emacs-lisp
+  ;; /SLAP command
+  (defun erc-cmd-SLAP (&rest nick)
+    (erc-send-action
+     (erc-default-target)
+     (concat "slaps " (car nick) " around the solar system "
+             "-- just out of spite!")))
+#+END_SRC
+
+*** Start and Stop commands
+#+BEGIN_SRC emacs-lisp
+  ;; start and stop commands
+  (defun start-irc ()
+    "Connect to IRC."
+    (interactive)
+    (erc :server "irc.freenode.net" :port 6667 :password (password-read "Freenode password: "))
+    (erc-tls :server "kanjar.irc.slack.com" :port 6667 :password (cadr (auth-source-user-and-password "kanjar"))))
+
+
+#+END_SRC
+*** Ghosting
+
+A simple command to ghost a nick.
+
+#+BEGIN_SRC emacs-lisp
+  (defun pc/erc-ghost (&optional nick)
+    "Ghost the nick given, or the default erc-nick"
+    (interactive)
+    (let ((nick (or nick erc-nick))
+          (password erc-session-password))
+
+      (message "Ghosting nick: %s" nick)
+      (erc-message "PRIVMSG" (format "NickServ GHOST %s %s" nick password))
+      (erc-cmd-NICK nick)
+      (erc-message "PRIVMSG" (format "NickServ identify %s %s" nick password))))
+#+END_SRC
+***** COMMENT Auto ghost
+# FIXME: The hook messes up buffer creation for some reason... :(
+
+The function above is useful by itself, but even more useful if used as a
+function on the hook called upon *receiving a 433 server response*. But, we
+cannot really ghost or change nick, before actually connecting to the
+server. So, we first connect with a different nick and try ghosting, etc. If
+the ghosting works, it all happens before joining any channels, so it is neat!
+
+#+BEGIN_SRC emacs-lisp
+  ;; (defun pc/erc-server-433-ghost (process response)
+  ;;   (let ((nick (cadr (erc-response.command-args response))))
+  ;;     (erc-nickname-in-use nick "already in use")
+  ;;     (pc/erc-ghost nick)))
+
+  ;; (add-hook 'erc-server-433-functions 'pc/erc-server-433-ghost)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  ;; (defun pc/erc-ghost-maybe (server nick)
+  ;;   "Send GHOST message to NickServ if NICK ends with `erc-nick-uniquifier'.
+  ;; The function is suitable for `erc-after-connect'."
+  ;;   (print erc-bad-nick))
+
+  ;; (add-hook 'erc-after-connect 'pc/erc-ghost-maybe)
+#+END_SRC
+* Email config
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/mu/mu4e/")
+  (require 'mu4e)
+
+  ;; All maildirs are here in ~/.maildirs but I just use one, as of now.
+  (setq mu4e-maildir "~/.maildirs/")
+  ;; Multiple accounts can be configured, later
+  ;; See http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html
+
+  ;; Path to mu binary
+  (setq mu4e-mu-binary "~/bin/mu")
+
+  ;; these paths are relative to `mu4e-maildir'
+  ;; set http://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html
+  (setq mu4e-sent-folder   "/muse-amuse/Sent"
+        mu4e-drafts-folder "/muse-amuse/Drafts"
+        mu4e-trash-folder  "/muse-amuse/Trash")
+
+  ;; a  list of user's e-mail addresses
+  (setq mu4e-user-mail-address-list '("punchagan@muse-amuse.in"))
+
+  ;; the headers to show in the headers list -- a pair of a field
+  ;; and its width, with `nil' meaning 'unlimited'
+  ;; (better only use that for the last field.
+  ;; These are the defaults:
+  (setq mu4e-headers-fields
+        '( (:date          .  25)
+           (:flags         .   6)
+           (:from          .  22)
+           (:subject       .  nil)))
+
+  ;; program to get mail;
+  (setq
+   mu4e-get-mail-command "offlineimap"
+   mu4e~get-mail-password-regexp "^Enter password for account '.*?': $"
+   mu4e-update-interval (* 6 3600))
+
+  ;; general emacs mail settings; used when composing e-mail
+  ;; the non-mu4e-* stuff is inherited from emacs/message-mode
+  (setq mu4e-reply-to-address "punchagan@muse-amuse.in"
+        user-mail-address "punchagan@muse-amuse.in"
+        user-full-name  "Puneeth Chaganti")
+
+  ;; smtp mail setting
+  (setq
+   message-send-mail-function 'smtpmail-send-it
+   smtpmail-default-smtp-server "muse-amuse.in"
+   smtpmail-smtp-server "muse-amuse.in"
+   smtpmail-local-domain "muse-amuse.in"
+   smtpmail-smtp-service 587
+   ;; if you need offline mode, set these -- and create the queue dir
+   ;; with 'mu mkdir', i.e.. mu mkdir /home/user/Maildir/queue
+   smtpmail-queue-mail t
+   smtpmail-queue-dir (expand-file-name "queue/cur" mu4e-maildir))
+
+  ;; don't keep message buffers around
+  (setq message-kill-buffer-on-exit t)
+
+  ;; Dealing with html email
+  (setq mu4e-html2text-command "/home/punchagan/.cabal/bin/pandoc -r html -w plain")
+  ;; view email in browser
+  (add-to-list 'mu4e-view-actions
+               '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
+  ;; Add manual to info
+  (add-to-list 'Info-directory-list  (file-name-directory (symbol-file 'mu4e-maildir)))
+
+  (defun pc/update-mail-and-index ()
+    "Swith to mu4e-main buffer and update mail and index."
+    (interactive)
+    (dolist (window (window-list))
+      (let ((buffer (window-buffer window)))
+        (when (string-match "mu4e-main" (buffer-name buffer))
+          (select-window window))))
+    (unless (string-match "mu4e-main" (buffer-name (current-buffer)))
+      (mu4e)))
+
+  ;; Global keybinding for email
+  (bind-key "<XF86Calculator>" 'pc/update-mail-and-index)
+  (bind-key "<Scroll_Lock>" 'pc/update-mail-and-index)
+
+  ;; Enable org-mu4e
+        ;;; org-link creation support
+  (require 'org-mu4e)
+        ;;; org-mode compose
+  (add-hook 'mu4e-compose-mode-hook 'org-mu4e-compose-org-mode)
+
+  ;; Disable auto signature
+  (setq mu4e-compose-signature-auto-include nil)
+
+  ;; Smart refiling
+  (setq mu4e-refile-folder 'pc/mu4e-refile-messages)
+
+  (defun pc/mu4e-refile-messages (msg)
+    "Rules for smartly refiling messages."
+    (let ((mailing-list (or (mu4e-message-field msg :mailing-list) "")))
+      (cond
+
+       ;; Nikola project
+       ((or (string-match "nikola.getnikola.github.com" mailing-list)
+            (string-match "nikola-discuss.googlegroups.com" mailing-list))
+        "/muse-amuse/Nikola")
+
+       ;; org2blog
+       ((string-match "org2blog.punchagan.github.com" mailing-list)
+        "/muse-amuse/org2blog")
+
+       ;; Catch all
+       (t  "/muse-amuse/INBOX"))))
+
+#+END_SRC
+
+* Jabber
+#+BEGIN_SRC emacs-lisp
+(require 'jabber)
+
+  (setq jabber-account-list
+        `(
+          ;; Gmail
+          (,(format "punchagan@gmail.com/Emacs-%s-Jabber-%s" emacs-version jabber-version)
+           (:network-server . "talk.google.com")
+           (:connection-type . starttls))
+
+          (,(format "punchagan@muse-amuse.in/MA-Emacs-%s-Jabber-%s" emacs-version jabber-version)
+           (:network-server . "muse-amuse.in")
+           (:connection-type . starttls))
+
+          ))
+
+  ;; Alerts
+  (setq jabber-alert-presence-hooks nil)
+  (setq jabber-alert-message-hooks '(jabber-message-scroll jabber-message-notifications))
+
+        ;;; Enable alerts when focussed out of  emacs
+  (add-hook 'focus-out-hook
+            (lambda () (add-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
+
+        ;;; Disable alerts when focussed in emacs
+  (add-hook 'focus-in-hook
+            (lambda () (remove-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
+
+  ;; History
+  (setq
+   jabber-history-enabled t
+   jabber-use-global-history nil
+   jabber-backlog-number 40
+   jabber-backlog-days 30)
+
+  ;; make URLs clickable
+  (add-hook 'jabber-chat-mode-hook 'goto-address)
+
+
+        ;;;; Jabber Message Queue stuff ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (require 'json)
+
+  (defconst pc/jabber-message-queue-file
+    (expand-file-name ".jabber-message-queue.json" user-emacs-directory)
+    "The file where jabber messages are queued")
+
+  (defun pc/jabber-add-message-to-queue (to body)
+    "Queue up messages when offline, and send on connect."
+    (interactive (list
+                  (read-string "message: ")))
+    (let ((data (append
+                 (or (ignore-errors (json-read-file pc/jabber-message-queue-file)) '())
+                 `(((to . ,to) (body . ,body))))))
+
+      (with-temp-buffer
+        (insert (json-encode data))
+        (write-file pc/jabber-message-queue-file nil))))
+
+  (defun pc/jabber-chat-buffer-send ()
+    "Send the message in the chat buffer to the queue."
+    (interactive)
+    (let ((body (delete-and-extract-region jabber-point-insert (point-max))))
+      (funcall 'pc/jabber-add-message-to-queue jabber-chatting-with body)))
+
+  (defun pc/jabber-chat-with ()
+    "Queue messages if not connected, else normal chat."
+    (interactive)
+    (if (ignore-errors (jabber-read-account))
+        (call-interactively 'jabber-chat-with)
+      (let ((to (completing-read
+                 "chat with: "
+                 ;; yes, that's right! we use mu4e contact list!
+                 (mapcar (lambda (x) (plist-get x :mail)) mu4e~contact-list))))
+        (switch-to-buffer (jabber-chat-create-buffer nil to))
+        (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))))
+
+  (defun pc/jabber-flush-queue (jc)
+    "Send all queued messages and empty queue."
+    (ignore-errors
+      (let ((data (or (ignore-errors (json-read-file pc/jabber-message-queue-file)) '())))
+        ;; Send messages
+        (mapcar
+         (lambda (x) (let ((to (cdr (assoc 'to x)))
+                           (body (cdr (assoc 'body x))))
+                       (message (format "Sent message to %s: %s" to body))
+                       (jabber-send-message jc to nil body "chat")))
+         data)
+
+        ;; Delete queue file
+        (delete-file pc/jabber-message-queue-file)
+
+        ;; Restore keymap
+        (define-key jabber-chat-mode-map (kbd "RET") 'jabber-chat-buffer-send))))
+
+  (add-hook 'jabber-post-connect-hooks 'pc/jabber-flush-queue)
+
+  ;; Bind key to our chat function
+  (global-set-key (kbd "C-x C-j C-j") 'pc/jabber-chat-with)
+#+END_SRC
+* Miscellaneous stuff
+*** Play music using ~mpsyt~
+#+BEGIN_SRC emacs-lisp
+    (defun pc/short-url-at-point ()
+      "Gets the short url at point.
+
+    This function is required only because
+    `thing-at-point-url-at-point' ignores urls (without a scheme)
+    that don't start with www."
+      (let ((bounds (thing-at-point-bounds-of-url-at-point t)))
+        (when (and bounds (< (car bounds) (cdr bounds)))
+          (buffer-substring-no-properties (car bounds) (cdr bounds)))))
+
+  (defun pc/mpsyt-url (url)
+    (let ((buffer (current-buffer))
+          (mpsyt-proc-name "*mpsyt*"))
+
+      ;; Start a new term with *mpsyt* if there isn't one
+      (unless (get-process mpsyt-proc-name)
+        (when (get-buffer mpsyt-proc-name)
+          (kill-buffer (get-buffer mpsyt-proc-name)))
+        (ansi-term "mpsyt" "mpsyt"))
+
+      ;; Play given url in mpsyt
+      (let ((mpsyt-proc (get-process mpsyt-proc-name)))
+        ;; If something is already playing, stop it and play this...
+        (term-send-string mpsyt-proc "\n\n\n")
+        ;; We wait for a bit, since looking for the prompt seems to fail, sometimes?
+        (sleep-for 1)
+        (term-send-string mpsyt-proc "\n")
+
+        ;; Actually send the command to playurl
+        (term-simple-send (get-process mpsyt-proc-name)
+                          (format "playurl %s" url)))
+
+      (switch-to-buffer buffer)))
+
+    (defun pc/mpsyt-url-at-point ()
+      "Play the URL at point using mpsyt."
+      (interactive)
+      (let ((url (or (url-get-url-at-point) (pc/short-url-at-point))))
+        (if (not url)
+          (message "No URL found")
+            (message (format "Playing %s with mpsyt" url))
+          (pc/mpsyt-url url))))
+#+END_SRC
+***** Bind it to <f8>
+#+BEGIN_SRC emacs-lisp
+  (bind-key "<f8>" 'pc/mpsyt-url-at-point)
 #+END_SRC
