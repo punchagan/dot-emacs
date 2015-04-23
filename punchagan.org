@@ -23,7 +23,6 @@ where there is additional stuff!
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path site-lisp-dir)
-  (print load-path)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -479,54 +478,6 @@ stuff into it...
   (require 'org-tree-slide)
   (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
 
-  ;; Capture related stuff
-  (require 'org-capture)
-  (global-set-key (kbd "C-M-r") 'org-capture)
-
-  ;; org-protocol
-  (require 'org-protocol)
-
-  (setq org-capture-templates
-        '(
-          ;; General
-          ("t" "todo" entry (file+headline "todo.org" "Miscellaneous")
-           "* TODO %?\n\n"
-           :empty-lines 1)
-          ("c" "org-protocol links under clock item" item
-           (clock)
-           "- [[%:link][%:description]]\n\n  %:initial"
-           :immediate-finish t :empty-lines 1)
-
-          ;; Blog related
-          ("b" "org-protocol bookmarks" item
-           (file "bookmarks.org")
-           "- [[%:link][%:description]]\n\n  %:initial"
-           :empty-lines 1)
-          ("q" "org-protocol quotes" item
-           (file "quotes.org")
-           "- %:initial"
-           :empty-lines 1)
-
-          ;; Incremental reading
-          ("u"
-           "Task: Read this URL"
-           entry
-           (file+headline "todo.org" "Articles To Read")
-           "* TODO Read article: [[%:link][%:description]]\n\n  %:initial\n\n"
-           :empty-lines 1
-           :immediate-finish t)
-          ("w"
-           "Capture web snippet"
-           entry
-           (file+headline "notes.org" "Web notes")
-           "%(concat  \"* Fact: '%:description'        :\"
-                 (format \"%s\" org-drill-question-tag)
-                 \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_TITLE: %:description\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
-           :empty-lines 1
-           )
-          )
-        )
-
   ;; Encrypted org buffers
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
@@ -639,6 +590,56 @@ stuff into it...
   (setq org-completion-use-ido t)
   (bind-key "C-c b" 'org-switchb)
 
+#+END_SRC
+*** Capture related stuff
+#+BEGIN_SRC emacs-lisp
+  ;; Capture related stuff
+  (require 'org-capture)
+  (global-set-key (kbd "C-M-r") 'org-capture)
+
+  ;; org-protocol
+  (require 'org-protocol)
+
+  (setq org-capture-templates
+        '(
+          ;; General
+          ("t" "todo" entry (file+headline "todo.org" "Miscellaneous")
+           "* TODO %?\n\n"
+           :empty-lines 1)
+          ("c" "org-protocol links under clock item" item
+           (clock)
+           "- [[%:link][%:description]]\n\n  %:initial"
+           :immediate-finish t :empty-lines 1)
+
+          ;; Blog related
+          ("b" "org-protocol bookmarks" item
+           (file "bookmarks.org")
+           "- [[%:link][%:description]]\n\n  %:initial"
+           :empty-lines 1)
+          ("q" "org-protocol quotes" item
+           (file "quotes.org")
+           "- %:initial"
+           :empty-lines 1)
+
+          ;; Incremental reading
+          ("u"
+           "Task: Read this URL"
+           entry
+           (file+headline "todo.org" "Articles To Read")
+           "* TODO Read article: [[%:link][%:description]]\n\n  %:initial\n\n"
+           :empty-lines 1
+           :immediate-finish t)
+          ("w"
+           "Capture web snippet"
+           entry
+           (file+headline "notes.org" "Web notes")
+           "%(concat  \"* Fact: '%:description'        :\"
+                 (format \"%s\" org-drill-question-tag)
+                 \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_TITLE: %:description\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
+           :empty-lines 1
+           )
+          )
+        )
 #+END_SRC
 
 *** Org date-tree refile
