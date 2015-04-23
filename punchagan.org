@@ -761,6 +761,12 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
               :filter-args 'pc/ipython-use-cpaste)
 #+END_SRC
 
+*** Org contacts
+#+BEGIN_SRC emacs-lisp
+  ;; We need to set this before we load org-contacts!
+  (setq org-contacts-enable-completion nil)
+  (require 'org-contacts)
+#+END_SRC
 * Language modes
 
 *** Python mode
@@ -1159,7 +1165,15 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
        ;; Catch all
        (t  "/muse-amuse/INBOX"))))
+#+END_SRC
 
+*** Use org-contacts as address book
+#+BEGIN_SRC emacs-lisp
+  (setq mu4e-org-contacts-file "~/.life-in-plain-text/contacts.org")
+  (add-to-list 'mu4e-headers-actions
+    '("org-contact-add" . mu4e-action-add-org-contact) t)
+  (add-to-list 'mu4e-view-actions
+    '("org-contact-add" . mu4e-action-add-org-contact) t)
 #+END_SRC
 
 * Jabber
