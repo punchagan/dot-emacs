@@ -47,7 +47,7 @@ stuff into it...
 #+END_SRC
 
 * Appearance
-
+*** Disable scroll bar, menu bar, fringes, junk...
 #+BEGIN_SRC emacs-lisp
   (scroll-bar-mode -1)
   (mouse-wheel-mode -1)
@@ -60,19 +60,14 @@ stuff into it...
   ;; No blinking cursor
   (blink-cursor-mode -1)
 
-  ;; No startup screen
-  (setq inhibit-startup-screen t)
-
-  ;; nice scrolling
-  (setq scroll-margin 0
-        scroll-conservatively 100000
-        scroll-preserve-screen-position 1)
-
   ;; make the fringe (gutter) smaller
   ;; the argument is a width in pixels (the default is 8)
   (if (fboundp 'fringe-mode)
       (fringe-mode 1))
+#+END_SRC
 
+*** Set frame title based on buffer name
+#+BEGIN_SRC emacs-lisp
   ;; more useful frame title, that show either a file or a
   ;; buffer name (if the buffer isn't visiting a file)
   (setq frame-title-format
@@ -84,6 +79,29 @@ stuff into it...
   (load-theme 'wombat t)
 #+END_SRC
 
+*** Nicer scrolling
+#+BEGIN_SRC emacs-lisp
+  (setq scroll-margin 0
+        scroll-conservatively 100000
+        scroll-preserve-screen-position 1)
+
+#+END_SRC
+
+* Startup
+*** Don't show startup screen
+#+BEGIN_SRC emacs-lisp
+  ;; No startup screen
+  (setq inhibit-startup-screen t)
+#+END_SRC
+*** scratch message
+Remove the default scratch buffer message.
+#+BEGIN_SRC emacs-lisp
+  (setq initial-scratch-message ";;; scratch")
+#+END_SRC
+*** initial buffer
+Display org-agenda when emacs starts-up!
+
+We do this immediately after [[*make agenda the initial buffer][org-agenda keys have been setup]].
 * Setup package.el
 #+BEGIN_SRC emacs-lisp
   (require 'package)
@@ -496,79 +514,6 @@ stuff into it...
                 ("DONE" :foreground "forest green" :weight bold)
                 ("CANCELLED" :foreground "forest green" :weight bold))))
 
-  ;; Org-agenda
-  (setq org-agenda-files
-        (expand-file-name "agenda-files.org" org-directory))
-  (global-set-key (kbd "<f12>") 'org-agenda)
-
-  (setq org-agenda-sticky t
-        org-agenda-compact-blocks t
-        org-agenda-inhibit-startup t
-        org-agenda-use-tag-inheritance nil
-        org-agenda-include-diary t
-        org-agenda-span 'day
-        org-enforce-todo-dependencies t
-        org-enforce-todo-checkbox-dependencies t
-        org-agenda-start-with-log-mode t
-        org-agenda-skip-scheduled-if-done t
-        org-clock-persist t
-        org-log-into-drawer t
-        org-clock-into-drawer t)
-
-        ;;; Clocking
-  (bind-keys
-   :prefix "<f9>"
-   :prefix-map pc/clock
-   ;; except org-clock-in, everything is useful globally...
-   ("i" . org-clock-in)
-   ("l" . org-clock-in-last)
-   ("o" . org-clock-out)
-   ("x" . org-clock-cancel)
-   ("j" . org-clock-goto)
-   ("e" . org-set-effort))
-        ;;; The keybindings are similar to what org-agenda already has. I, O, X, J, e.
-
-        ;;; What to do with dangling clocks?
-  (org-clock-persistence-insinuate)
-
-  ;; Clocking and notifications
-  (add-hook 'org-clock-in-hook 'pc/turn-off-notifications)
-  (add-hook 'org-clock-out-hook 'pc/turn-on-notifications)
-
-  ;; Appointments and notifications
-  (setq
-   appt-message-warning-time 10
-   appt-display-mode-line t
-   appt-display-format 'window
-   ;; Display messages, until the actual appointment time.
-   appt-display-duration (* appt-message-warning-time 60))
-
-  (appt-activate 1) ;; active appt (appointment notification)
-  (display-time)    ;; time display is required for this...? really?
-
-        ;;; Keybinding to close the appointment reminder window
-  (bind-key "<f5>" '(lambda () (interactive) (appt-delete-window)))
-
-        ;;; update appt each time agenda opened
-  (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
-
-        ;;; Custom agenda command definitions
-  (setq org-agenda-custom-commands
-        (quote ((" " "ZTD Agenda"
-                 ((agenda "" nil)
-                  (tags "bigrock"
-                        ((org-agenda-overriding-header "Big Rocks")
-                         (org-tags-match-list-sublevels nil)
-                         (org-agenda-sorting-strategy
-                          '(category-keep))))
-                  )))))
-
-  ;; org-habits
-  (require 'org-habit)
-
-  ;; org-checklist
-  (require 'org-checklist)
-
   ;; Export
   (setq org-use-sub-superscripts '{}
         org-export-use-sub-superscripts '{})
@@ -594,7 +539,93 @@ stuff into it...
   (bind-key "C-c b" 'org-switchb)
 
 #+END_SRC
-*** Capture related stuff
+
+*** Agenda and clocking
+#+BEGIN_SRC emacs-lisp
+  ;; Org-agenda
+  (setq org-agenda-files
+        (expand-file-name "agenda-files.org" org-directory))
+  (global-set-key (kbd "<f12>") 'org-agenda)
+
+  (setq org-agenda-sticky t
+        org-agenda-compact-blocks t
+        org-agenda-inhibit-startup t
+        org-agenda-use-tag-inheritance nil
+        org-agenda-include-diary t
+        org-agenda-span 'day
+        org-enforce-todo-dependencies t
+        org-enforce-todo-checkbox-dependencies t
+        org-agenda-start-with-log-mode t
+        org-agenda-skip-scheduled-if-done t
+        org-clock-persist t
+        org-log-into-drawer t
+        org-clock-into-drawer t)
+
+          ;;; Clocking
+  (bind-keys
+   :prefix "<f9>"
+   :prefix-map pc/clock
+   ;; except org-clock-in, everything is useful globally...
+   ("i" . org-clock-in)
+   ("l" . org-clock-in-last)
+   ("o" . org-clock-out)
+   ("x" . org-clock-cancel)
+   ("j" . org-clock-goto)
+   ("e" . org-set-effort))
+          ;;; The keybindings are similar to what org-agenda already has. I, O, X, J, e.
+
+          ;;; What to do with dangling clocks?
+  (org-clock-persistence-insinuate)
+
+  ;; Clocking and notifications
+  (add-hook 'org-clock-in-hook 'pc/turn-off-notifications)
+  (add-hook 'org-clock-out-hook 'pc/turn-on-notifications)
+
+  ;; Appointments and notifications
+  (setq
+   appt-message-warning-time 10
+   appt-display-mode-line t
+   appt-display-format 'window
+   ;; Display messages, until the actual appointment time.
+   appt-display-duration (* appt-message-warning-time 60))
+
+  (appt-activate 1) ;; active appt (appointment notification)
+  (display-time)    ;; time display is required for this...? really?
+
+          ;;; Keybinding to close the appointment reminder window
+  (bind-key "<f5>" '(lambda () (interactive) (appt-delete-window)))
+
+          ;;; update appt each time agenda opened
+  (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
+
+          ;;; Custom agenda command definitions
+  (setq org-agenda-custom-commands
+        (quote ((" " "ZTD Agenda"
+                 ((agenda "" nil)
+                  (tags "bigrock"
+                        ((org-agenda-overriding-header "Big Rocks")
+                         (org-tags-match-list-sublevels nil)
+                         (org-agenda-sorting-strategy
+                          '(category-keep))))
+                  )))))
+
+  ;; org-habits
+  (require 'org-habit)
+
+  ;; org-checklist
+  (require 'org-checklist)
+
+#+END_SRC
+
+***** make agenda the initial buffer
+#+BEGIN_SRC emacs-lisp
+  (setq initial-buffer-choice
+        (lambda ()
+          (org-agenda nil " ")
+          (delete-other-windows)
+          (get-buffer "*Org Agenda( )*")))
+#+END_SRC
+*** Capture
 #+BEGIN_SRC emacs-lisp
   ;; Capture related stuff
   (require 'org-capture)
