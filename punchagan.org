@@ -120,11 +120,10 @@ We do this immediately after [[*make agenda the initial buffer][org-agenda keys 
 #+END_SRC
 
 * Hippie expand
-
+Use hippie expand
 #+BEGIN_SRC emacs-lisp
-
-  ;; Use hippie expand
   (define-key global-map "\M-/" 'hippie-expand)
+
   (setq hippie-expand-try-functions-list
         '(try-expand-dabbrev
           try-expand-dabbrev-all-buffers
@@ -412,7 +411,7 @@ We do this immediately after [[*make agenda the initial buffer][org-agenda keys 
   (define-key global-map "\C-xb" 'ido-switch-buffer)
 
   ;; Debug on error
-                                          ;(setq debug-on-error t)
+  ;; (setq debug-on-error t)
 
   ;; Confirmation on exit
   (setq confirm-kill-emacs 'yes-or-no-p)
@@ -1328,15 +1327,15 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 * Miscellaneous stuff
 *** Play music using ~mpsyt~
 #+BEGIN_SRC emacs-lisp
-    (defun pc/short-url-at-point ()
-      "Gets the short url at point.
+  (defun pc/short-url-at-point ()
+    "Gets the short url at point.
 
     This function is required only because
     `thing-at-point-url-at-point' ignores urls (without a scheme)
     that don't start with www."
-      (let ((bounds (thing-at-point-bounds-of-url-at-point t)))
-        (when (and bounds (< (car bounds) (cdr bounds)))
-          (buffer-substring-no-properties (car bounds) (cdr bounds)))))
+    (let ((bounds (thing-at-point-bounds-of-url-at-point t)))
+      (when (and bounds (< (car bounds) (cdr bounds)))
+        (buffer-substring-no-properties (car bounds) (cdr bounds)))))
 
   (defun pc/mpsyt-url (url)
     (let ((buffer (current-buffer))
@@ -1362,14 +1361,14 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
       (switch-to-buffer buffer)))
 
-    (defun pc/mpsyt-url-at-point ()
-      "Play the URL at point using mpsyt."
-      (interactive)
-      (let ((url (or (url-get-url-at-point) (pc/short-url-at-point))))
-        (if (not url)
+  (defun pc/mpsyt-url-at-point ()
+    "Play the URL at point using mpsyt."
+    (interactive)
+    (let ((url (or (url-get-url-at-point) (pc/short-url-at-point))))
+      (if (not url)
           (message "No URL found")
-            (message (format "Playing %s with mpsyt" url))
-          (pc/mpsyt-url url))))
+        (message (format "Playing %s with mpsyt" url))
+        (pc/mpsyt-url url))))
 #+END_SRC
 ***** Bind it to <f8>
 #+BEGIN_SRC emacs-lisp
