@@ -813,6 +813,8 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
                          org-contacts-birthday-property
                          org-contacts-anniversary-property)
                    "|"))
+
+  (set-register ?c `(file . ,(expand-file-name "contacts.txt" org-directory)))
 #+END_SRC
 * Language modes
 
