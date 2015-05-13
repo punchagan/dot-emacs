@@ -1327,6 +1327,8 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 * Miscellaneous stuff
 *** Play music using ~mpsyt~
 #+BEGIN_SRC emacs-lisp
+  (require 'url)
+
   (defun pc/short-url-at-point ()
     "Gets the short url at point.
 
