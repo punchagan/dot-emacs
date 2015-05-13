@@ -1292,7 +1292,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (defun pc/jabber-chat-with ()
     "Queue messages if not connected, else normal chat."
     (interactive)
-    (if (ignore-errors (jabber-read-account))
+    (if (not (null jabber-connections))
         (call-interactively 'jabber-chat-with)
       (let ((to (completing-read
                  "chat with: "
