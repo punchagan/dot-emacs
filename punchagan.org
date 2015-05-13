@@ -101,7 +101,8 @@ Remove the default scratch buffer message.
 *** initial buffer
 Display org-agenda when emacs starts-up!
 
-We do this immediately after [[*make agenda the initial buffer][org-agenda keys have been setup]].
+We do this immediately after [[*make agenda the initial buffer][org-agenda keys
+have been setup]].
 * Setup package.el
 #+BEGIN_SRC emacs-lisp
   (require 'package)
@@ -591,13 +592,13 @@ Use hippie expand
   (appt-activate 1) ;; active appt (appointment notification)
   (display-time)    ;; time display is required for this...? really?
 
-          ;;; Keybinding to close the appointment reminder window
+  ;; Keybinding to close the appointment reminder window
   (bind-key "<f5>" '(lambda () (interactive) (appt-delete-window)))
 
-          ;;; update appt each time agenda opened
+  ;; update appt each time agenda opened
   (add-hook 'org-finalize-agenda-hook 'org-agenda-to-appt)
 
-          ;;; Custom agenda command definitions
+  ;; Custom agenda command definitions
   (setq org-agenda-custom-commands
         (quote ((" " "ZTD Agenda"
                  ((agenda "" nil)
@@ -849,7 +850,6 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 
 *** Emacs Lisp mode
 #+BEGIN_SRC emacs-lisp
-  ;; (provide 'setup-jabber)
         ;;; Lisp mode configuration
 
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -958,7 +958,6 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
       (when (and word-match tags)
         (delete-backward-char (length word-match)))
       (mapc (lambda (tag) (insert (format "%s, " tag))) tags)))
-
 #+END_SRC
 * ERC
 
@@ -1007,6 +1006,7 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (setq erc-autojoin-channels-alist
         '(("freenode.net"
            "#emacs" "#org-mode" "#emacs-in" "#fossee" "#ipython"
+           "#pyconindia" "##linux-india"
            "#elm" "#scikit-learn" "#scikit-image" "#nikola")))
 #+END_SRC
 
