@@ -1250,11 +1250,11 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (setq jabber-alert-presence-hooks nil)
   (setq jabber-alert-message-hooks '(jabber-message-scroll jabber-message-notifications))
 
-          ;;; Enable alerts when focussed out of  emacs
+              ;;; Enable alerts when focussed out of  emacs
   (add-hook 'focus-out-hook
             (lambda () (add-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
 
-          ;;; Disable alerts when focussed in emacs
+              ;;; Disable alerts when focussed in emacs
   (add-hook 'focus-in-hook
             (lambda () (remove-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
 
@@ -1280,9 +1280,10 @@ the ghosting works, it all happens before joining any channels, so it is neat!
     "Queue up messages when offline, and send on connect."
     (interactive (list
                   (read-string "message: ")))
-    (let ((data (append
-                 (or (ignore-errors (json-read-file pc/jabber-message-queue-file)) '())
-                 `(((to . ,to) (body . ,body))))))
+    (let* ((from (nth 0 jabber-account-history))
+           (data (append
+                  (or (ignore-errors (json-read-file pc/jabber-message-queue-file)) '())
+                  `(((from . ,from) (to . ,to) (body . ,body))))))
 
       (with-temp-buffer
         (insert (json-encode data))
@@ -1295,16 +1296,32 @@ the ghosting works, it all happens before joining any channels, so it is neat!
       (funcall 'pc/jabber-add-message-to-queue jabber-chatting-with body)))
 
   (defun pc/jabber-chat-with ()
-    "Queue messages if not connected, else normal chat."
-    (interactive)
-    (if (not (null jabber-connections))
-        (call-interactively 'jabber-chat-with)
-      (let ((to (completing-read
-                 "chat with: "
-                 ;; yes, that's right! we use mu4e contact list!
-                 (mapcar (lambda (x) (plist-get x :mail)) mu4e~contact-list))))
-        (switch-to-buffer (jabber-chat-create-buffer nil to))
-        (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))))
+      "Queue messages if not connected, else normal chat."
+      (interactive)
+      (let* ((to (completing-read
+                  "chat with: "
+                  ;; yes, that's right! we use mu4e contact list!
+                  (mapcar (lambda (x) (plist-get x :mail)) mu4e~contact-list)))
+             (from (let*
+                       ((completions (mapcar
+                                      (lambda (c) (nth 0 (split-string (car c) "/")))
+                                      jabber-account-list))
+                        (default (nth 0 completions)))
+                     (completing-read
+                      (concat "Select Jabber account (default " default "): ")
+                      completions nil t nil 'jabber-account-history default)))
+             (jids (mapcar
+                     (lambda (jc) (jabber-connection-bare-jid jc))
+                     jabber-connections))
+             (n (position from jids :test 'string-equal)))
+
+        (if (not (null n))
+            (jabber-chat-with (nth n jabber-connections) to)
+          (switch-to-buffer (jabber-chat-create-buffer nil to))
+          (use-local-map (copy-keymap jabber-chat-mode-map))
+          (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))))
+
+
 
   (defun pc/jabber-flush-queue (jc)
     "Send all queued messages and empty queue."
@@ -1313,16 +1330,27 @@ the ghosting works, it all happens before joining any channels, so it is neat!
         ;; Send messages
         (mapcar
          (lambda (x) (let ((to (cdr (assoc 'to x)))
-                           (body (cdr (assoc 'body x))))
-                       (message (format "Sent message to %s: %s" to body))
-                       (jabber-send-message jc to nil body "chat")))
+                           (body (cdr (assoc 'body x)))
+                           (from (cdr (assoc 'from x))))
+                       (when (string= from (jabber-connection-bare-jid jc))
+                         (jabber-send-message jc to nil body "chat")
+                         (message (format "Sent message to %s: %s" to body))
+                         (setq data (delete x data)))))
          data)
 
-        ;; Delete queue file
-        (delete-file pc/jabber-message-queue-file)
+
+        ;; Update queue file
+        (with-temp-buffer
+          (insert (json-encode data))
+          (write-file pc/jabber-message-queue-file nil))
 
         ;; Restore keymap
-        (define-key jabber-chat-mode-map (kbd "RET") 'jabber-chat-buffer-send))))
+        (mapcar
+         (lambda (buffer)
+           (with-current-buffer buffer
+             (when (equal major-mode 'jabber-chat-mode)
+               (local-set-key (kbd "RET") 'jabber-chat-buffer-send))))
+         (buffer-list)))))
 
   (add-hook 'jabber-post-connect-hooks 'pc/jabber-flush-queue)
 
