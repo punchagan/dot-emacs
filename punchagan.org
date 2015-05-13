@@ -867,6 +867,11 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
     (server-start))
 
 #+END_SRC
+
+*** Go mode
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'go-mode-hook 'disable-paredit-mode)
+#+END_SRC
 * Yasnippet
 #+BEGIN_SRC emacs-lisp
   (require 'yasnippet)
