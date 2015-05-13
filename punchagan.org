@@ -1226,7 +1226,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
 * Jabber
 #+BEGIN_SRC emacs-lisp
-(require 'jabber)
+  (require 'jabber)
 
   (setq jabber-account-list
         `(
@@ -1245,11 +1245,11 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (setq jabber-alert-presence-hooks nil)
   (setq jabber-alert-message-hooks '(jabber-message-scroll jabber-message-notifications))
 
-        ;;; Enable alerts when focussed out of  emacs
+          ;;; Enable alerts when focussed out of  emacs
   (add-hook 'focus-out-hook
             (lambda () (add-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
 
-        ;;; Disable alerts when focussed in emacs
+          ;;; Disable alerts when focussed in emacs
   (add-hook 'focus-in-hook
             (lambda () (remove-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
 
@@ -1264,7 +1264,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (add-hook 'jabber-chat-mode-hook 'goto-address)
 
 
-        ;;;; Jabber Message Queue stuff ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Jabber Message Queue stuff ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (require 'json)
 
   (defconst pc/jabber-message-queue-file
