@@ -611,6 +611,7 @@ Use hippie expand
 
   ;; org-habits
   (require 'org-habit)
+  (setq org-habit-graph-column 50)
 
   ;; org-checklist
   (require 'org-checklist)
@@ -805,6 +806,9 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 
   ;; Matching rule for finding headings that are contacts.
   (setq org-contacts-anniversary-property "ANNIVERSARY")
+
+  ;; Using gravatar isn't fast enough
+  (setq org-contacts-icon-use-gravatar nil)
 
   (setq org-contacts-matcher
         (mapconcat (lambda (p) (format "%s<>\"\"" p))
