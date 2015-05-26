@@ -797,7 +797,8 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
               :filter-args 'pc/ipython-use-cpaste)
 #+END_SRC
 
-*** Org contacts
+* Contact Management
+*** Setup org-contacts
 #+BEGIN_SRC emacs-lisp
   ;; We need to set this before we load org-contacts to disable completion
   (setq org-contacts-enable-completion nil)
@@ -821,7 +822,7 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (set-register ?c `(file . ,(expand-file-name "contacts.txt" org-directory)))
 #+END_SRC
 
-***** Code to fix contacts file
+*** Code to fix contacts file                                     :ARCHIVE:
 #+BEGIN_SRC emacs-lisp
 
   (defun pc/make-property-multi-valued (property)
@@ -896,6 +897,29 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   ;'("~/.life-in-plain-text/contacts.txt"))
 
 
+#+END_SRC
+*** Howdy
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/software/my-repos/howdy/")
+  (require 'howdy)
+#+END_SRC
+***** Hook up mu4e
+#+BEGIN_SRC emacs-lisp
+  (advice-add 'mu4e-headers-view-message :before 'pc/howdy-mu4e-contacted)
+
+  (defun pc/howdy-mu4e-contacted ()
+      (let* ((msg (mu4e-message-at-point 'noerror))
+             (from (car (mu4e-message-field msg :from)))
+             (name (car from))
+             (email (cdr from))
+             (time (mu4e-message-field msg :date))
+             (flags (mu4e-message-field msg :flags))
+             (unread (member 'unread flags))
+             (to-me (not (member 'list flags)))
+             (info `((:name . ,name) (:email . ,email)))
+             (contact (howdy--find-contact info)))
+        (when (and to-me unread contact)
+          (howdy--contacted-contact contact time))))
 #+END_SRC
 * Language modes
 
