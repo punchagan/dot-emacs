@@ -904,6 +904,7 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (require 'howdy)
 #+END_SRC
 ***** Hook up mu4e
+******* Received mail
 #+BEGIN_SRC emacs-lisp
   (advice-add 'mu4e-headers-view-message :before 'pc/howdy-mu4e-contacted)
 
@@ -916,10 +917,24 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
              (flags (mu4e-message-field msg :flags))
              (unread (member 'unread flags))
              (to-me (not (member 'list flags)))
-             (info `((:name . ,name) (:email . ,email)))
-             (contact (howdy--find-contact info)))
-        (when (and to-me unread contact)
-          (howdy--contacted-contact contact time))))
+             (info `((:name . ,name) (:email . ,email))))
+        (when (and to-me unread)
+          (howdy--contacted info time))))
+#+END_SRC
+******* Sent mail
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'message-send-hook 'pc/howdy-mu4e-message-send)
+
+  (defun pc/howdy-mu4e-message-send ()
+    (let* ((to (mail-fetch-field "to" nil t))
+           (cc (mail-fetch-field "cc" nil t))
+           (emails
+            (mail-strip-quoted-names
+             (concat to (when cc (concat ", " cc)))))
+           (now (current-time)))
+      (loop for email in (split-string emails ",[[:space:]]+" t)
+            do (let ((info `((:email . ,email))))
+                 (howdy--contacted info now)))))
 #+END_SRC
 * Language modes
 
