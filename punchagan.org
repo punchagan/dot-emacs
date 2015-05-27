@@ -906,9 +906,9 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 ***** Hook up mu4e
 ******* Received mail
 #+BEGIN_SRC emacs-lisp
-  (advice-add 'mu4e-headers-view-message :before 'pc/howdy-mu4e-contacted)
+  (advice-add 'mu4e-headers-view-message :before 'pc/howdy-mu4e-message-receive)
 
-  (defun pc/howdy-mu4e-contacted ()
+  (defun pc/howdy-mu4e-message-receive ()
       (let* ((msg (mu4e-message-at-point 'noerror))
              (from (car (mu4e-message-field msg :from)))
              (name (car from))
@@ -930,11 +930,29 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
            (cc (mail-fetch-field "cc" nil t))
            (emails
             (mail-strip-quoted-names
-             (concat to (when cc (concat ", " cc)))))
-           (now (current-time)))
+             (concat to (when cc (concat ", " cc))))))
       (loop for email in (split-string emails ",[[:space:]]+" t)
             do (let ((info `((:email . ,email))))
-                 (howdy--contacted info now)))))
+                 (howdy--contacted info nil)))))
+#+END_SRC
+***** Hook up jabber.el
+******* Sent messages
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'jabber-chat-send-hooks 'pc/howdy-jabber-message-send)
+
+  (defun pc/howdy-jabber-message-send (body id)
+    (let* ((info `((:email . ,jabber-chatting-with))))
+      (howdy--contacted info nil)))
+#+END_SRC
+******* Received messages
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'jabber-alert-message-hooks 'pc/howdy-jabber-message-received)
+
+  (defun pc/howdy-jabber-message-received (from buffer text title)
+    (let ((info `(:email . ,(jabber-jid-user from))))
+      (howdy--contacted info)))
+
+
 #+END_SRC
 * Language modes
 
