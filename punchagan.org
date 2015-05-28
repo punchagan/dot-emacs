@@ -646,6 +646,12 @@ Use hippie expand
            "- [[%:link][%:description]]\n\n  %:initial"
            :immediate-finish t :empty-lines 1)
 
+          ;; Contact
+          ("C" "Contact" entry
+           (file "contacts.txt")
+           "* %^{Name}\n:PROPERTIES:\n:EMAIL: %^{Email}\n:BIRTHDAY: %^u\n:END:"
+           :empty-lines 0)
+
           ;; Blog related
           ("b" "org-protocol bookmarks" item
            (file "bookmarks.org")
@@ -669,8 +675,8 @@ Use hippie expand
            entry
            (file+headline "notes.org" "Web notes")
            "%(concat  \"* Fact: '%:description'        :\"
-                 (format \"%s\" org-drill-question-tag)
-                 \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_TITLE: %:description\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
+                   (format \"%s\" org-drill-question-tag)
+                   \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_TITLE: %:description\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
            :empty-lines 1
            )
           )
@@ -826,7 +832,7 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (set-register ?c `(file . ,pc/org-contacts-file))
 #+END_SRC
 
-*** Code to fix contacts file                                     :ARCHIVE:
+*** COMMENT Code to fix contacts file                               :ARCHIVE:
 #+BEGIN_SRC emacs-lisp
 
   (defun pc/make-property-multi-valued (property)
@@ -897,8 +903,10 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
       (goto-char (point-min))
       (widen)))
 
-  ;; (org-map-entries 'pc/org-contact-fix-in-buffer org-contacts-matcher
-  ;'("~/.life-in-plain-text/contacts.txt"))
+  ;; (org-map-entries
+  ;;  'pc/org-contact-fix-in-buffer
+  ;;  org-contacts-matcher
+  ;;  '("~/.life-in-plain-text/contacts.txt"))
 
 
 #+END_SRC
