@@ -953,18 +953,20 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (add-hook 'jabber-chat-send-hooks 'pc/howdy-jabber-message-send)
 
   (defun pc/howdy-jabber-message-send (body id)
-    (let* ((info `((:email . ,jabber-chatting-with))))
-      (howdy--contacted info nil)))
+    (let* ((name (jabber-jid-displayname (jabber-jid-user jabber-chatting-with)))
+           (info `((:name . ,name) (:email . ,jabber-chatting-with))))
+      (howdy--contacted info nil))
+    nil)
 #+END_SRC
 ******* Received messages
 #+BEGIN_SRC emacs-lisp
   (add-hook 'jabber-alert-message-hooks 'pc/howdy-jabber-message-received)
 
   (defun pc/howdy-jabber-message-received (from buffer text title)
-    (let ((info `(:email . ,(jabber-jid-user from))))
+    (let ((user (jabber-jid-user from))
+          (name (jabber-jid-displayname user))
+          (info `((:email . ,user) (:name . ,name))))
       (howdy--contacted info)))
-
-
 #+END_SRC
 * Language modes
 
