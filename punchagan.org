@@ -919,11 +919,11 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 ***** Hook up mu4e
 #+BEGIN_SRC emacs-lisp
   (advice-add 'mu4e-headers-view-message :before 'howdy-mu4e-message-receive-hook)
-  (add-hook 'message-send-hook 'howdy-email-message-send-hook)
+  ;; (add-hook 'message-send-hook 'howdy-email-message-send-hook)
 #+END_SRC
 ***** Hook up jabber.el
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'jabber-chat-send-hooks 'howdy-jabber-message-send-hook)
+  ;; (add-hook 'jabber-chat-send-hooks 'howdy-jabber-message-send-hook)
   (add-hook 'jabber-alert-message-hooks 'howdy-jabber-message-received-hook)
 #+END_SRC
 * Language modes
