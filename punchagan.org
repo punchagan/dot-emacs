@@ -916,7 +916,11 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (require 'howdy)
   (require 'howdy-hooks)
 
-  (setq howdy-add-contact-function (lambda (info) (org-capture nil "C")))
+  (setq howdy-add-contact-function
+        (lambda (info)
+          (let ((name (cdr (assoc :name info))))
+            (when name
+              (org-capture nil "C")))))
 #+END_SRC
 ***** Hook up mu4e
 #+BEGIN_SRC emacs-lisp
