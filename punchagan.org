@@ -921,6 +921,8 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
           (let ((name (cdr (assoc :name info))))
             (when name
               (org-capture nil "C")))))
+
+
 #+END_SRC
 ***** Hook up mu4e
 #+BEGIN_SRC emacs-lisp
@@ -931,6 +933,10 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 #+BEGIN_SRC emacs-lisp
   ;; (add-hook 'jabber-chat-send-hooks 'howdy-jabber-message-send-hook)
   (add-hook 'jabber-alert-message-hooks 'howdy-jabber-message-received-hook)
+#+END_SRC
+***** Howdy from agenda
+#+BEGIN_SRC emacs-lisp
+  (define-key org-agenda-mode-map "H" 'howdy-agenda-contacted)
 #+END_SRC
 * Language modes
 
