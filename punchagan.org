@@ -1058,13 +1058,26 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
     (pc/with-nikola-venv
      (async-shell-command (format "cd %s && nikola deploy" pc/nikola-site))))
 
-  (defun pc/nikola-new-post (title)
+  (defun pc/nikola-new-post (title &optional content)
     (interactive "MTitle: ")
-    (pc/with-nikola-venv
-     (call-process-shell-command
-      (format
-       "export EDITOR=\"/home/punchagan/bin/emacsclient -n\" && cd %s && nikola new_post -e -t \"%s\"&"
-       pc/nikola-site title))))
+    (let* ((output (pc/with-nikola-venv
+                    (shell-command-to-string
+                     (format
+                      "cd %s && nikola new_post -t \"%s\"&"
+                      pc/nikola-site title))))
+           (path (save-match-data
+                   (string-match "\nPATH:\s*\\(.*\\)\n" output)
+                   (match-string 1 output))))
+      (find-file path)
+      (when content
+        (goto-char (point-min))
+        (search-forward "#+END_COMMENT\n\n\n")
+        (if (looking-at-p "Write your post here.")
+            (org-kill-line)
+          (goto-char (point-max))
+          (insert "\n"))
+        (insert content))))
+
 
   (defun pc/nikola-tags-insert ()
     "Insert a nikola tag at point."
