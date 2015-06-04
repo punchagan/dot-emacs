@@ -636,7 +636,7 @@ Use hippie expand
   (require 'org-protocol)
 
   (setq org-capture-templates
-        '(
+        `(
           ;; General
           ("t" "todo" entry (file+headline "todo.org" "Miscellaneous")
            "* TODO %?\n\n"
@@ -649,7 +649,10 @@ Use hippie expand
           ;; Contact
           ("C" "Contact" entry
            (file "contacts.txt")
-           "* %^{Name}\n:PROPERTIES:\n:EMAIL: %^{Email}\n:BIRTHDAY: %^u\n:END:"
+           ,(concat
+            "* %^{Name}\n:PROPERTIES:\n:EMAIL: %^{Email}\n:BIRTHDAY: %^u\n:"
+            howdy-interval-property
+            ": %^{Days}\n:END:")
            :empty-lines 0 :immediate-finish t)
 
           ;; Blog related
