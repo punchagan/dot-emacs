@@ -649,10 +649,10 @@ Use hippie expand
           ;; Contact
           ("C" "Contact" entry
            (file "contacts.txt")
-           ,(concat
-            "* %^{Name}\n:PROPERTIES:\n:EMAIL: %^{Email}\n:BIRTHDAY: %^u\n:"
+           "%(concat
+            \"* %^{Name}\n:PROPERTIES:\n:EMAIL: %^{Email}\n:BIRTHDAY: %^u\n:\"
             howdy-interval-property
-            ": %^{Days}\n:END:")
+            \": %^{Days}\n:END:\")"
            :empty-lines 0 :immediate-finish t)
 
           ;; Blog related
@@ -922,7 +922,7 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (setq howdy-add-contact-function
         (lambda (info)
           (let ((name (cdr (assoc :name info))))
-            (when name
+            (when (and name (not (member-ignore-case name '("PyCon India" "Zulip" "Melissa" "Cron Daemon"))))
               (org-capture nil "C")))))
 
 
@@ -936,6 +936,22 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 #+BEGIN_SRC emacs-lisp
   ;; (add-hook 'jabber-chat-send-hooks 'howdy-jabber-message-send-hook)
   (add-hook 'jabber-alert-message-hooks 'howdy-jabber-message-received-hook)
+#+END_SRC
+***** Hook up phone logs
+#+BEGIN_SRC emacs-lisp
+  ;; fixme: pull out the xml from the zip.
+
+  (loop for item in (cddadr  (xml-parse-file "/tmp/calllog.xml" t))
+        do (when (listp item)
+             (let ((phone (cdr (assoc 'Number (cadr item))))
+                   (direction (cdr (assoc 'Direction (cadr item))))
+                   (time (seconds-to-time
+                          (/ (string-to-number (cdr (assoc 'DateLong (cadr item)))) 1000))))
+               (when (string= direction "INCOMING")
+                 (howdy--contacted `((:phone . ,phone)) time)))))
+
+  ;; fixme: hook this up to run as a cron...
+  ;; fixme: do the same for sms logs.
 #+END_SRC
 ***** Howdy from agenda
 #+BEGIN_SRC emacs-lisp
