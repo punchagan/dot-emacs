@@ -925,7 +925,7 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
             (when (and name (not (member-ignore-case name '("PyCon India" "Zulip" "Melissa" "Cron Daemon"))))
               (org-capture nil "C")))))
 
-
+  (setq howdy-max-contacts 10)
 #+END_SRC
 ***** Hook up mu4e
 #+BEGIN_SRC emacs-lisp
