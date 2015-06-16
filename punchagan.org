@@ -635,6 +635,18 @@ Use hippie expand
   ;; org-protocol
   (require 'org-protocol)
 
+  (defvar pc/org-capture-plist)
+
+  (defun pc/howdy-capture-template ()
+    (concat (format "* %s\n"
+                    (or (plist-get pc/org-capture-plist :howdy-name) "%^{Name}"))
+            ":PROPERTIES:\n"
+            (format ":EMAIL: %s\n"
+                    (or (plist-get pc/org-capture-plist :howdy-email) "%^{Email}"))
+            (format ":%s: %s\n" howdy-interval-property howdy-interval-default)
+            ":BIRTHDAY: %^u\n"
+            ":END:\n"))
+
   (setq org-capture-templates
         `(
           ;; General
@@ -649,11 +661,8 @@ Use hippie expand
           ;; Contact
           ("C" "Contact" entry
            (file "contacts.txt")
-           "%(concat
-            \"* %^{Name}\n:PROPERTIES:\n:EMAIL: %^{Email}\n:BIRTHDAY: %^u\n:\"
-            howdy-interval-property
-            \": %^{Days}\n:END:\")"
-           :empty-lines 0 :immediate-finish t)
+           "%(pc/howdy-capture-template)"
+           :empty-lines 0 :immediate-finish t :jump-to-captured t)
 
           ;; Blog related
           ("b" "org-protocol bookmarks" item
@@ -678,8 +687,8 @@ Use hippie expand
            entry
            (file+headline "notes.org" "Web notes")
            "%(concat  \"* Fact: '%:description'        :\"
-                   (format \"%s\" org-drill-question-tag)
-                   \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_TITLE: %:description\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
+                     (format \"%s\" org-drill-question-tag)
+                     \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_TITLE: %:description\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
            :empty-lines 1
            )
           )
@@ -919,11 +928,16 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (require 'howdy)
   (require 'howdy-hooks)
 
-  (setq howdy-add-contact-function
-        (lambda (info)
-          (let ((name (cdr (assoc :name info))))
-            (when (and name (not (member-ignore-case name '("PyCon India" "Zulip" "Melissa" "Cron Daemon"))))
-              (org-capture nil "C")))))
+  (defun pc/howdy-add-contact-function (info)
+    (let ((name (cdr (assoc :name info)))
+          (email (cdr (assoc :email info)))
+          (phone (cdr (assoc :phone info))))
+      (setq pc/org-capture-plist (plist-put org-capture-plist :howdy-name name))
+      (plist-put pc/org-capture-plist :howdy-email email)
+      (plist-put pc/org-capture-plist :howdy-phone phone)
+      (org-capture nil "C")))
+
+  (setq howdy-add-contact-function 'pc/howdy-add-contact-function)
 
   (setq howdy-max-contacts 10)
 #+END_SRC
