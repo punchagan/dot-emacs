@@ -662,7 +662,7 @@ Use hippie expand
           ("C" "Contact" entry
            (file "contacts.txt")
            "%(pc/howdy-capture-template)"
-           :empty-lines 0 :immediate-finish t :jump-to-captured t)
+           :empty-lines 0 :immediate-finish t)
 
           ;; Blog related
           ("b" "org-protocol bookmarks" item
