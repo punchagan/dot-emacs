@@ -1565,14 +1565,16 @@ the ghosting works, it all happens before joining any channels, so it is neat!
         (when msg
           (goto-char (point-max))
           (insert msg)
-          (execute-kbd-macro (kbd "RET"))))
+          (execute-kbd-macro (kbd "RET"))
+          (kill-buffer)))
 
       (if (pc/is-email-p to)
           (pc/jabber--chat-with n to)
         (let* ((emails (pc/get-all-emails-for-tag to pc/chat-domains))
                (msg (read-string (format "Message to send to %s: " emails))))
           (loop for email in emails
-                do (pc/jabber--chat-with n email msg))))))
+                for x from 1 to 10000
+                do (run-with-timer (* x 1.5) nil 'pc/jabber--chat-with n email msg))))))
 
   (defun pc/jabber-flush-queue (jc)
     "Send all queued messages and empty queue."
