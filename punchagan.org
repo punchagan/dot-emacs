@@ -932,10 +932,11 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
     (let ((name (cdr (assoc :name info)))
           (email (cdr (assoc :email info)))
           (phone (cdr (assoc :phone info))))
-      (setq pc/org-capture-plist (plist-put org-capture-plist :howdy-name name))
-      (plist-put pc/org-capture-plist :howdy-email email)
-      (plist-put pc/org-capture-plist :howdy-phone phone)
-      (org-capture nil "C")))
+      (when name
+        (setq pc/org-capture-plist (plist-put org-capture-plist :howdy-name name))
+        (plist-put pc/org-capture-plist :howdy-email email)
+        (plist-put pc/org-capture-plist :howdy-phone phone)
+        (org-capture nil "C"))))
 
   (setq howdy-add-contact-function 'pc/howdy-add-contact-function)
 
