@@ -1474,9 +1474,8 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
   (defun pc/collect-ids-by-domains (domains)
     "Return a list of email ids from contacts db, by given domains."
-    (apply 'append
-           (loop for domain in domains
-                 collect (pc/collect-ids-by-domain domain))))
+    (loop for domain in domains
+          append (pc/collect-ids-by-domain domain)))
 
   (defun pc/find-email-by-domain (domain-name emails)
     "Return email id of DOMAIN-NAME from space separated list."
