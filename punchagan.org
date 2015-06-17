@@ -818,9 +818,6 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 * Contact Management
 *** Setup org-contacts
 #+BEGIN_SRC emacs-lisp
-  ;; We need to set this before we load org-contacts to disable completion
-  (setq org-contacts-enable-completion nil)
-
   (require 'org-contacts)
 
   ;; Matching rule for finding headings that are contacts.
