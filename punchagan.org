@@ -1431,11 +1431,11 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (setq jabber-alert-presence-hooks nil)
   (setq jabber-alert-message-hooks '(jabber-message-scroll jabber-message-notifications))
 
-              ;;; Enable alerts when focussed out of  emacs
+  ;; Enable alerts when focussed out of Emacs
   (add-hook 'focus-out-hook
             (lambda () (add-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
 
-              ;;; Disable alerts when focussed in emacs
+  ;; Disable alerts when focussed in Emacs
   (add-hook 'focus-in-hook
             (lambda () (remove-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
 
@@ -1457,6 +1457,33 @@ the ghosting works, it all happens before joining any channels, so it is neat!
     (expand-file-name ".jabber-message-queue.json" user-emacs-directory)
     "The file where jabber messages are queued")
 
+  (defun pc/collect-ids-by-domain (domain-name)
+    "Return a list of email ids from contacts db, by given domain."
+    (loop for contact in (org-contacts-db)
+          for contact-name = (car contact)
+          for email = (pc/find-email-by-domain
+                       domain-name
+                       (cdr (assoc-string org-contacts-email-property (caddr contact))))
+          for tags = (cdr (assoc "TAGS" (nth 2 contact)))
+          for tags-list = (if tags
+                              (split-string (substring (cdr (assoc "TAGS" (nth 2 contact))) 1 -1) ":")
+                            '())
+          for marker = (second contact)
+          if (not (null email))
+          collect email))
+
+  (defun pc/collect-ids-by-domains (domains)
+    "Return a list of email ids from contacts db, by given domains."
+    (apply 'append
+           (loop for domain in domains
+                 collect (pc/collect-ids-by-domain domain))))
+
+  (defun pc/find-email-by-domain (domain-name emails)
+    "Return email id of DOMAIN-NAME from space separated list."
+    (let ((ids (org-contacts-split-property
+                (or emails ""))))
+      (car (seq-filter (lambda (email) (string-match domain-name email)) ids))))
+
   (defun pc/jabber-add-message-to-queue (to body)
     "Queue up messages when offline, and send on connect."
     (interactive (list
@@ -1477,32 +1504,30 @@ the ghosting works, it all happens before joining any channels, so it is neat!
       (funcall 'pc/jabber-add-message-to-queue jabber-chatting-with body)))
 
   (defun pc/jabber-chat-with ()
-      "Queue messages if not connected, else normal chat."
-      (interactive)
-      (let* ((to (completing-read
-                  "chat with: "
-                  ;; yes, that's right! we use mu4e contact list!
-                  (mapcar (lambda (x) (plist-get x :mail)) mu4e~contact-list)))
-             (from (let*
-                       ((completions (mapcar
-                                      (lambda (c) (nth 0 (split-string (car c) "/")))
-                                      jabber-account-list))
-                        (default (nth 0 completions)))
-                     (completing-read
-                      (concat "Select Jabber account (default " default "): ")
-                      completions nil t nil 'jabber-account-history default)))
-             (jids (mapcar
-                     (lambda (jc) (jabber-connection-bare-jid jc))
-                     jabber-connections))
-             (n (position from jids :test 'string-equal)))
+    "Queue messages if not connected, else normal chat."
+    (interactive)
+    (let* ((to (completing-read
+                "chat with: "
+                ;; We find email ids from contacts.db!
+                (pc/collect-ids-by-domains '("muse-amuse.in" "gmail.com"))))
+           (from (let*
+                     ((completions (mapcar
+                                    (lambda (c) (nth 0 (split-string (car c) "/")))
+                                    jabber-account-list))
+                      (default (nth 0 completions)))
+                   (completing-read
+                    (concat "Select Jabber account (default " default "): ")
+                    completions nil t nil 'jabber-account-history default)))
+           (jids (mapcar
+                  (lambda (jc) (jabber-connection-bare-jid jc))
+                  jabber-connections))
+           (n (position from jids :test 'string-equal)))
 
-        (if (not (null n))
-            (jabber-chat-with (nth n jabber-connections) to)
-          (switch-to-buffer (jabber-chat-create-buffer nil to))
-          (use-local-map (copy-keymap jabber-chat-mode-map))
-          (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))))
-
-
+      (if (not (null n))
+          (jabber-chat-with (nth n jabber-connections) to)
+        (switch-to-buffer (jabber-chat-create-buffer nil to))
+        (use-local-map (copy-keymap jabber-chat-mode-map))
+        (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))))
 
   (defun pc/jabber-flush-queue (jc)
     "Send all queued messages and empty queue."
