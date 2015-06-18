@@ -643,6 +643,7 @@ Use hippie expand
             ":PROPERTIES:\n"
             (format ":EMAIL: %s\n"
                     (or (plist-get pc/org-capture-plist :howdy-email) "%^{Email}"))
+            (format ":PHONE: %s\n" (or (plist-get pc/org-capture-plist :howdy-phone) ""))
             (format ":%s: %s\n" howdy-interval-property howdy-interval-default)
             ":BIRTHDAY: %^u\n"
             ":END:\n"))
