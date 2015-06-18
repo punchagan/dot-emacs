@@ -955,31 +955,37 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (defun pc/howdy-phone-logs (filename)
     (let ((archive-buffer (find-file-noselect filename)))
       (with-current-buffer archive-buffer
-          (while (archive-get-descr t)
-            (archive-extract)
-            (loop for item in (cddadr  (xml-parse-region nil nil nil t))
-                  do (when (listp item)
-                       (let ((phone (cdr (assoc 'Number (cadr item))))
-                             (direction (cdr (assoc 'Direction (cadr item))))
-                             (status (cdr (assoc 'Status (cadr item))))
-                             (time (seconds-to-time
-                                    (/ (string-to-number (cdr (assoc 'DateLong (cadr item)))) 1000))))
-                         (when (or
-                                ;; Ignore MISSED calls
-                                (string= direction "INCOMING")
-                                (string= direction "OUTGOING")
-                                ;; Only consider incoming SMS messages
-                                (string= status "-1"))
-                           (howdy--contacted `((:phone . ,phone)) time)))))
-            (kill-buffer)
-            (switch-to-buffer archive-buffer)
-            (forward-line)))
+        (while (archive-get-descr t)
+          (archive-extract)
+          (loop for item in (cddadr  (xml-parse-region nil nil nil t))
+                do (when (listp item)
+                     (let ((name (cdr (assoc 'Name (cadr item))))
+                           (phone (cdr (assoc 'Number (cadr item))))
+                           (direction (cdr (assoc 'Direction (cadr item))))
+                           (status (cdr (assoc 'Status (cadr item))))
+                           (time (seconds-to-time
+                                  (/ (string-to-number (cdr (assoc 'DateLong (cadr item)))) 1000)))
+                           info)
+                       (when (or
+                              ;; Ignore MISSED calls
+                              (string= direction "INCOMING")
+                              (string= direction "OUTGOING")
+                              ;; Only consider incoming SMS messages
+                              (string= status "-1"))
+                         (setq info `((:phone . ,phone)))
+                         (when (not (string= name ""))
+                           (setq info (append info `((:name . ,name)))))
+                         (howdy--contacted info time)))))
+          (kill-buffer)
+          (switch-to-buffer archive-buffer)
+          (forward-line)))
       (kill-buffer archive-buffer)))
 
   (run-with-timer 60
                   (* 24 60 60)
                   'pc/howdy-phone-logs
                   "~/Dropbox/Apps/BakupSMSCallLog/Backup_Archive.zip")
+
 #+END_SRC
 ***** Howdy from agenda
 #+BEGIN_SRC emacs-lisp
