@@ -1521,6 +1521,34 @@ the ghosting works, it all happens before joining any channels, so it is neat!
     (save-match-data
       (string-match ".+@.+\\..+" email)))
 
+  (defun pc/jabber--chat-with (jid-pos to &optional msg)
+        (if (not (null jid-pos))
+            (jabber-chat-with (nth jid-pos jabber-connections) to)
+          (switch-to-buffer (jabber-chat-create-buffer nil to))
+          (use-local-map (copy-keymap jabber-chat-mode-map))
+          (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))
+
+        (when msg
+          ;; Kill any partially typed messages
+          (goto-char (point-max)) (insert " ")
+          (beginning-of-line) (kill-line)
+          ;; Send msg
+          (insert msg)
+          (execute-kbd-macro (kbd "RET"))
+          (kill-buffer)))
+
+  (defun pc/jabber--ping-group (emails jid-pos size msg)
+    (loop for email in emails
+          for x from 1 to size
+          do (pc/jabber--chat-with jid-pos email msg)))
+
+  (defun pc/jabber--format-msg (msg email)
+    (let* ((contact (car (howdy--find-contacts `((:email . ,email)))))
+           (name (org-no-properties (car contact)))
+           (nick (cdr (assoc-string "NICK" (caddr contact))))
+           (address (if (null nick) (car (org-split-string name)) nick)))
+      (format "%s, %s"  address msg)))
+
   (defun pc/jabber-add-message-to-queue (to body)
     "Queue up messages when offline, and send on connect."
     (interactive (list
@@ -1560,28 +1588,22 @@ the ghosting works, it all happens before joining any channels, so it is neat!
            (jids (mapcar
                   (lambda (jc) (jabber-connection-bare-jid jc))
                   jabber-connections))
-           (n (position from jids :test 'string-equal)))
-
-      (defun pc/jabber--chat-with (n to &optional msg)
-        (if (not (null n))
-            (jabber-chat-with (nth n jabber-connections) to)
-          (switch-to-buffer (jabber-chat-create-buffer nil to))
-          (use-local-map (copy-keymap jabber-chat-mode-map))
-          (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))
-
-        (when msg
-          (goto-char (point-max))
-          (insert msg)
-          (execute-kbd-macro (kbd "RET"))
-          (kill-buffer)))
+           (jid-pos (position from jids :test 'string-equal)))
 
       (if (pc/is-email-p to)
-          (pc/jabber--chat-with n to)
+          (pc/jabber--chat-with jid-pos to)
         (let* ((emails (pc/get-all-emails-for-tag to pc/chat-domains))
-               (msg (read-string (format "Message to send to %s: " emails))))
-          (loop for email in emails
-                for x from 1 to 10000
-                do (run-with-timer (* x 1.5) nil 'pc/jabber--chat-with n email msg))))))
+               (msg (read-string (format "Message to send to %s: " emails)))
+               (group-size 10)
+               (group-count (/ (length emails) group-size))
+               (time-interval 120))
+          (loop for n to group-count
+                do (run-with-timer (* n time-interval) nil
+                                   'pc/jabber--ping-group
+                                   (nthcdr (* n group-size) emails)
+                                   jid-pos
+                                   group-size
+                                   msg))))))
 
   (defun pc/jabber-flush-queue (jc)
     "Send all queued messages and empty queue."
