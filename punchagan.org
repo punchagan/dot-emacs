@@ -820,8 +820,8 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 #+BEGIN_SRC emacs-lisp
   (require 'org-journal)
 
-  ;; Set org-journal-dir inside org-directory. 
-  (setq org-journal-dir (expand-file-name "journal" org-directory))
+  ;; Set org-journal-dir inside org-directory.
+  (setq org-journal-dir (expand-file-name "journal/" org-directory))
 #+END_SRC
 * Contact Management
 *** Setup org-contacts
