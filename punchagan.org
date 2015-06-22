@@ -822,6 +822,9 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 
   ;; Set org-journal-dir inside org-directory.
   (setq org-journal-dir (expand-file-name "journal/" org-directory))
+
+  ;; Enable encryption
+  (setq org-journal-enable-encryption t)
 #+END_SRC
 * Contact Management
 *** Setup org-contacts
