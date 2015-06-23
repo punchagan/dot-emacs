@@ -76,7 +76,7 @@ stuff into it...
                      (abbreviate-file-name (buffer-file-name))
                    "%b"))))
 
-  (load-theme 'wombat t)
+  (load-theme 'flatland-black t)
 #+END_SRC
 
 *** Nicer scrolling
