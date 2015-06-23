@@ -1710,3 +1710,32 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 #+BEGIN_SRC emacs-lisp
   (bind-key "<f8>" 'pc/mpsyt-url-at-point)
 #+END_SRC
+*** Show random pragmatic tip!
+Display a tip from the Pragmatic Programmer! Based on
+https://github.com/sfrapoport/daily-pragmatic-tip
+#+BEGIN_SRC emacs-lisp
+  (defun pc/be-pragmatic ()
+    "Display a tip from the Pragmatic Programmer!"
+    (let* ((revert-without-query '("pragmatic.*\\.org"))
+           (url "http://tinyurl.com/q4tbobl")
+           (buffer (url-retrieve-synchronously url))
+           n text)
+      (switch-to-buffer buffer)
+      (re-search-forward "^$" nil t 1)
+      (forward-line)
+      (delete-region (point) (point-min))
+      (setq n (count-lines (point-min) (point-max)))
+      (forward-line (random 70))
+      (setq text (buffer-substring-no-properties
+                  (line-beginning-position)
+                  (line-end-position)))
+      (delete-non-matching-lines text (point-min) (point-max))
+      (write-file (make-temp-file "pragmatic" nil ".org"))
+      (revert-buffer-with-coding-system 'utf-8-hfs-dos t)
+      (fill-paragraph)
+      (save-buffer)))
+#+END_SRC
+***** Hook it up to be called on an idle timer, every day
+#+BEGIN_SRC emacs-lisp
+  (run-with-timer 1 86400 (lambda () (run-with-idle-timer 300 nil 'pc/be-pragmatic)))
+#+END_SRC
