@@ -1657,9 +1657,9 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (defun pc/short-url-at-point ()
     "Gets the short url at point.
 
-    This function is required only because
-    `thing-at-point-url-at-point' ignores urls (without a scheme)
-    that don't start with www."
+        This function is required only because
+        `thing-at-point-url-at-point' ignores urls (without a scheme)
+        that don't start with www."
     (let ((bounds (thing-at-point-bounds-of-url-at-point t)))
       (when (and bounds (< (car bounds) (cdr bounds)))
         (buffer-substring-no-properties (car bounds) (cdr bounds)))))
@@ -1672,7 +1672,8 @@ the ghosting works, it all happens before joining any channels, so it is neat!
       (unless (get-process mpsyt-proc-name)
         (when (get-buffer mpsyt-proc-name)
           (kill-buffer (get-buffer mpsyt-proc-name)))
-        (ansi-term "mpsyt" "mpsyt"))
+        (ansi-term "mpsyt" "mpsyt")
+        (pc/mpsyt-set-keybindings))
 
       ;; Play given url in mpsyt
       (let ((mpsyt-proc (get-process mpsyt-proc-name)))
@@ -1696,6 +1697,14 @@ the ghosting works, it all happens before joining any channels, so it is neat!
           (message "No URL found")
         (message (format "Playing %s with mpsyt" url))
         (pc/mpsyt-url url))))
+
+  (defun pc/mpsyt-set-keybindings ()
+    "Change key codes sent for gray keys."
+    (use-local-map (copy-keymap term-raw-map))
+    (local-set-key (kbd "<up>") (lambda () (interactive) (term-send-raw-string "\e[A")))
+    (local-set-key (kbd "<down>") (lambda () (interactive) (term-send-raw-string "\e[B")))
+    (local-set-key (kbd "<right>") (lambda () (interactive) (term-send-raw-string "\e[C")))
+    (local-set-key (kbd "<left>") (lambda () (interactive) (term-send-raw-string "\e[D"))))
 #+END_SRC
 ***** Bind it to <f8>
 #+BEGIN_SRC emacs-lisp
