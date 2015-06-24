@@ -1527,6 +1527,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
                                    for email = (pc/find-email-by-domain domain emails-str)
                                    if (not (null email))
                                    collect email))
+            if (not (null email))
             collect email)))
 
   (defvar pc/chat-domains `("gmail.com" "muse-amuse.in"))
