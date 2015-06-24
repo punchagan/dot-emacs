@@ -606,8 +606,7 @@ Use hippie expand
                         ((org-agenda-overriding-header "Big Rocks")
                          (org-tags-match-list-sublevels nil)
                          (org-agenda-sorting-strategy
-                          '(category-keep))))
-                  )))))
+                          '(category-keep)))))))))
 
   ;; org-habits
   (require 'org-habit)
