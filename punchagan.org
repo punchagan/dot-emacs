@@ -1511,15 +1511,8 @@ the ghosting works, it all happens before joining any channels, so it is neat!
            if (not (null tags))
            append (org-split-string tags ":"))))
 
-  (defun pc/get-all-contacts-for-tag (tag)
-    "Return all contacts with the given tag."
-    (loop for contact in (org-contacts-db)
-          for tags = (cdr (assoc-string "ALLTAGS" (caddr contact)))
-          if (save-match-data (string-match (format ":%s:" tag) (or tags "")))
-          collect contact))
-
   (defun pc/get-all-emails-for-tag (tag domains)
-    (let ((contacts (pc/get-all-contacts-for-tag tag)))
+    (let ((contacts (howdy--get-contacts-for-tag tag)))
       (loop for contact in contacts
             for emails-str = (cdr (assoc-string org-contacts-email-property (caddr contact)))
             for email = (car (loop for domain in domains
