@@ -1503,14 +1503,6 @@ the ghosting works, it all happens before joining any channels, so it is neat!
                 (or emails ""))))
       (car (seq-filter (lambda (email) (string-match domain-name email)) ids))))
 
-  (defun pc/get-all-contact-tags ()
-    "Get all the tags from the contacts db."
-    (delete-dups
-     (loop for contact in  (org-contacts-db)
-           for tags = (cdr (assoc-string "ALLTAGS" (caddr contact)))
-           if (not (null tags))
-           append (org-split-string tags ":"))))
-
   (defun pc/get-all-emails-for-tag (tag domains)
     (let ((contacts (howdy--get-contacts-for-tag tag)))
       (loop for contact in contacts
@@ -1583,7 +1575,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
                 ;; We find email ids from contacts.db!
                 (append
                  (pc/collect-ids-by-domains pc/chat-domains)
-                 (pc/get-all-contact-tags))))
+                 (howdy--contact-tags))))
            (from (let*
                      ((completions (mapcar
                                     (lambda (c) (nth 0 (split-string (car c) "/")))
