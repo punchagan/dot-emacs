@@ -691,6 +691,13 @@ Use hippie expand
                      \":\n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_TITLE: %:description\n:SOURCE_URL: %:link\n:END:\n\n%x\n%?\n\n\")"
            :empty-lines 1
            )
+
+          ;; Work related
+          ("I" "Infilect notes" entry (file "infilect.org")
+           "* %?\n\n"
+           :empty-lines 1
+           :clock-in t
+           :clock-resume t)
           )
         )
 #+END_SRC
