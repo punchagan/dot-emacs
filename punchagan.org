@@ -1028,7 +1028,10 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 
   ;; Pyflakes
   (require 'flycheck-pyflakes)
-  (add-hook 'python-mode-hook 'flycheck-mode)
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (unless (tramp-tramp-file-p (buffer-file-name))
+                (flycheck-mode))))
   (add-to-list 'flycheck-disabled-checkers 'python-flake8)
   (add-to-list 'flycheck-disabled-checkers 'python-pylint)
 
