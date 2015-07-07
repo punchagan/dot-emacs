@@ -1735,5 +1735,5 @@ https://github.com/sfrapoport/daily-pragmatic-tip
 #+END_SRC
 ***** Hook it up to be called on an idle timer, every day
 #+BEGIN_SRC emacs-lisp
-  (run-with-timer 1 86400 (lambda () (run-with-idle-timer 300 nil 'pc/be-pragmatic)))
+  (run-with-timer 1 86400 (lambda () (run-with-idle-timer 120 nil 'pc/be-pragmatic)))
 #+END_SRC
