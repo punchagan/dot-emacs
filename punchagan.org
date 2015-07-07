@@ -437,8 +437,8 @@ Use hippie expand
   (bind-key "C-M-g" 'magit-status)
 
   ;; All dirs to search for git repos
-  (setq magit-repo-dirs
-        '("~/software/my-repos/" "~/software/infilect/" "~/software/random/" "~/.emacs.d"))
+  (setq magit-repository-directories
+        '("~/software/my-repos/" "~/software/random/" "~/.emacs.d"))
 
 #+END_SRC
 
