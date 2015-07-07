@@ -1268,14 +1268,13 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 
 *** Start and Stop commands
 #+BEGIN_SRC emacs-lisp
-  ;; start and stop commands
-  (defun start-irc ()
-    "Connect to IRC."
-    (interactive)
-    (erc :server "irc.freenode.net" :port 6667 :password (password-read "Freenode password: "))
-    (erc-tls :server "kanjar.irc.slack.com" :port 6667 :password (cadr (auth-source-user-and-password "kanjar"))))
-
-
+    ;; start and stop commands
+    (defun start-irc ()
+      "Connect to IRC."
+      (interactive)
+      (erc :server "irc.freenode.net" :port 6667 :password (password-read "Freenode password: "))
+      (erc-tls :server "kanjar.irc.slack.com" :port 6667 :password (cadr (auth-source-user-and-password "kanjar")))
+      (erc-tls :server "infilect.irc.slack.com" :port 6667 :password (cadr (auth-source-user-and-password "infilect"))))
 #+END_SRC
 *** Ghosting
 
