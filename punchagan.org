@@ -306,6 +306,12 @@ Use hippie expand
     (require 'paredit)
     (paredit-mode +1))
 
+  (defmacro pc/run-with-timer-when-idle (secs idle-time repeat-time function &rest args)
+    "Run a function on timer, but only when idle."
+    `(run-with-timer
+      ,secs
+      ,repeat-time
+      (lambda () (run-with-idle-timer ,idle-time nil ,function ,@args))))
 #+END_SRC
 
 * General editor tweaks
@@ -1000,15 +1006,9 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
           (forward-line)))
       (kill-buffer archive-buffer)))
 
-  (run-with-timer 60
-                  (* 24 60 60)
-                  (lambda ()
-                    (run-with-idle-timer
-                     60 ;; idle time
-                     nil ;; repeat
-                     'pc/howdy-phone-logs ;; function
-                     "~/Dropbox/Apps/BakupSMSCallLog/Backup_Archive.zip")))
-
+  (pc/run-with-timer-when-idle
+   60 60 (* 24 60 60) 'pc/howdy-phone-logs
+   "~/Dropbox/Apps/BakupSMSCallLog/Backup_Archive.zip")
 #+END_SRC
 ******* Setup function to be able to run manually.
 #+BEGIN_SRC emacs-lisp
@@ -1745,5 +1745,5 @@ https://github.com/sfrapoport/daily-pragmatic-tip
 #+END_SRC
 ***** Hook it up to be called on an idle timer, every day
 #+BEGIN_SRC emacs-lisp
-  (run-with-timer 1 86400 (lambda () (run-with-idle-timer 120 nil 'pc/be-pragmatic)))
+  (pc/run-with-timer-when-idle 1 120 86400 'pc/be-pragmatic)
 #+END_SRC
