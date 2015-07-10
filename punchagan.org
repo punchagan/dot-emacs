@@ -1010,6 +1010,13 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
                      "~/Dropbox/Apps/BakupSMSCallLog/Backup_Archive.zip")))
 
 #+END_SRC
+******* Setup function to be able to run manually.
+#+BEGIN_SRC emacs-lisp
+  (defun pc/howdy-sync-phone-logs ()
+    (interactive)
+    (pc/howdy-phone-logs "~/Dropbox/Apps/BakupSMSCallLog/Backup_Archive.zip"))
+#+END_SRC
+
 ***** Howdy from agenda
 #+BEGIN_SRC emacs-lisp
   (define-key org-agenda-mode-map "H" 'howdy-agenda-contacted)
