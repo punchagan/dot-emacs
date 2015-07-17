@@ -426,6 +426,9 @@ Use hippie expand
   ;; Enable pdf tools
   ;; (pdf-tools-install)
 
+  ;; Set kill ring to be huge!
+  (setq kill-ring-max 500)
+
   ;; Copy the pdf region, so that it can be used in capture templates.
   (add-hook 'pdf-misc-minor-mode-hook
             (lambda ()
