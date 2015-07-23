@@ -447,7 +447,8 @@ Use hippie expand
 
   ;; All dirs to search for git repos
   (setq magit-repository-directories
-        '("~/software/my-repos/" "~/software/random/" "~/.emacs.d"))
+        '("~/software/my-repos/" "~/software/random/" "~/.emacs.d"
+          "/ssh:infilectdev@localhost#3022:/opt/infilect/dev"))
 
 #+END_SRC
 
