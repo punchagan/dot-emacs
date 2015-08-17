@@ -1513,7 +1513,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
                             '())
           for marker = (second contact)
           if (not (null email))
-          collect email))
+          collect `(,(format "%s [%s]" contact-name email) . ,email)))
 
   (defun pc/collect-ids-by-domains (domains)
     "Return a list of email ids from contacts db, by given domains."
@@ -1537,7 +1537,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
             if (not (null email))
             collect email)))
 
-  (defvar pc/chat-domains `("gmail.com" "muse-amuse.in"))
+  (defvar pc/chat-domains `("public.talk.google.com" "gmail.com" "muse-amuse.in"))
 
   (defun pc/is-email-p (email)
     (save-match-data
@@ -1593,12 +1593,12 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (defun pc/jabber-chat-with ()
     "Queue messages if not connected, else normal chat."
     (interactive)
-    (let* ((to (completing-read
+    (let* ((to (helm-comp-read
                 "chat with: "
                 ;; We find email ids from contacts.db!
                 (append
                  (pc/collect-ids-by-domains pc/chat-domains)
-                 (howdy--contact-tags))))
+                 (mapcar (lambda (x) `(,x . ,x)) (howdy--contact-tags)))))
            (from (let*
                      ((completions (mapcar
                                     (lambda (c) (nth 0 (split-string (car c) "/")))
