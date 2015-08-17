@@ -1551,20 +1551,20 @@ the ghosting works, it all happens before joining any channels, so it is neat!
       (string-match ".+@.+\\..+" email)))
 
   (defun pc/jabber--chat-with (jid-pos to &optional msg)
-        (if (not (null jid-pos))
-            (jabber-chat-with (nth jid-pos jabber-connections) to)
-          (switch-to-buffer (jabber-chat-create-buffer nil to))
-          (use-local-map (copy-keymap jabber-chat-mode-map))
-          (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))
+    (if (not (null jid-pos))
+        (jabber-chat-with (nth jid-pos jabber-connections) to)
+      (switch-to-buffer (jabber-chat-create-buffer nil to))
+      (use-local-map (copy-keymap jabber-chat-mode-map))
+      (local-set-key (kbd "RET") 'pc/jabber-chat-buffer-send))
 
-        (when msg
-          ;; Kill any partially typed messages
-          (goto-char (point-max)) (insert " ")
-          (beginning-of-line) (kill-line)
-          ;; Send msg
-          (insert msg)
-          (execute-kbd-macro (kbd "RET"))
-          (kill-buffer)))
+    (when msg
+      ;; Kill any partially typed messages
+      (goto-char (point-max)) (insert " ")
+      (beginning-of-line) (kill-line)
+      ;; Send msg
+      (insert msg)
+      (execute-kbd-macro (kbd "RET"))
+      (kill-buffer)))
 
   (defun pc/jabber--ping-group (emails jid-pos size msg)
     (loop for email in emails
