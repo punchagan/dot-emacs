@@ -1470,6 +1470,13 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
           ))
 
+  ;; Don't show avatars in chat windows
+  (setq jabber-chat-buffer-show-avatar nil)
+
+  ;; Jabber roster tweaks
+  (setq jabber-roster-show-title nil
+        jabber-roster-show-bindings nil)
+
   ;; Alerts
   (setq jabber-alert-presence-hooks nil)
   (setq jabber-alert-message-hooks '(jabber-message-scroll jabber-message-notifications))
