@@ -1046,8 +1046,8 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
             (lambda ()
               (unless (tramp-tramp-file-p (buffer-file-name))
                 (flycheck-mode))))
-  (add-to-list 'flycheck-disabled-checkers 'python-flake8)
-  (add-to-list 'flycheck-disabled-checkers 'python-pylint)
+  ;; (add-to-list 'flycheck-disabled-checkers 'python-flake8)
+  ;; (add-to-list 'flycheck-disabled-checkers 'python-pylint)
 
   ;; Cython mode
   (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
