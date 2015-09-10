@@ -1084,6 +1084,15 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'go-mode-hook 'disable-paredit-mode)
 #+END_SRC
+
+*** Lua mode
+#+BEGIN_SRC emacs-lisp
+  (setq lua-indent-level 2)
+#+END_SRC
+***** Linting
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'lua-mode-hook 'flycheck-mode)
+#+END_SRC
 * Yasnippet
 #+BEGIN_SRC emacs-lisp
   (require 'yasnippet)
