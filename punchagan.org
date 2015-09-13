@@ -1190,6 +1190,18 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
           (insert "\n"))
         (insert content))))
 
+  (defun pc/nikola-post-subtree ()
+    "Post subtree as a new post."
+    (interactive)
+    (save-restriction
+      (save-excursion
+        (let ((title (org-get-heading t t))
+              (content (and (org-back-to-heading)
+                            (org-agenda-get-some-entry-text (point-marker) 100000))))
+
+          (pc/nikola-new-post
+           (org-no-properties title)
+           (org-no-properties content))))))
 
   (defun pc/nikola-tags-insert ()
     "Insert a nikola tag at point."
