@@ -1499,7 +1499,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
           ))
 #+END_SRC
-*** Display preferences
+*** Appearance
 #+BEGIN_SRC emacs-lisp
   ;; Don't show avatars in chat windows
   (setq jabber-chat-buffer-show-avatar nil)
@@ -1527,6 +1527,10 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
 #+END_SRC
 
+*** Auto-away
+#+BEGIN_SRC emacs-lisp
+(add-hook 'jabber-post-connect-hooks 'jabber-autoaway-start)
+#+END_SRC
 *** History
 #+BEGIN_SRC emacs-lisp
   (setq
