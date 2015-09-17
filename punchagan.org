@@ -1483,7 +1483,9 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 * Jabber
 #+BEGIN_SRC emacs-lisp
   (require 'jabber)
-
+#+END_SRC
+*** Account setup
+#+BEGIN_SRC emacs-lisp
   (setq jabber-account-list
         `(
           ;; Gmail
@@ -1496,7 +1498,9 @@ the ghosting works, it all happens before joining any channels, so it is neat!
            (:connection-type . starttls))
 
           ))
-
+#+END_SRC
+*** Display preferences
+#+BEGIN_SRC emacs-lisp
   ;; Don't show avatars in chat windows
   (setq jabber-chat-buffer-show-avatar nil)
 
@@ -1504,7 +1508,12 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (setq jabber-roster-show-title nil
         jabber-roster-show-bindings nil)
 
-  ;; Alerts
+  ;; make URLs clickable
+  (add-hook 'jabber-chat-mode-hook 'goto-address)
+#+END_SRC
+
+*** Alerts
+#+BEGIN_SRC emacs-lisp
   (setq jabber-alert-presence-hooks nil)
   (setq jabber-alert-message-hooks '(jabber-message-scroll jabber-message-notifications))
 
@@ -1516,18 +1525,19 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (add-hook 'focus-in-hook
             (lambda () (remove-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
 
-  ;; History
+#+END_SRC
+
+*** History
+#+BEGIN_SRC emacs-lisp
   (setq
    jabber-history-enabled t
    jabber-use-global-history nil
    jabber-backlog-number 40
    jabber-backlog-days 30)
+#+END_SRC
 
-  ;; make URLs clickable
-  (add-hook 'jabber-chat-mode-hook 'goto-address)
-
-
-  ;; Jabber Message Queue stuff ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+*** Jabber message queue and group chat stuff
+#+BEGIN_SRC emacs-lisp
   (require 'json)
 
   (defconst pc/jabber-message-queue-file
