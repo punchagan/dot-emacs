@@ -20,12 +20,6 @@ Everything else tries to use ~use-package~.  So, we try to load it first.
 #+BEGIN_SRC emacs-lisp
   (set-register ?I '(file . "~/.emacs.d/punchagan.org"))
 #+END_SRC
-* Disable any GCs at startup
-https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/
-#+BEGIN_SRC emacs-lisp
-  ;; Set GC threshold to 100MB
-  (set gc-cons-threshold 100000000)
-#+END_SRC
 
 * Load path tweaks
 Add additional paths to the load-path.  Currently site-lisp is the only place
