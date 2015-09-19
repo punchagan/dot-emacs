@@ -451,6 +451,9 @@ Use hippie expand
         '("~/software/my-repos/" "~/software/random/" "~/.emacs.d"
           "/opt/infilect/dev/"))
 
+  ;; Popup
+  (setq magit-popup-use-prefix-argument 'popup)
+
 #+END_SRC
 
 * Helm
