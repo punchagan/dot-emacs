@@ -932,7 +932,7 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
     (let ((old-name (nth 4 (org-heading-components)))
           name nick)
       (unless (or (string-match " " old-name)
-                  (org-entry-properties (point) "NICK"))
+                  (org-entry-properties (point) "NICKNAME"))
         (setq name (read-string "Name: " old-name))
         (setq nick (read-string "Nick: " old-name))
 
@@ -942,7 +942,7 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
           (insert (format "* %s" name)))
 
         (when nick
-          (org-set-property "NICK" nick)))))
+          (org-set-property "NICKNAME" nick)))))
 
   (defun pc/org-contact-fix (contact)
     (with-temp-buffer
@@ -1568,13 +1568,11 @@ the ghosting works, it all happens before joining any channels, so it is neat!
           for email = (pc/find-email-by-domain
                        domain-name
                        (cdr (assoc-string org-contacts-email-property (caddr contact))))
-          for tags = (cdr (assoc "TAGS" (nth 2 contact)))
-          for tags-list = (if tags
-                              (split-string (substring (cdr (assoc "TAGS" (nth 2 contact))) 1 -1) ":")
-                            '())
+          for nick = (let ((nick (assoc-string org-contacts-nickname-property (caddr contact))))
+                       (if nick (format "(%s)" (cdr nick)) ""))
           for marker = (second contact)
           if (not (null email))
-          collect `(,(format "%s [%s]" contact-name email) . ,email)))
+          collect `(,(format "%s%s [%s]" contact-name nick email) . ,email)))
 
   (defun pc/collect-ids-by-domains (domains)
     "Return a list of email ids from contacts db, by given domains."
@@ -1628,7 +1626,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (defun pc/jabber--format-msg (msg email)
     (let* ((contact (car (howdy--find-contacts `((:email . ,email)))))
            (name (org-no-properties (car contact)))
-           (nick (cdr (assoc-string "NICK" (caddr contact))))
+           (nick (cdr (assoc-string org-contacts-nickname-property (caddr contact))))
            (address (if (null nick) (car (org-split-string name)) nick)))
       (format "%s, %s"  address msg)))
 
