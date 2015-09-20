@@ -441,6 +441,22 @@ Use hippie expand
   (setenv "PATH" (format "/home/punchagan/bin:%s" (getenv "PATH")))
 #+END_SRC
 
+** Projectile
+#+BEGIN_SRC emacs-lisp
+(projectile-global-mode)
+#+END_SRC
+
+*** Mode line
+#+BEGIN_SRC emacs-lisp
+(setq projectile-mode-line
+      '(:eval (format "[%s]" (projectile-project-name))))
+#+END_SRC
+
+** Power-line
+#+BEGIN_SRC emacs-lisp
+  (require 'powerline)
+  (powerline-default-theme)
+#+END_SRC
 * Magit
 #+BEGIN_SRC emacs-lisp
   (require 'magit)
