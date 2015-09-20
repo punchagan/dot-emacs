@@ -443,7 +443,8 @@ Use hippie expand
 
 ** Projectile
 #+BEGIN_SRC emacs-lisp
-(projectile-global-mode)
+(add-hook 'prog-mode-hook 'projectile-mode)
+(add-hook 'text-mode-hook 'projectile-mode)
 #+END_SRC
 
 *** Mode line
