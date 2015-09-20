@@ -65,6 +65,8 @@ stuff into it...
   ;; the argument is a width in pixels (the default is 8)
   (if (fboundp 'fringe-mode)
       (fringe-mode 1))
+
+  (display-time-mode 0)
 #+END_SRC
 
 *** Set frame title based on buffer name
