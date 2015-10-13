@@ -78,10 +78,16 @@ stuff into it...
           (:eval (if (buffer-file-name)
                      (abbreviate-file-name (buffer-file-name))
                    "%b"))))
-
-  (load-theme 'wombat t)
 #+END_SRC
 
+*** Theme
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'custom-theme-load-path (expand-file-name "emacs-color-theme-solarized" site-lisp-dir))
+  ;; weird hack to get this working on startup
+  (load-theme 'solarized t)
+  (setq frame-background-mode 'dark)
+  (load-theme 'solarized t)
+#+END_SRC
 *** Nicer scrolling
 #+BEGIN_SRC emacs-lisp
   (setq scroll-margin 0
