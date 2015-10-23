@@ -1189,38 +1189,37 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
     (pc/with-nikola-venv
      (async-shell-command (format "cd %s && nikola deploy" pc/nikola-site))))
 
-  (defun pc/nikola-new-post (title &optional content)
+  (defun pc/nikola-new-post (title &optional paste-subtree)
     (interactive "MTitle: ")
     (let* ((output (pc/with-nikola-venv
                     (shell-command-to-string
                      (format
-                      "cd %s && nikola new_post -t \"%s\"&"
+                      "cd %s && nikola new_post --tags=draft -t \"%s\"&"
                       pc/nikola-site title))))
            (path (save-match-data
                    (string-match "\nPATH:\s*\\(.*\\)\n" output)
                    (match-string 1 output))))
       (find-file path)
-      (when content
+      (when paste-subtree
+        (goto-char (point-max))
+        (insert "\n")
+        (org-paste-subtree 1)
         (goto-char (point-min))
         (search-forward "#+END_COMMENT\n\n\n")
-        (if (looking-at-p "Write your post here.")
-            (org-kill-line)
-          (goto-char (point-max))
-          (insert "\n"))
-        (insert content))))
+        (when (looking-at-p "Write your post here.")
+          (org-kill-line)
+          (org-next-visible-heading 1)
+          (org-kill-line)
+          (org-map-entries 'org-promote)))))
 
   (defun pc/nikola-post-subtree ()
     "Post subtree as a new post."
     (interactive)
     (save-restriction
       (save-excursion
-        (let ((title (org-get-heading t t))
-              (content (and (org-back-to-heading)
-                            (org-agenda-get-some-entry-text (point-marker) 100000))))
-
-          (pc/nikola-new-post
-           (org-no-properties title)
-           (org-no-properties content))))))
+        (let ((title (org-get-heading t t)))
+          (org-copy-subtree)
+          (pc/nikola-new-post (org-no-properties title) t)))))
 
   (defun pc/nikola-tags-insert ()
     "Insert a nikola tag at point."
