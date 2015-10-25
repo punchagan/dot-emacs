@@ -898,6 +898,52 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
 
   (set-register ?c `(file . ,pc/org-contacts-file))
 #+END_SRC
+*** Hack to be able to use `org-bbdb-anniversaries-future'
+#+BEGIN_SRC emacs-lisp
+  (require 'org-bbdb)
+
+  (defun org-contacts-anniversaries-future (&optional n)
+    "Show future anniversaries in agenda.
+
+    This is a hack to reuse the code in
+    `org-bbdb-anniversaries-future'."
+
+    (save-match-data
+      (let ((org-bbdb-anniversaries
+             (lambda ()
+               (append
+                (org-contacts-anniversaries)
+                (org-contacts-anniversaries
+                 org-contacts-anniversary-property
+                 "Anniversary: %l (%Y)"))))
+
+            (humanize-dates
+             (lambda (entry)
+               (let* ((now (apply 'encode-time
+                                  `(0 0 0
+                                      ,(calendar-extract-day date)
+                                      ,(calendar-extract-month date)
+                                      ,(calendar-extract-year date)
+                                      nil nil nil)))
+                      (today (format-time-string "%Y-%m-%d" now))
+                      (tomorrow (format-time-string
+                                 "%Y-%m-%d"
+                                 (time-add now (days-to-time 1))))
+                      (date-string
+                       (and
+                        (string-match "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}" entry)
+                        (match-string 0 entry)))
+                      (dow (format-time-string
+                            "%A"
+                            (apply 'encode-time (org-parse-time-string date-string))))
+                      (entry (replace-regexp-in-string today "Today" entry))
+                      (entry (replace-regexp-in-string tomorrow "Tomorrow" entry)))
+                 (replace-regexp-in-string date-string dow entry)))))
+        (mapcar
+         (lambda (d) (funcall humanize-dates d))
+         (org-bbdb-anniversaries-future n)))))
+
+#+END_SRC
 
 *** COMMENT Code to fix contacts file                               :ARCHIVE:
 #+BEGIN_SRC emacs-lisp
