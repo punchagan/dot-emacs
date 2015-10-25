@@ -50,8 +50,10 @@ stuff into it...
 * Appearance
 *** Disable scroll bar, menu bar, fringes, junk...
 #+BEGIN_SRC emacs-lisp
-  (scroll-bar-mode -1)
-  (mouse-wheel-mode -1)
+  (when (display-graphic-p)
+    (scroll-bar-mode -1)
+    (mouse-wheel-mode -1))
+
   (tool-bar-mode -1)
   (tooltip-mode -1)
 
