@@ -1470,16 +1470,8 @@ the ghosting works, it all happens before joining any channels, so it is neat!
         user-full-name  "Puneeth Chaganti")
 
   ;; smtp mail setting
-  (setq
-   message-send-mail-function 'smtpmail-send-it
-   smtpmail-default-smtp-server "muse-amuse.in"
-   smtpmail-smtp-server "muse-amuse.in"
-   smtpmail-local-domain "muse-amuse.in"
-   smtpmail-smtp-service 587
-   ;; if you need offline mode, set these -- and create the queue dir
-   ;; with 'mu mkdir', i.e.. mu mkdir /home/user/Maildir/queue
-   smtpmail-queue-mail t
-   smtpmail-queue-dir (expand-file-name "queue/cur" mu4e-maildir))
+  ;; Send mail using nullmailer.
+  (setq message-send-mail-function 'message-send-mail-with-sendmail)
 
   ;; don't keep message buffers around
   (setq message-kill-buffer-on-exit t)
