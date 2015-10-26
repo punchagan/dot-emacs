@@ -1055,8 +1055,24 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
 #+END_SRC
 ***** Hook up phone logs
 #+BEGIN_SRC emacs-lisp
+  (defun pc/howdy-phone-set-last-updated (time)
+    (let ((filename "~/.emacs.d/.phone"))
+      (with-temp-buffer
+        (insert (format-time-string "%FT%T%z" time))
+        (write-file filename))))
+
+  (defun pc/howdy-phone-get-last-updated ()
+    (let ((filename "~/.emacs.d/.phone")
+          time)
+      (with-current-buffer (find-file-noselect filename)
+        (setq time (string-trim (buffer-substring-no-properties
+                                 (point-min) (point-max)))))
+      (parse-iso8601-time-string time)))
+
   (defun pc/howdy-phone-logs (filename)
-    (let ((archive-buffer (find-file-noselect filename)))
+    (let ((archive-buffer (find-file-noselect filename))
+          (current-modified (nth 5 (file-attributes filename)))
+          (last-update (pc/howdy-phone-get-last-updated)))
       (with-current-buffer archive-buffer
         (while (archive-get-descr t)
           (archive-extract)
@@ -1078,11 +1094,13 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
                          (setq info `((:phone . ,phone)))
                          (when (not (string= name ""))
                            (setq info (append info `((:name . ,name)))))
-                         (howdy--contacted info time)))))
+                         (when (time-less-p last-update time)
+                           (howdy--contacted info time))))))
           (kill-buffer)
           (switch-to-buffer archive-buffer)
           (forward-line)))
-      (kill-buffer archive-buffer)))
+      (kill-buffer archive-buffer)
+      (pc/howdy-phone-set-last-updated current-modified)))
 
   (pc/run-with-timer-when-idle
    60 60 (* 24 60 60) 'pc/howdy-phone-logs
