@@ -1526,25 +1526,21 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   ;; Disable auto signature
   (setq mu4e-compose-signature-auto-include nil)
 
-  ;; Smart refiling
-  (setq mu4e-refile-folder 'pc/mu4e-refile-messages)
+  ;; set bookmarks
+  (setq mu4e-bookmarks
+        '(("flag:unread AND NOT flag:trashed" "All unread messages" ?u)
+          ("flag:unread AND NOT flag:trashed AND maildir:/muse-amuse/INBOX" "Inbox unread messages" ?i)
+          ("date:today..now" "Today's messages" ?t)))
 
-  (defun pc/mu4e-refile-messages (msg)
-    "Rules for smartly refiling messages."
-    (let ((mailing-list (or (mu4e-message-field msg :mailing-list) "")))
-      (cond
-
-       ;; Nikola project
-       ((or (string-match "nikola.getnikola.github.com" mailing-list)
-            (string-match "nikola-discuss.googlegroups.com" mailing-list))
-        "/muse-amuse/Nikola")
-
-       ;; org2blog
-       ((string-match "org2blog.punchagan.github.com" mailing-list)
-        "/muse-amuse/org2blog")
-
-       ;; Catch all
-       (t  "/muse-amuse/INBOX"))))
+  ;; Run imapfilter!
+  (add-hook 'mu4e-update-pre-hook 'pc/imapfilter)
+  (defun pc/imapfilter ()
+    (message "Running imapfilter...")
+    (with-current-buffer (get-buffer-create " *imapfilter*")
+      (goto-char (point-max))
+      (insert "---\n")
+      (call-process "imapfilter" nil (current-buffer) nil "-v"))
+    (message "Running imapfilter...done"))
 #+END_SRC
 
 *** Use org-contacts as address book
