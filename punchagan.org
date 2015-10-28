@@ -1051,14 +1051,16 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
     (let ((filename "~/.emacs.d/.phone"))
       (with-temp-buffer
         (insert (format-time-string "%FT%T%z" time))
-        (write-file filename))))
+        (write-file filename)
+        (kill-buffer))))
 
   (defun pc/howdy-phone-get-last-updated ()
     (let ((filename "~/.emacs.d/.phone")
           time)
       (with-current-buffer (find-file-noselect filename)
         (setq time (string-trim (buffer-substring-no-properties
-                                 (point-min) (point-max)))))
+                                 (point-min) (point-max))))
+        (kill-buffer))
       (parse-iso8601-time-string time)))
 
   (defun pc/howdy-phone-logs (filename)
