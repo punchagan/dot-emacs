@@ -174,28 +174,6 @@ Use hippie expand
      "%A, %e %B %Y, %I:%M %p"
      (apply 'encode-time (org-parse-time-string time-stamp))))
 
-  (defun pc/package-delete (package)
-    "Provide a way to delete packages from the CLI."
-    (interactive
-     (progn
-       ;; Initialize the package system to get the list of package
-       ;; symbols for completion.
-       (package-initialize t)
-       (list (intern (completing-read
-                      "Delete package: "
-                      (mapcar (lambda (elt) (symbol-name (car elt)))
-                              package-alist)
-                      nil t)))))
-    (package-delete (cadr (assq package package-alist)))
-    (package-initialize t))
-
-  (defun pc/packages-install (packages)
-    "Install any packages that are missing."
-    (dolist (package my-packages)
-      (unless (or (package-installed-p package)
-                  (el-get-package-installed-p package))
-        (pc/install package))))
-
   (defun pc/read-random-article ()
     "Jump to and open a random article.  The way the function is
           currently written requires read articles to be archived."
