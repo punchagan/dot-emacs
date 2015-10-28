@@ -868,9 +868,20 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
 
   (set-register ?c `(file . ,pc/org-contacts-file))
 #+END_SRC
-*** Hack to be able to use `org-bbdb-anniversaries-future'
+*** Show future events in today's agenda.
 #+BEGIN_SRC emacs-lisp
   (require 'org-bbdb)
+
+  (setq date (calendar-current-date))
+
+  (defun org-bbdb-anniversaries ()
+    "Redefine org-bbdb-anniversaries as a hack to be able to use
+  org-bbdb-anniversaries-future."
+    (append
+       (org-contacts-anniversaries)
+       (org-contacts-anniversaries
+        org-contacts-anniversary-property
+        "Anniversary: %l (%Y)")))
 
   (defun org-contacts-anniversaries-future (&optional n)
     "Show future anniversaries in agenda.
@@ -879,15 +890,7 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
     `org-bbdb-anniversaries-future'."
 
     (save-match-data
-      (let ((org-bbdb-anniversaries
-             (lambda ()
-               (append
-                (org-contacts-anniversaries)
-                (org-contacts-anniversaries
-                 org-contacts-anniversary-property
-                 "Anniversary: %l (%Y)"))))
-
-            (humanize-dates
+      (let ((humanize-dates
              (lambda (entry)
                (let* ((now (apply 'encode-time
                                   `(0 0 0
@@ -912,7 +915,6 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
         (mapcar
          (lambda (d) (funcall humanize-dates d))
          (org-bbdb-anniversaries-future n)))))
-
 #+END_SRC
 
 *** COMMENT Code to fix contacts file                               :ARCHIVE:
