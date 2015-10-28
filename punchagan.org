@@ -279,12 +279,8 @@ Use hippie expand
   (defun pc/turn-off-notifications ()
     "Turn gnome notifications off."
     ;; gnome notifications
-    (dbus-send-signal
-     :session
-     "org.gnome.SessionManager"
-     "/org/gnome/SessionManager/Presence"
-     "org.gnome.SessionManager.Presence"
-     "SetStatus" 2)
+    (shell-command
+     "dconf write /org/gnome/desktop/notifications/show-banners false")
     ;; jabber.el status
     (jabber-send-presence "away" "" 10)
     ;; turn off tracking mode
@@ -300,12 +296,8 @@ Use hippie expand
   (defun pc/turn-on-notifications ()
     "Turn gnome notifications back on."
     ;; gnome notifications
-    (dbus-send-signal
-     :session
-     "org.gnome.SessionManager"
-     "/org/gnome/SessionManager/Presence"
-     "org.gnome.SessionManager.Presence"
-     "SetStatus" 0)
+    (shell-command
+     "dconf write /org/gnome/desktop/notifications/show-banners true")
     ;; jabber.el status
     (jabber-send-presence "" "" 10)
     ;; turn on tracking mode
