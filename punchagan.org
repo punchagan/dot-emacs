@@ -1535,6 +1535,9 @@ the ghosting works, it all happens before joining any channels, so it is neat!
       (insert "---\n")
       (call-process "imapfilter" nil (current-buffer) nil "-v"))
     (message "Running imapfilter...done"))
+
+  ;; Show mu4e maildirs info/count
+  (mu4e-maildirs-extension)
 #+END_SRC
 
 *** Use org-contacts as address book
