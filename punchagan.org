@@ -870,18 +870,16 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
 #+END_SRC
 *** Show future events in today's agenda.
 #+BEGIN_SRC emacs-lisp
-  (require 'org-bbdb)
-
-  (setq date (calendar-current-date))
-
   (defun org-bbdb-anniversaries ()
     "Redefine org-bbdb-anniversaries as a hack to be able to use
   org-bbdb-anniversaries-future."
     (append
-       (org-contacts-anniversaries)
-       (org-contacts-anniversaries
-        org-contacts-anniversary-property
-        "Anniversary: %l (%Y)")))
+     (org-contacts-anniversaries)
+     (org-contacts-anniversaries
+      org-contacts-anniversary-property
+      "Anniversary: %l (%Y)")))
+
+  (require 'org-bbdb)
 
   (defun org-contacts-anniversaries-future (&optional n)
     "Show future anniversaries in agenda.
