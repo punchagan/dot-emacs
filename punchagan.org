@@ -112,8 +112,15 @@ Remove the default scratch buffer message.
 *** initial buffer
 Display org-agenda when emacs starts-up!
 
-We do this immediately after [[*make agenda the initial buffer][org-agenda keys
-have been setup]].
+#+BEGIN_SRC emacs-lisp
+  (defun pc/display-agenda ()
+    (org-agenda nil " ")
+    (delete-other-windows)
+    (get-buffer "*Org Agenda( )*"))
+
+  (add-hook 'after-init-hook #'pc/display-agenda)
+
+#+END_SRC
 * Setup package.el
 #+BEGIN_SRC emacs-lisp
   (require 'package)
@@ -625,14 +632,6 @@ Use hippie expand
 
 #+END_SRC
 
-***** make agenda the initial buffer
-#+BEGIN_SRC emacs-lisp
-  (setq initial-buffer-choice
-        (lambda ()
-          (org-agenda nil " ")
-          (delete-other-windows)
-          (get-buffer "*Org Agenda( )*")))
-#+END_SRC
 *** Capture
 #+BEGIN_SRC emacs-lisp
   ;; Capture related stuff
