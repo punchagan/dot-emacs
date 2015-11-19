@@ -443,6 +443,12 @@ Use hippie expand
   (require 'powerline)
   (powerline-default-theme)
 #+END_SRC
+** Beacon mode
+#+BEGIN_SRC emacs-lisp
+  (use-package beacon
+    :config (beacon-mode 1)
+    :demand t)
+#+END_SRC
 * Magit
 #+BEGIN_SRC emacs-lisp
   (require 'magit)
