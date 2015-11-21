@@ -870,6 +870,13 @@ Use org-mode in comments everywhere!
   (autoload 'poporg-dwim "poporg" nil t)
   (global-set-key (kbd "C-c \"") 'poporg-dwim)
 #+END_SRC
+*** Org Reveal
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/org-reveal/")
+  (require 'ox-reveal)
+#+END_SRC
+
+
 * Contact Management
 *** Setup org-contacts
 #+BEGIN_SRC emacs-lisp
