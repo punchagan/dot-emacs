@@ -875,7 +875,14 @@ Use org-mode in comments everywhere!
   (add-to-list 'load-path "~/.emacs.d/site-lisp/org-reveal/")
   (require 'ox-reveal)
 #+END_SRC
-
+*** Org gcal
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/org-gcal/")
+  (require 'org-gcal)
+  (setq org-gcal-client-id (car (auth-source-user-and-password "infilect-gcal"))
+        org-gcal-client-secret (cadr (auth-source-user-and-password "infilect-gcal"))
+        org-gcal-file-alist `(("puneeth@infilect.com" . ,(expand-file-name "infilect-cal.org" org-directory))))
+#+END_SRC
 
 * Contact Management
 *** Setup org-contacts
