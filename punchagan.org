@@ -862,7 +862,14 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
       (other-window -1)))
 #+END_SRC
 
+*** Poporg
 
+Use org-mode in comments everywhere!
+
+#+BEGIN_SRC emacs-lisp
+  (autoload 'poporg-dwim "poporg" nil t)
+  (global-set-key (kbd "C-c \"") 'poporg-dwim)
+#+END_SRC
 * Contact Management
 *** Setup org-contacts
 #+BEGIN_SRC emacs-lisp
