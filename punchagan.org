@@ -806,6 +806,7 @@ file and returns the list of files.  This is used to set the scope for drills.
                                '((emacs-lisp . t)
                                  (ditaa . t)
                                  (python . t)
+                                 (sqlite . t)
                                  (sh . t)))
 #+END_SRC
 ***** sh customizations
