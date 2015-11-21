@@ -848,6 +848,21 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 
 *** Org Caldav
 Connect to the caldav server setup on muse-amuse and setup sync jobs.
+
+*** Daily list
+#+BEGIN_SRC emacs-lisp
+  (defun pc/show-daily-list ()
+    (interactive)
+    (let ((id "c1308beb-816a-45d5-b9e7-899cdcff0aef"))
+      (other-window 1)
+      (org-id-goto id)
+      (widen)
+      (org-narrow-to-subtree)
+      (org-show-entry)
+      (other-window -1)))
+#+END_SRC
+
+
 * Contact Management
 *** Setup org-contacts
 #+BEGIN_SRC emacs-lisp
