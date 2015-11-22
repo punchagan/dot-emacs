@@ -705,14 +705,12 @@ Use hippie expand
            :empty-lines 1
            )
 
-          ;; Work related
-          ("I" "Infilect notes" entry (file "infilect.org")
-           "* %?\n\n"
-           :empty-lines 1
-           :clock-in t
-           :clock-resume t)
           )
         )
+#+END_SRC
+*** Org refile targets
+#+BEGIN_SRC emacs-lisp
+(setq org-refile-targets '((nil . (:maxlevel . 5))))
 #+END_SRC
 
 *** Org date-tree refile
@@ -1233,15 +1231,19 @@ Use org-mode in comments everywhere!
 
 #+END_SRC
 *** Nikola stuff
+***** Constants
 #+BEGIN_SRC emacs-lisp
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Blogging related functions ;;
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
   (defconst pc/nikola-site
     (expand-file-name "~/software/my-repos/muse-amuse.in/")
     "Path to the default nikola site.")
 
+  (defconst pc/reading-list
+    (expand-file-name "reading-list.org"
+                      (expand-file-name "pages" pc/nikola-site))
+    "Path to the reading list page.")
+#+END_SRC
+***** Activate venv
+#+BEGIN_SRC emacs-lisp
   (defmacro pc/with-nikola-venv (&rest body)
     "Activate nikola venv, evaluate BODY, restore old venv."
     nil
@@ -1250,25 +1252,16 @@ Use org-mode in comments everywhere!
        (setq result (progn ,@body))
        (venv-workon old-venv)
        result))
-
-  (defun pc/nikola--tags-get ()
-    "Get the current tags in the site, given the site path."
-    (let* ((nikola-site (file-name-directory
-                         (directory-file-name
-                          (file-name-directory
-                           (or (buffer-file-name (current-buffer)) "/")))))
-           tags)
-      (pc/with-nikola-venv
-       (setq tags (shell-command-to-string
-                   (format "cd %s && nikola tags -l" nikola-site)))
-       (unless (search "ERROR" tags)
-         (cdr (split-string tags "\n" t "\s+"))))))
-
+#+END_SRC
+***** Deploy
+#+BEGIN_SRC emacs-lisp
   (defun pc/nikola-deploy ()
     (interactive)
     (pc/with-nikola-venv
      (async-shell-command (format "cd %s && nikola deploy" pc/nikola-site))))
-
+#+END_SRC
+***** New Post helpers
+#+BEGIN_SRC emacs-lisp
   (defun pc/nikola-new-post (title &optional paste-subtree)
     (interactive "MTitle: ")
     (let* ((output (pc/with-nikola-venv
@@ -1309,7 +1302,39 @@ Use org-mode in comments everywhere!
       (when (and word-match tags)
         (delete-backward-char (length word-match)))
       (mapc (lambda (tag) (insert (format "%s, " tag))) tags)))
+
+  (defun pc/nikola--tags-get ()
+    "Get the current tags in the site, given the site path."
+    (let* ((nikola-site (file-name-directory
+                         (directory-file-name
+                          (file-name-directory
+                           (or (buffer-file-name (current-buffer)) "/")))))
+           tags)
+      (pc/with-nikola-venv
+       (setq tags (shell-command-to-string
+                   (format "cd %s && nikola tags -l" nikola-site)))
+       (unless (search "ERROR" tags)
+         (cdr (split-string tags "\n" t "\s+"))))))
+
 #+END_SRC
+***** Reading list
+#+BEGIN_SRC emacs-lisp
+  ;; Jump to reading list quickly!
+  (set-register ?R `(file . ,pc/reading-list))
+
+  ;; Capture books to read, quickly!
+  (add-to-list 'org-capture-templates
+               `("B" "Reading list entry"
+                 entry (file+headline ,pc/reading-list "Archive")
+                 ,(concat
+                  "* [[%:link][%:description]] %^G\n"
+                  ":PROPERTIES:\n"
+                  ":SUGGESTED_BY: %?\n"
+                  ":URL: %:link\n"
+                  ":END:")
+                 :empty-lines 1))
+#+END_SRC
+
 * ERC
 
 *** Initial setup + miscellaneous
