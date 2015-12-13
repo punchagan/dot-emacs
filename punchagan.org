@@ -910,14 +910,19 @@ Use org-mode in comments everywhere!
 #+END_SRC
 *** Show future events in today's agenda.
 #+BEGIN_SRC emacs-lisp
-  (defun org-bbdb-anniversaries ()
-    "Redefine org-bbdb-anniversaries as a hack to be able to use
-  org-bbdb-anniversaries-future."
+  (require 'org-bbdb)
+
+  (defun pc/org-bbdb-anniversaries ()
+    "Override `org-bbdb-anniversaries' to work without `bbdb'."
     (append
      (org-contacts-anniversaries)
      (org-contacts-anniversaries
       org-contacts-anniversary-property
       "Anniversary: %l (%Y)")))
+
+  ;; Redefine org-bbdb-anniversaries as a hack to be able to use
+  ;; `org-bbdb-anniversaries-future'.
+  (advice-add 'org-bbdb-anniversaries :override 'pc/org-bbdb-anniversaries)
 
   (require 'org-bbdb)
 
