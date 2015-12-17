@@ -1339,7 +1339,52 @@ Use org-mode in comments everywhere!
                   ":END:")
                  :empty-lines 1))
 #+END_SRC
+* Web Feeds - Elfeed
+#+BEGIN_SRC emacs-lisp
+  ;; Set global keybinding
+  (global-set-key (kbd "C-c f") 'elfeed)
+#+END_SRC
+*** timeouts!
 
+Elfeed uses Emacs' url-queue package to manage feed fetching. Unfortunately it
+has a very short default value, so if you're getting any "Queue timeout
+exceeded" errors, increase url-queue-timeout.
+
+#+BEGIN_SRC emacs-lisp
+(setf url-queue-timeout 30)
+#+END_SRC
+*** elfeed-org
+#+BEGIN_SRC emacs-lisp
+  (setq rmh-elfeed-org-files `(,(expand-file-name "elfeed.org" org-directory)))
+  (elfeed-org)
+#+END_SRC
+***** Capture template
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-capture-templates
+               '("L" "Elfeed url" entry (file+headline "elfeed.org" "Blogs")
+                 "* [[%^{url}][%^{title}]]  %^g\n\n"))
+#+END_SRC
+*** Prettier elfeed
+#+BEGIN_SRC emacs-lisp
+  (defface pc/elfeed-search-self-posts-face
+    '((((class color) (background light)) (:foreground "#070"))
+      (((class color) (background dark))  (:foreground "#0ff")))
+    "Face used for my own posts.")
+
+  (defface pc/elfeed-search-programming-face
+    '((((class color) (background light)) (:foreground "#070"))
+      (((class color) (background dark))  (:foreground "#f90")))
+    "Face used for my own posts.")
+
+  (defface pc/elfeed-search-emacs-face
+    '((((class color) (background light)) (:foreground "#070"))
+      (((class color) (background dark))  (:foreground "#90f")))
+    "Face used for my own posts.")
+
+  (add-to-list 'elfeed-search-face-alist '(self pc/elfeed-search-self-posts-face))
+  (add-to-list 'elfeed-search-face-alist '(programming pc/elfeed-search-programming-face))
+  (add-to-list 'elfeed-search-face-alist '(emacs pc/elfeed-search-emacs-face))
+#+END_SRC
 * ERC
 
 *** Initial setup + miscellaneous
