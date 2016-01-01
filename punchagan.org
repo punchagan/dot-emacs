@@ -843,6 +843,41 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 
   ;; Enable encryption
   (setq org-journal-enable-encryption t)
+
+  ;; Turn off flyspell mode
+  (add-hook 'org-journal-mode-hook (lambda () (flyspell-mode -1)))
+
+  ;; Turn off auto-save-mode
+  (add-hook 'org-journal-mode-hook (lambda () (auto-save-mode -1)))
+
+  ;; Turn on draft mode
+  (add-hook 'org-journal-mode-hook (lambda () (draft-mode 1)))
+
+  ;; and run org-wc-display on a timer every time I go idle for 5 seconds
+  (defun pc/display-org-wc-in-buffer ()
+    "Calls org-wc-display in the buffer if timer is set."
+    (when (timerp pc/org-wc-display-timer)
+      (call-interactively 'org-wc-display)))
+
+  (defun pc/setup-org-wc-display-timer ()
+    "Function to setup a buffer local timer."
+    (interactive)
+
+    (defvar pc/org-wc-display-timer nil
+      "Buffer-local timer.")
+
+    (let ((buffer (current-buffer)))
+      (setq pc/org-wc-display-timer
+            (run-with-idle-timer 2 t 'pc/display-org-wc-in-buffer))))
+
+  (defun pc/cancel-org-wc-display-timer ()
+    "Cancel the timer once we are done."
+    (interactive)
+    (when (timerp pc/org-wc-display-timer)
+      (cancel-timer pc/org-wc-display-timer)))
+
+  ;; (advice-add 'org-journal-decrypt :after 'pc/setup-org-wc-display-timer)
+
 #+END_SRC
 
 *** Org Caldav
