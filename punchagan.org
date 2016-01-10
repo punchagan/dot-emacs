@@ -300,6 +300,22 @@ Use hippie expand
       ,secs
       ,repeat-time
       (lambda () (run-with-idle-timer ,idle-time nil ,function ,@args))))
+
+  (defun pc/turn-on-fullscreen ()
+    "Switch to fullscreen if it isn't already fullscreen.
+  Intended to be used from elisp similar to something
+  like `(toggle-frame-fullscreen 1)' for minor modes, etc."
+    (let ((fullscreen (frame-parameter nil 'fullscreen)))
+      (unless (memq fullscreen '(fullscreen fullboth))
+        (toggle-frame-fullscreen))))
+
+  (defun pc/turn-off-fullscreen ()
+    "Switch out of fullscreen.
+  Intended to be used from elisp similar to something
+  like `(toggle-frame-fullscreen -1)' for minor modes, etc."
+    (let ((fullscreen (frame-parameter nil 'fullscreen)))
+      (when (memq fullscreen '(fullscreen fullboth))
+        (toggle-frame-fullscreen))))
 #+END_SRC
 
 * General editor tweaks
