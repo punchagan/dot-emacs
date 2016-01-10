@@ -1302,13 +1302,15 @@ Use org-mode in comments everywhere!
 #+END_SRC
 ***** New Post helpers
 #+BEGIN_SRC emacs-lisp
-  (defun pc/nikola-new-post (title &optional paste-subtree)
+  (defun pc/nikola-new-post (title &optional paste-subtree import-from)
     (interactive "MTitle: ")
-    (let* ((output (pc/with-nikola-venv
-                    (shell-command-to-string
-                     (format
-                      "cd %s && nikola new_post --tags=draft -t \"%s\"&"
-                      pc/nikola-site title))))
+    (let* ((command (format
+                     "cd %s && nikola new_post --tags=draft -t \"%s\""
+                     pc/nikola-site title))
+           (command- (or (and import-from (format "%s -i %s" command import-from))
+                         command))
+           (output (pc/with-nikola-venv
+                    (shell-command-to-string command-)))
            (path (save-match-data
                    (string-match "\nPATH:\s*\\(.*\\)\n" output)
                    (match-string 1 output))))
@@ -1334,6 +1336,23 @@ Use org-mode in comments everywhere!
           (org-copy-subtree)
           (pc/nikola-new-post (org-no-properties title) t)))))
 
+
+  (defun pc/nikola-rename-post (title)
+    "Rename a post with the given new post.
+  Works only if we are currently in the buffer with the post in
+  question, open."
+    (interactive "MTitle: ")
+    (let ((post-file (buffer-file-name))
+          (buf (current-buffer)))
+      (unless (string-match (format "^%s.*" pc/nikola-site) (or (buffer-file-name) ""))
+        (error "Not a nikola post file."))
+      (pc/nikola-new-post title nil post-file)
+      (let ((trash-directory "/tmp"))
+        (move-file-to-trash post-file)
+        (kill-buffer buf))))
+#+END_SRC
+***** Insert tags in post
+#+BEGIN_SRC emacs-lisp
   (defun pc/nikola-tags-insert ()
     "Insert a nikola tag at point."
     (interactive)
