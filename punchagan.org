@@ -225,6 +225,11 @@ Use hippie expand
             (save-buffer))))
       (select-window sw)))
 
+  (defun pc/single-window ()
+    "Return true if there is only one window."
+    (let ((window (selected-window)))
+      (equalp (next-window window nil) window)))
+
   (defun pc/sort--end-record ()
     (forward-sexp))
 
@@ -902,14 +907,16 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
 *** Daily list
 #+BEGIN_SRC emacs-lisp
   (defun pc/show-daily-list ()
+    "Show the daily list."
     (interactive)
-    (let ((id "c1308beb-816a-45d5-b9e7-899cdcff0aef"))
-      (other-window 1)
-      (org-id-goto id)
-      (widen)
-      (org-narrow-to-subtree)
-      (org-show-entry)
-      (other-window -1)))
+    (when (or (called-interactively-p) (not (pc/single-window)))
+      (let ((id "c1308beb-816a-45d5-b9e7-899cdcff0aef"))
+        (other-window 1)
+        (org-id-goto id)
+        (widen)
+        (org-narrow-to-subtree)
+        (org-show-entry)
+        (other-window -1))))
 #+END_SRC
 
 *** Poporg
