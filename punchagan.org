@@ -392,8 +392,10 @@ Use hippie expand
   (column-number-mode t)
 
   ;; Programming mode generic setup
-  (add-hook 'prog-mode-hook 'pc/turn-on-line-and-column-numbering)
-  (add-hook 'prog-mode-hook 'paredit-everywhere-mode)
+  (add-hook 'prog-mode-hook #'pc/turn-on-line-and-column-numbering)
+  (add-hook 'prog-mode-hook #'paredit-everywhere-mode)
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'prog-mode-hook #'linum-mode)
 
   ;; Encoding
   (set-terminal-coding-system 'utf-8)
