@@ -267,7 +267,8 @@ Use hippie expand
     (other-window 1))
 
   (defun pc/turn-off-notifications ()
-    "Turn gnome notifications off."
+    "Turn desktop/emacs notifications off."
+    (interactive)
     ;; gnome notifications
     (shell-command
      "dconf write /org/gnome/desktop/notifications/show-banners false")
@@ -276,7 +277,15 @@ Use hippie expand
     ;; turn off tracking mode
     (erc-track-disable)
     ;; turn off jabber activity in mode line
-    (jabber-activity-mode 0))
+    (jabber-activity-mode 0)
+    ;; Full screen mode for all windows
+    (shell-command "~/bin/fullscreen on")
+    ;; Close gmail window
+    (shell-command "wmctrl -c \"punchagan@gmail.com\"")
+    ;; Turn on get-shit-done mode
+    (with-temp-buffer
+      (cd "/sudo::/")
+      (shell-command "HOME=/home/punchagan get-shit-done work")))
 
   (defun pc/turn-on-line-and-column-numbering ()
     (make-local-variable 'column-number-mode)
@@ -284,7 +293,8 @@ Use hippie expand
     (auto-fill-mode t))
 
   (defun pc/turn-on-notifications ()
-    "Turn gnome notifications back on."
+    "Turn notifications back on."
+    (interactive)
     ;; gnome notifications
     (shell-command
      "dconf write /org/gnome/desktop/notifications/show-banners true")
@@ -293,7 +303,13 @@ Use hippie expand
     ;; turn on tracking mode
     (erc-track-enable)
     ;; turn on jabber activity in mode line
-    (jabber-activity-mode 1))
+    (jabber-activity-mode 1)
+    ;; Fullscreen mode off for all windows
+    (shell-command "~/bin/fullscreen off")
+    ;; Turn off get-shit-done mode
+    (with-temp-buffer
+      (cd "/sudo::/")
+      (shell-command "HOME=/home/punchagan get-shit-done play")))
 
   (defun pc/turn-on-paredit ()
     (require 'paredit)
