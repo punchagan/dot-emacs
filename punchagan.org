@@ -2056,3 +2056,11 @@ https://github.com/sfrapoport/daily-pragmatic-tip
 #+BEGIN_SRC emacs-lisp
   (pc/run-with-timer-when-idle 1 120 86400 'pc/be-pragmatic)
 #+END_SRC
+*** Bookmarking
+#+BEGIN_SRC emacs-lisp
+  (require 'helm-pinboard)
+#+END_SRC
+*** Chrome edit server
+#+BEGIN_SRC emacs-lisp
+  (edit-server-start)
+#+END_SRC
