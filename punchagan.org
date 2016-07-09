@@ -587,6 +587,13 @@ Use hippie expand
           "/opt/infilect/dev/"))
 
 #+END_SRC
+** Pull requests
+#+BEGIN_SRC emacs-lisp
+  (use-package magit-gh-pulls
+    :ensure t
+    :defer
+    :config (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+#+END_SRC
 
 * Helm
 #+BEGIN_SRC emacs-lisp
