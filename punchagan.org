@@ -216,6 +216,15 @@ Use hippie expand
                   (if (file-exists-p elc)
                       (delete-file elc))))))
 
+
+  (defun pc/buffer-mode (buffer-or-string)
+    "Returns the major mode associated with a buffer."
+    (with-current-buffer buffer-or-string
+      major-mode))
+
+  ;; List of modes where we don't want auto-save on focus out.
+  (setq pc/no-save-modes '(org-journal-mode))
+
   (defun pc/save-visible-windows ()
     "Function to save all the buffers in visible windows in the
           current frame."
@@ -223,7 +232,8 @@ Use hippie expand
       (dolist (window (window-list))
         (let ((buffer (window-buffer window)))
           (when (and (buffer-modified-p buffer)
-                     (buffer-file-name buffer))
+                     (buffer-file-name buffer)
+                     (not (member (pc/buffer-mode buffer) pc/no-save-modes)))
             (select-window window)
             (save-buffer))))
       (select-window sw)))
