@@ -326,7 +326,8 @@ Use hippie expand
 
   (defun pc/turn-on-paredit ()
     (require 'paredit)
-    (paredit-mode +1))
+    (paredit-mode +1)
+    (diminish 'paredit-mode " ⒫"))
 
   (defmacro pc/run-with-timer-when-idle (secs idle-time repeat-time function &rest args)
     "Run a function on timer, but only when idle."
@@ -350,6 +351,7 @@ Use hippie expand
     (let ((fullscreen (frame-parameter nil 'fullscreen)))
       (when (memq fullscreen '(fullscreen fullboth))
         (toggle-frame-fullscreen))))
+
 #+END_SRC
 
 * General editor tweaks
@@ -476,8 +478,68 @@ Use hippie expand
 
   ;; Add ~/bin dir to path
   (setenv "PATH" (format "/home/punchagan/bin:%s" (getenv "PATH")))
-#+END_SRC
 
+  ;; Disable backups for tramp files.
+  (add-to-list 'backup-directory-alist
+               (cons tramp-file-name-regexp nil))
+
+  ;; Disable auto-save for tramp files (sort of)
+  (setq tramp-auto-save-directory "/tmp/")
+
+  ;; Prompt for files larger than 100MB.
+  (setq large-file-warning-threshold  100000000)
+
+  ;; Turn on tls checking
+  (setq tls-checktrust t)
+
+  ;; Set tls program
+    ;;; From: https://glyph.twistedmatrix.com/2015/11/editor-malware.html
+  (let ((trustfile
+         (replace-regexp-in-string
+          "\\\\" "/"
+          (replace-regexp-in-string
+           "\n" ""
+           (shell-command-to-string "python -m certifi")))))
+    (setq tls-program
+          (list
+           (format "gnutls-cli%s --x509cafile %s -p %%p %%h"
+                   (if (eq window-system 'w32) ".exe" "") trustfile)))
+    (setq gnutls-verify-error t)
+    (setq gnutls-trustfiles (list trustfile)))
+
+  ;; Enable fixmee mode globally
+  (use-package button-lock
+    :config (diminish 'button-lock-mode))
+
+  (use-package fixmee
+    :init (setq fixmee-view-listing-keystrokes '("M-g M-v")
+                fixmee-goto-prevmost-urgent-keystrokes '("M-g M-F")
+                fixmee-goto-nextmost-urgent-keystrokes '("M-g M-f"))
+    :config (progn
+              (global-fixmee-mode 1)
+              (diminish 'fixmee-mode " ❗")))
+
+  ;; Which key
+  (use-package which-key
+    :ensure t
+    :config (progn
+              (which-key-mode 1)
+              (diminish 'which-key-mode " ⓚ")))
+
+  ;; Golden Ratio
+  (use-package golden-ratio
+    :config (progn
+              (golden-ratio-mode 1)
+              (diminish 'golden-ratio-mode " φ")))
+
+  ;; Diminish flyspell
+  (use-package flyspell
+    :config (diminish #'flyspell-mode " Ⓢ"))
+
+  ;; Diminish auto-fill
+  (use-package auto-fill
+    :config (diminish #'auto-fill-function " Ⓕ"))
+#+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
 (add-hook 'prog-mode-hook 'projectile-mode)
