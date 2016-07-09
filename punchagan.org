@@ -1,4 +1,4 @@
-#+STARTUP: indent odd hidestars
+#+STARTUP: indent hidestars
 * Introduction
 This file contains the bulk of my emacs config.  It uses John Wiegley's
 wonderful ~use-package~.  Also, this file is loaded in my ~init.el~ using
@@ -693,7 +693,7 @@ Use hippie expand
 
 #+END_SRC
 
-*** Agenda and clocking
+** Agenda and clocking
 #+BEGIN_SRC emacs-lisp
   ;; Org-agenda
   (setq org-agenda-files
@@ -714,7 +714,7 @@ Use hippie expand
         org-log-into-drawer t
         org-clock-into-drawer t)
 
-          ;;; Clocking
+  ;; Clocking
   (bind-keys
    :prefix "<f9>"
    :prefix-map pc/clock
@@ -770,7 +770,7 @@ Use hippie expand
 
 #+END_SRC
 
-*** Capture
+** Capture
 #+BEGIN_SRC emacs-lisp
   ;; Capture related stuff
   (require 'org-capture)
@@ -840,12 +840,12 @@ Use hippie expand
           )
         )
 #+END_SRC
-*** Org refile targets
+** Org refile targets
 #+BEGIN_SRC emacs-lisp
 (setq org-refile-targets '((nil . (:maxlevel . 5))))
 #+END_SRC
 
-*** Org date-tree refile
+** Org date-tree refile
 #+BEGIN_SRC emacs-lisp
   (require 'org-datetree)
   (defun pc/org-refile-to-datetree (journal)
@@ -867,13 +867,13 @@ Use hippie expand
       (message "Refiled to %s" journal)))
 
 #+END_SRC
-*** Org Drill
+** Org Drill
 #+BEGIN_SRC emacs-lisp
   (require 'org-drill)
   (setq org-drill-maximum-items-per-session 40
         org-drill-maximum-duration 40)
 #+END_SRC
-***** Scope
+**** Scope
 All my drill files are listed in a separate file, and this function reads the
 file and returns the list of files.  This is used to set the scope for drills.
 
@@ -887,7 +887,7 @@ file and returns the list of files.  This is used to set the scope for drills.
   (setq org-drill-scope (pc/get-drill-files))
 
 #+END_SRC
-***** Hacks to capture answers
+**** Hacks to capture answers
 #+BEGIN_SRC emacs-lisp
   (defun pc/org-drill-presentation-prompt (old-fun &rest fmt-and-args)
     "A presentation prompt that allows capturing answers."
@@ -929,8 +929,8 @@ file and returns the list of files.  This is used to set the scope for drills.
   (advice-add 'org-drill-reschedule :around 'pc/org-drill-reschedule)
 
 #+END_SRC
-*** Org Babel
-***** Enable Languages
+** Org Babel
+**** Enable Languages
 #+BEGIN_SRC emacs-lisp
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
@@ -939,15 +939,15 @@ file and returns the list of files.  This is used to set the scope for drills.
                                  (sqlite . t)
                                  (sh . t)))
 #+END_SRC
-***** sh customizations
+**** sh customizations
 #+BEGIN_SRC emacs-lisp
   (setq org-babel-sh-command "bash")
 #+END_SRC
 
-***** python customizations
+**** python customizations
 The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/emacs-orgmode/2014-03/msg00405.html][Arun Persaud]]
 
-******* Use IPython interpreter
+****** Use IPython interpreter
 - Set command to IPython.
 - ~--classic~ changes prompts to be classic. org-babel seems to use some kind
   of regexps to figure out what the prompt is.
@@ -955,7 +955,7 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   (setq org-babel-python-command "ipython --no-banner --classic --no-confirm-exit")
 #+END_SRC
 
-******* Use %cpaste magic to send code
+****** Use %cpaste magic to send code
 #+BEGIN_SRC emacs-lisp
   (defun pc/ipython-use-cpaste (args)
     "Add a %cpaste and '--' to the body, for IPython magic!."
@@ -966,7 +966,7 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
               :filter-args 'pc/ipython-use-cpaste)
 #+END_SRC
 
-*** Org Journal
+** Org Journal
 #+BEGIN_SRC emacs-lisp
   (require 'org-journal)
 
@@ -1012,10 +1012,10 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
 
 #+END_SRC
 
-*** Org Caldav
+** Org Caldav
 Connect to the caldav server setup on muse-amuse and setup sync jobs.
 
-*** Daily list
+** Daily list
 #+BEGIN_SRC emacs-lisp
   (defun pc/show-daily-list ()
     "Show the daily list."
@@ -1029,9 +1029,7 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
         (org-show-entry)
         (other-window -1))))
 #+END_SRC
-
-*** Poporg
-
+** Poporg
 Use org-mode in comments everywhere!
 
 #+BEGIN_SRC emacs-lisp
@@ -1043,7 +1041,7 @@ Use org-mode in comments everywhere!
   (add-to-list 'load-path "~/.emacs.d/site-lisp/org-reveal/")
   (require 'ox-reveal)
 #+END_SRC
-*** Org gcal
+** Org gcal
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/site-lisp/org-gcal/")
   (require 'org-gcal)
@@ -1305,7 +1303,7 @@ Use org-mode in comments everywhere!
 #+END_SRC
 * Language modes
 
-*** Python mode
+** Python mode
 #+BEGIN_SRC emacs-lisp
   ;; Virtual environments
   (setq python-environment-directory "~/.virtualenvs/")
@@ -1338,7 +1336,7 @@ Use org-mode in comments everywhere!
   (setq jedi:complete-on-dot t)
 #+END_SRC
 
-*** Emacs Lisp mode
+** Emacs Lisp mode
 #+BEGIN_SRC emacs-lisp
         ;;; Lisp mode configuration
 
@@ -1358,16 +1356,16 @@ Use org-mode in comments everywhere!
 
 #+END_SRC
 
-*** Go mode
+** Go mode
 #+BEGIN_SRC emacs-lisp
   (add-hook 'go-mode-hook 'disable-paredit-mode)
 #+END_SRC
 
-*** Lua mode
+** Lua mode
 #+BEGIN_SRC emacs-lisp
   (setq lua-indent-level 2)
 #+END_SRC
-***** Linting
+*** Linting
 #+BEGIN_SRC emacs-lisp
   (add-hook 'lua-mode-hook 'flycheck-mode)
 #+END_SRC
@@ -1434,7 +1432,7 @@ Use org-mode in comments everywhere!
                       (expand-file-name "pages" pc/nikola-site))
     "Path to the reading list page.")
 #+END_SRC
-***** Activate venv
+**** Activate venv
 #+BEGIN_SRC emacs-lisp
   (defmacro pc/with-nikola-venv (&rest body)
     "Activate nikola venv, evaluate BODY, restore old venv."
@@ -1445,7 +1443,7 @@ Use org-mode in comments everywhere!
        (venv-workon old-venv)
        result))
 #+END_SRC
-***** Deploy
+**** New Post helpers
 #+BEGIN_SRC emacs-lisp
   (defun pc/nikola-deploy ()
     (interactive)
@@ -1633,7 +1631,7 @@ exceeded" errors, increase url-queue-timeout.
 
 #+END_SRC
 
-*** Channels to connect to
+** Channels to connect to
 #+BEGIN_SRC emacs-lisp
   (setq erc-autojoin-channels-alist
         '(("freenode.net"
@@ -1642,7 +1640,7 @@ exceeded" errors, increase url-queue-timeout.
            "#elm" "#scikit-learn" "#scikit-image" "#nikola")))
 #+END_SRC
 
-*** Tracking
+** Tracking
 #+BEGIN_SRC emacs-lisp
   ;; track
   (erc-track-mode t)
@@ -1652,7 +1650,7 @@ exceeded" errors, increase url-queue-timeout.
 
 #+END_SRC
 
-*** Logging
+** Logging
 #+BEGIN_SRC emacs-lisp
   ;; Logging
   (setq erc-log-channels-directory "~/.erc/logs/")
@@ -1669,7 +1667,7 @@ exceeded" errors, increase url-queue-timeout.
 
 #+END_SRC
 
-*** Notifications
+** Notifications
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'erc-modules 'notifications)
   (erc-notifications-mode)
@@ -1677,7 +1675,7 @@ exceeded" errors, increase url-queue-timeout.
   (add-hook 'focus-in-hook 'erc-notifications-disable)
 #+END_SRC
 
-*** Custom commands
+** Custom commands
 #+BEGIN_SRC emacs-lisp
   ;; /SLAP command
   (defun erc-cmd-SLAP (&rest nick)
@@ -1687,7 +1685,7 @@ exceeded" errors, increase url-queue-timeout.
              "-- just out of spite!")))
 #+END_SRC
 
-*** Start and Stop commands
+** Start and Stop commands
 #+BEGIN_SRC emacs-lisp
   ;; start and stop commands
   (defun start-irc ()
@@ -1696,7 +1694,7 @@ exceeded" errors, increase url-queue-timeout.
     (erc :server "irc.freenode.net" :port 6667 :password (password-read "Freenode password: "))
     (erc-tls :server "kanjar.irc.slack.com" :port 6667 :password (cadr (auth-source-user-and-password "kanjar"))))
 #+END_SRC
-*** Ghosting
+** Ghosting
 
 A simple command to ghost a nick.
 
@@ -1712,7 +1710,7 @@ A simple command to ghost a nick.
       (erc-cmd-NICK nick)
       (erc-message "PRIVMSG" (format "NickServ identify %s %s" nick password))))
 #+END_SRC
-***** COMMENT Auto ghost
+**** COMMENT Auto ghost
 # FIXME: The hook messes up buffer creation for some reason... :(
 
 The function above is useful by itself, but even more useful if used as a
