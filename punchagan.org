@@ -3,8 +3,11 @@
 This file contains the bulk of my emacs config.  It uses John Wiegley's
 wonderful ~use-package~.  Also, this file is loaded in my ~init.el~ using
 ~org-babel-load-file~.
-
-*** Ensure use-package is available
+** Enable lexical binding
+#+BEGIN_SRC emacs-lisp
+  ;; -*- lexical-binding: t -*-
+#+END_SRC
+** Ensure use-package is available
 
 Everything else tries to use ~use-package~.  So, we try to load it first.
 
