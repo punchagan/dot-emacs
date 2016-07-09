@@ -1405,6 +1405,24 @@ Use org-mode in comments everywhere!
 
 #+END_SRC
 *** Nikola stuff
+** Clojure!
+#+BEGIN_SRC emacs-lisp
+  (use-package clojure-mode-extra-font-locking)
+
+  (use-package cider
+    :ensure t
+    :defer t
+    :config (let ()
+              (add-hook 'clojure-mode-hook 'enable-paredit-mode)
+              (setq cider-prompt-for-symbol nil
+                    cider-prompt-save-file-on-load 'always-save)))
+#+END_SRC
+** Hy lang
+#+BEGIN_SRC emacs-lisp
+  (use-package hy-mode
+    :ensure t
+    :config (add-hook 'hy-mode-hook 'enable-paredit-mode))
+#+END_SRC
 ***** Constants
 #+BEGIN_SRC emacs-lisp
   (defconst pc/nikola-site
