@@ -549,7 +549,13 @@ Use hippie expand
 (setq projectile-mode-line
       '(:eval (format "[%s]" (projectile-project-name))))
 #+END_SRC
-
+*** Enable regeneration of tags
+#+BEGIN_SRC emacs-lisp
+  (setq projectile-enable-idle-timer t
+        projectile-idle-timer-seconds 300
+        tags-revert-without-query t
+        tags-add-tables t)
+#+END_SRC
 ** Power-line
 #+BEGIN_SRC emacs-lisp
   (require 'powerline)
