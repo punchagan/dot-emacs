@@ -800,7 +800,7 @@ Use hippie expand
            :empty-lines 1)
           ("c" "org-protocol links under clock item" item
            (clock)
-           "- [[%:link][%:description]]\n\n  %:initial"
+           "- [[%:link][%:description]]\n\n%:initial"
            :immediate-finish t :empty-lines 1)
 
           ;; Contact
@@ -812,7 +812,7 @@ Use hippie expand
           ;; Blog related
           ("b" "org-protocol bookmarks" item
            (file "bookmarks.org")
-           "- [[%:link][%:description]]\n\n  %:initial"
+           "- [[%:link][%:description]]\n\n%:initial"
            :empty-lines 1)
           ("q" "org-protocol quotes" item
            (file "quotes.org")
@@ -824,7 +824,7 @@ Use hippie expand
            "Task: Read this URL"
            entry
            (file+headline "todo.org" "Articles To Read")
-           "* TODO Read article: [[%:link][%:description]]\n\n  %:initial\n\n"
+           "* TODO Read article: [[%:link][%:description]]\n\n%:initial\n\n"
            :empty-lines 1
            :immediate-finish t)
           ("w"
