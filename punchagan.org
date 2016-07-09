@@ -558,13 +558,20 @@ Use hippie expand
 #+END_SRC
 ** Power-line
 #+BEGIN_SRC emacs-lisp
-  (require 'powerline)
-  (powerline-default-theme)
+  (use-package powerline)
+
+  (use-package spaceline-config
+    :init (setq
+           spaceline-minor-modes-separator ""
+           powerline-default-separator 'wave)
+    :config (spaceline-spacemacs-theme))
 #+END_SRC
 ** Beacon mode
 #+BEGIN_SRC emacs-lisp
   (use-package beacon
-    :config (beacon-mode 1)
+    :config (progn
+              (beacon-mode 1)
+              (diminish #'beacon-mode " ⯐"))
     :demand t)
 #+END_SRC
 * Magit
