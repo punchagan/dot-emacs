@@ -542,10 +542,8 @@ Use hippie expand
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode-hook 'projectile-mode)
-(add-hook 'text-mode-hook 'projectile-mode)
+  (projectile-global-mode)
 #+END_SRC
-
 *** Mode line
 #+BEGIN_SRC emacs-lisp
 (setq projectile-mode-line
