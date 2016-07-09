@@ -87,11 +87,14 @@ stuff into it...
 
 *** Theme
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'custom-theme-load-path (expand-file-name "emacs-color-theme-solarized" site-lisp-dir))
-  ;; weird hack to get this working on startup
-  (load-theme 'solarized t)
-  (setq frame-background-mode 'dark)
-  (load-theme 'solarized t)
+  (use-package color-theme-solarized
+    :load-path "site-lisp/emacs-color-theme-solarized"
+    :demand t
+    :config
+    (progn
+      (load-theme 'solarized t)
+      (setq frame-background-mode 'dark)
+      (load-theme 'solarized t)))
 #+END_SRC
 *** Nicer scrolling
 #+BEGIN_SRC emacs-lisp
@@ -122,7 +125,6 @@ Display org-agenda when emacs starts-up!
     (get-buffer "*Org Agenda( )*"))
 
   (add-hook 'after-init-hook #'pc/display-agenda)
-
 #+END_SRC
 * Setup package.el
 #+BEGIN_SRC emacs-lisp
