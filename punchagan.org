@@ -1755,8 +1755,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
   ;; program to get mail;
   (setq
-   mu4e-get-mail-command "offlineimap"
-   mu4e~get-mail-password-regexp "^Enter password for account '.*?': $"
+   mu4e-get-mail-command "mbsync muse-amuse"
    mu4e-update-interval (* 6 3600))
 
   ;; general emacs mail settings; used when composing e-mail
