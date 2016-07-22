@@ -1356,6 +1356,13 @@ Use org-mode in comments everywhere!
 
 #+END_SRC
 
+*** README from elisp header
+#+BEGIN_SRC emacs-lisp
+  (use-package h2o
+    :pin manual
+    :load-path "/home/punchagan/software/my-repos/h2o/")
+#+END_SRC
+
 ** Go mode
 #+BEGIN_SRC emacs-lisp
   (add-hook 'go-mode-hook 'disable-paredit-mode)
