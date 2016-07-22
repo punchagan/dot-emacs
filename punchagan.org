@@ -1859,12 +1859,8 @@ the ghosting works, it all happens before joining any channels, so it is neat!
           ;; Gmail
           (,(format "punchagan@gmail.com/Emacs-%s-Jabber-%s" emacs-version jabber-version)
            (:network-server . "talk.google.com")
+           (:password . ,(cadr (auth-source-user-and-password "emacs-jabber")))
            (:connection-type . starttls))
-
-          (,(format "punchagan@muse-amuse.in/MA-Emacs-%s-Jabber-%s" emacs-version jabber-version)
-           (:network-server . "muse-amuse.in")
-           (:connection-type . starttls))
-
           ))
 #+END_SRC
 *** Appearance
