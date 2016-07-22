@@ -1756,7 +1756,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
         mu4e-drafts-folder "/muse-amuse/Drafts"
         mu4e-trash-folder  "/muse-amuse/Trash")
 
-  ;; a  list of user's e-mail addresses
+  ;; a list of my e-mail addresses
   (setq mu4e-user-mail-address-list '("punchagan@muse-amuse.in"))
 
   ;; the headers to show in the headers list -- a pair of a field
@@ -1811,9 +1811,9 @@ the ghosting works, it all happens before joining any channels, so it is neat!
   (bind-key "<Scroll_Lock>" 'pc/update-mail-and-index)
 
   ;; Enable org-mu4e
-        ;;; org-link creation support
+          ;;; org-link creation support
   (require 'org-mu4e)
-        ;;; org-mode compose
+          ;;; org-mode compose
   (add-hook 'mu4e-compose-mode-hook 'org-mu4e-compose-org-mode)
 
   ;; Disable auto signature
