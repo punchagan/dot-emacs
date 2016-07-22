@@ -1633,9 +1633,10 @@ exceeded" errors, increase url-queue-timeout.
 #+BEGIN_SRC emacs-lisp
   (setq erc-autojoin-channels-alist
         '(("freenode.net"
-           "#emacs" "#org-mode" "#emacs-in" "#fossee" "#ipython"
-           "#pyconindia" "##linux-india"
-           "#elm" "#scikit-learn" "#scikit-image" "#nikola")))
+           "#emacs" "#org-mode" "#emacs-in"
+           "#pyconindia" "##linux-india" "#fossee"
+           "#ipython" "#scikit-learn" "#scikit-image" "#nikola" "#hypothesis"
+           "#elm" "#hy")))
 #+END_SRC
 
 ** Tracking
@@ -1686,11 +1687,13 @@ exceeded" errors, increase url-queue-timeout.
 ** Start and Stop commands
 #+BEGIN_SRC emacs-lisp
   ;; start and stop commands
-  (defun start-irc ()
+  (defun my/start-irc ()
     "Connect to IRC."
     (interactive)
-    (erc :server "irc.freenode.net" :port 6667 :password (password-read "Freenode password: "))
-    (erc-tls :server "kanjar.irc.slack.com" :port 6667 :password (cadr (auth-source-user-and-password "kanjar"))))
+    (erc
+     :server "irc.freenode.net"
+     :port 6667
+     :password (cadr (auth-source-user-and-password "freenode"))))
 #+END_SRC
 ** Ghosting
 
