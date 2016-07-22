@@ -1223,7 +1223,13 @@ Use org-mode in comments everywhere!
 
   (setq howdy-add-contact-function 'pc/howdy-add-contact-function)
 
-  (setq howdy-max-contacts 10)
+  (setq howdy-max-contacts 5)
+
+  (setq howdy-interval-default 30)
+
+  (setq howdy-email-function #'mu4e~compose-mail)
+
+  (setq howdy-jabber-domains '("gmail.com"))
 #+END_SRC
 ***** Hook up mu4e
 #+BEGIN_SRC emacs-lisp
