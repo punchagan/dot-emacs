@@ -1913,42 +1913,22 @@ the ghosting works, it all happens before joining any channels, so it is neat!
     (expand-file-name ".jabber-message-queue.json" user-emacs-directory)
     "The file where jabber messages are queued")
 
-  (defun pc/collect-ids-by-domain (domain-name)
-    "Return a list of email ids from contacts db, by given domain."
+  (defun pc/collect-jids ()
+    "Return a list of jids."
     (loop for contact in (org-contacts-db)
           for contact-name = (car contact)
-          for email = (pc/find-email-by-domain
-                       domain-name
-                       (cdr (assoc-string org-contacts-email-property (caddr contact))))
+          for jid = (howdy--get-jabber-id contact)
           for nick = (let ((nick (assoc-string org-contacts-nickname-property (caddr contact))))
                        (if nick (format "(%s)" (cdr nick)) ""))
-          for marker = (second contact)
-          if (not (null email))
-          collect `(,(format "%s%s [%s]" contact-name nick email) . ,email)))
+          if (not (null jid))
+          collect `(,(format "%s%s [%s]" contact-name nick jid) . ,jid)))
 
-  (defun pc/collect-ids-by-domains (domains)
-    "Return a list of email ids from contacts db, by given domains."
-    (loop for domain in domains
-          append (pc/collect-ids-by-domain domain)))
-
-  (defun pc/find-email-by-domain (domain-name emails)
-    "Return email id of DOMAIN-NAME from space separated list."
-    (let ((ids (org-contacts-split-property
-                (or emails ""))))
-      (car (seq-filter (lambda (email) (string-match domain-name email)) ids))))
-
-  (defun pc/get-all-emails-for-tag (tag domains)
+  (defun pc/get-all-jids-for-tag (tag)
     (let ((contacts (howdy--get-contacts-for-tag tag)))
       (loop for contact in contacts
-            for emails-str = (cdr (assoc-string org-contacts-email-property (caddr contact)))
-            for email = (car (loop for domain in domains
-                                   for email = (pc/find-email-by-domain domain emails-str)
-                                   if (not (null email))
-                                   collect email))
-            if (not (null email))
-            collect email)))
-
-  (defvar pc/chat-domains `("public.talk.google.com" "gmail.com" "muse-amuse.in"))
+            for jid = (howdy--get-jabber-id contact)
+            if (not (null jid))
+            collect jid)))
 
   (defun pc/is-email-p (email)
     (save-match-data
@@ -2008,7 +1988,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
                 "chat with: "
                 ;; We find email ids from contacts.db!
                 (append
-                 (pc/collect-ids-by-domains pc/chat-domains)
+                 (pc/collect-jids)
                  (mapcar (lambda (x) `(,x . ,x)) (howdy--contact-tags)))))
            (from (let*
                      ((completions (mapcar
@@ -2025,7 +2005,7 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
       (if (pc/is-email-p to)
           (pc/jabber--chat-with jid-pos to)
-        (let* ((emails (pc/get-all-emails-for-tag to pc/chat-domains))
+        (let* ((emails (pc/get-all-jids-for-tag to))
                (msg (read-string (format "Message to send to %s: " emails)))
                (group-size 10)
                (group-count (/ (length emails) group-size))
