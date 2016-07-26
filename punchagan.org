@@ -1451,7 +1451,7 @@ Use org-mode in comments everywhere!
           blog-admin-backend-nikola-executable "/home/punchagan/.virtualenvs/nikola/bin/nikola"))
 #+END_SRC
 ** Nikola stuff
-**** Constants
+*** Constants
 #+BEGIN_SRC emacs-lisp
   (defconst pc/nikola-site
     (expand-file-name "~/software/my-repos/muse-amuse.in/")
@@ -1462,7 +1462,7 @@ Use org-mode in comments everywhere!
                       (expand-file-name "pages" pc/nikola-site))
     "Path to the reading list page.")
 #+END_SRC
-**** Activate venv
+*** Activate venv
 #+BEGIN_SRC emacs-lisp
   (defmacro pc/with-nikola-venv (&rest body)
     "Activate nikola venv, evaluate BODY, restore old venv."
@@ -1473,7 +1473,7 @@ Use org-mode in comments everywhere!
        (venv-workon old-venv)
        result))
 #+END_SRC
-**** New Post helpers
+*** New Post helpers
 #+BEGIN_SRC emacs-lisp
   (defun pc/nikola-post-subtree ()
     "Post subtree as a new post."
@@ -1486,6 +1486,7 @@ Use org-mode in comments everywhere!
 
   (defun pc/nikola-rename-post (title)
     "Rename a post with the given new post.
+
   Works only if we are currently in the buffer with the post in
   question, open."
     (interactive "MTitle: ")
@@ -1523,7 +1524,7 @@ Use org-mode in comments everywhere!
          (cdr (split-string tags "\n" t "\s+"))))))
 
 #+END_SRC
-***** Reading list
+*** Reading list
 #+BEGIN_SRC emacs-lisp
   ;; Jump to reading list quickly!
   (set-register ?R `(file . ,pc/reading-list))
