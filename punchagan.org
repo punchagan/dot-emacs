@@ -978,6 +978,9 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   ;; Enable encryption
   (setq org-journal-enable-encryption t)
 
+  ;; Don't carry over any items
+  (setq org-journal-carryover-items nil)
+
   ;; Turn off flyspell mode
   (add-hook 'org-journal-mode-hook (lambda () (flyspell-mode -1)))
 
