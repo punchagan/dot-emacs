@@ -937,6 +937,7 @@ file and returns the list of files.  This is used to set the scope for drills.
                                '((emacs-lisp . t)
                                  (ditaa . t)
                                  (python . t)
+                                 (ipython . t)
                                  (sqlite . t)
                                  (sh . t)))
 #+END_SRC
