@@ -744,7 +744,6 @@ Use hippie expand
    appt-display-duration (* appt-message-warning-time 60))
 
   (appt-activate 1) ;; active appt (appointment notification)
-  (display-time)    ;; time display is required for this...? really?
 
   ;; Keybinding to close the appointment reminder window
   (bind-key "<f5>" '(lambda () (interactive) (appt-delete-window)))
