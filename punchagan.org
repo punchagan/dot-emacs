@@ -1542,7 +1542,7 @@ Use org-mode in comments everywhere!
   ;; Capture books to read, quickly!
   (add-to-list 'org-capture-templates
                `("B" "Reading list entry"
-                 entry (file+headline ,pc/reading-list "Archive")
+                 entry (file+headline ,pc/reading-list "Kitchen-sink")
                  ,(concat
                   "* [[%:link][%:description]] %^G\n"
                   ":PROPERTIES:\n"
