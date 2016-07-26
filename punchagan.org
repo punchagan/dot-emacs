@@ -1102,8 +1102,6 @@ Use org-mode in comments everywhere!
   ;; `org-bbdb-anniversaries-future'.
   (advice-add 'org-bbdb-anniversaries :override 'pc/org-bbdb-anniversaries)
 
-  (require 'org-bbdb)
-
   (defun org-contacts-anniversaries-future (&optional n)
     "Show future anniversaries in agenda.
 
@@ -1136,6 +1134,7 @@ Use org-mode in comments everywhere!
         (mapcar
          (lambda (d) (funcall humanize-dates d))
          (org-bbdb-anniversaries-future n)))))
+
 #+END_SRC
 
 *** COMMENT Code to fix contacts file                               :ARCHIVE:
