@@ -1043,15 +1043,23 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
 #+END_SRC
 ** Poporg
 Use org-mode in comments everywhere!
-
 #+BEGIN_SRC emacs-lisp
-  (autoload 'poporg-dwim "poporg" nil t)
-  (global-set-key (kbd "C-c \"") 'poporg-dwim)
+  (use-package poporg
+    :ensure t
+    :bind (("C-c \"" . poporg-dwim)))
 #+END_SRC
+** Export backends
 *** Org Reveal
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/site-lisp/org-reveal/")
-  (require 'ox-reveal)
+  (use-package ox-reveal
+    :pin manual
+    :load-path "~/.emacs.d/site-lisp/org-reveal/"
+    :defer 5
+    :ensure t)
+#+END_SRC
+*** Markdown
+#+BEGIN_SRC emacs-lisp
+  (require 'ox-md)
 #+END_SRC
 ** Org gcal
 #+BEGIN_SRC emacs-lisp
