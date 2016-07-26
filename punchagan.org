@@ -768,6 +768,10 @@ Use hippie expand
   ;; org-checklist
   (require 'org-checklist)
 
+  ;; Org Agenda clockreport
+  ;; Modified to show more levels
+  (setq org-agenda-clockreport-parameter-plist
+        '(:fileskip0 t :link t :maxlevel 4))
 #+END_SRC
 
 ** Capture
