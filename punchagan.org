@@ -617,8 +617,7 @@ Use hippie expand
     (set-face-attribute 'helm-source-header nil
                         :height 1.2
                         :foreground (cdr (assoc 'cursor-color (color-theme-get-params)))
-                        :background nil)
-    )
+                        :background nil))
 
   (global-set-key (kbd "C-c h") 'helm-mini-or-imenu)
   (global-set-key (kbd "M-X") 'execute-extended-command)
@@ -725,10 +724,11 @@ Use hippie expand
    ("o" . org-clock-out)
    ("x" . org-clock-cancel)
    ("j" . org-clock-goto)
-   ("e" . org-set-effort))
-          ;;; The keybindings are similar to what org-agenda already has. I, O, X, J, e.
+   ("e" . org-set-effort)
+   ("t" . (lambda () (interactive) (org-time-stamp-inactive '(16)))))
+  ;; The keybindings are similar to what org-agenda already has. I, O, X, J, e.
 
-          ;;; What to do with dangling clocks?
+  ;; What to do with dangling clocks?
   (org-clock-persistence-insinuate)
 
   ;; Clocking and notifications
