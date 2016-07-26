@@ -1584,20 +1584,59 @@ Use org-mode in comments everywhere!
   (defface pc/elfeed-search-programming-face
     '((((class color) (background light)) (:foreground "#070"))
       (((class color) (background dark))  (:foreground "#f90")))
-    "Face used for my own posts.")
+    "Face used for programming posts.")
 
   (defface pc/elfeed-search-emacs-face
     '((((class color) (background light)) (:foreground "#070"))
       (((class color) (background dark))  (:foreground "#90f")))
-    "Face used for my own posts.")
+    "Face used for Emacs posts.")
+
+  (defface pc/elfeed-search-data-face
+      '((((class color) (background light)) (:foreground "#070"))
+        (((class color) (background dark))  (:foreground "#FFEB3B")))
+      "Face used for Data posts.")
 
   (add-to-list 'elfeed-search-face-alist '(self pc/elfeed-search-self-posts-face))
   (add-to-list 'elfeed-search-face-alist '(programming pc/elfeed-search-programming-face))
   (add-to-list 'elfeed-search-face-alist '(emacs pc/elfeed-search-emacs-face))
+  (add-to-list 'elfeed-search-face-alist '(data pc/elfeed-search-data-face))
+#+END_SRC
+*** Fix width
+#+BEGIN_SRC emacs-lisp
+  (setq shr-width 80)
+#+END_SRC
+** Goodies
+#+BEGIN_SRC emacs-lisp
+  (require 'elfeed-goodies)
+  (elfeed-goodies/setup)
+  (setq elfeed-goodies/entry-pane-position 'right)
+
+#+END_SRC
+** Get content for entries with no content
+#+BEGIN_SRC emacs-lisp
+  (defun pc/get-url-content (url)
+    "Fetches the content for a url."
+    (shell-command-to-string (format "/home/punchagan/bin/get_article.py %s" url)))
+
+  (defun pc/get-entry-content (entry)
+    "Fetches content for pinboard entries that are not tweets."
+    (interactive
+     (let ((entry elfeed-show-entry))
+       (list entry)))
+
+    (let ((url (elfeed-entry-link entry))
+          (feed-id (elfeed-deref (elfeed-entry-feed-id entry)))
+          (content (elfeed-deref (elfeed-entry-content entry))))
+      (when (and (s-matches? "feeds.pinboard.in/" feed-id)
+                 (not (s-matches? "twitter.com/\\|pdf$\\|png$\\|jpg$" url))
+                 (string-equal "" content))
+        (setq content (pc/get-url-content url))
+        (setf (elfeed-entry-content entry) (elfeed-ref content)))))
+
+  (add-hook 'elfeed-new-entry-hook #'pc/get-entry-content)
 #+END_SRC
 * ERC
-
-*** Initial setup + miscellaneous
+** Initial setup + miscellaneous
 
 #+BEGIN_SRC emacs-lisp
   (require 'erc)
