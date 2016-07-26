@@ -1238,7 +1238,6 @@ Use org-mode in comments everywhere!
 #+END_SRC
 ***** Hook up jabber.el
 #+BEGIN_SRC emacs-lisp
-  ;; (add-hook 'jabber-chat-send-hooks 'howdy-jabber-message-send-hook)
   (add-hook 'jabber-message-hooks 'howdy-jabber-message-received-hook)
 #+END_SRC
 ***** Hook up phone logs
