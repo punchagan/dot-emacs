@@ -1027,14 +1027,16 @@ Connect to the caldav server setup on muse-amuse and setup sync jobs.
 
 ** Daily list
 #+BEGIN_SRC emacs-lisp
-  (defun pc/show-daily-list ()
+  (defun pc/show-daily-list (&optional clear)
     "Show the daily list."
-    (interactive)
+    (interactive "p")
     (when (or (called-interactively-p) (not (pc/single-window)))
       (let ((id "c1308beb-816a-45d5-b9e7-899cdcff0aef"))
         (other-window 1)
         (org-id-goto id)
         (widen)
+        (when (equal clear 4)
+          (org-reset-checkbox-state-subtree))
         (org-narrow-to-subtree)
         (org-show-entry)
         (other-window -1))))
