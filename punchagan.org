@@ -1883,9 +1883,15 @@ the ghosting works, it all happens before joining any channels, so it is neat!
     (message "Running imapfilter...done"))
 
   ;; Show mu4e maildirs info/count
-  (mu4e-maildirs-extension)
-#+END_SRC
+  (use-package mu4e-maildirs-extension
+    :pin manual
+    :load-path "~/software/random/mu4e-maildirs-extension"
+    :ensure t
+    :config (mu4e-maildirs-extension))
 
+  ;; Hook up mu4e to default compose key.
+  (bind-key "C-x m" 'mu4e-compose-new)
+#+END_SRC
 *** Use org-contacts as address book
 #+BEGIN_SRC emacs-lisp
   (setq mu4e-org-contacts-file "~/.life-in-plain-text/contacts.org")
