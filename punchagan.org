@@ -990,6 +990,12 @@ The IPython customizations are thanks to [[https://lists.gnu.org/archive/html/em
   ;; Turn on draft mode
   (add-hook 'org-journal-mode-hook (lambda () (draft-mode 1)))
 
+  ;; Turn on full screen mode
+  (add-hook 'org-journal-mode-hook #'pc/turn-on-fullscreen)
+
+  ;; Delete other windows
+  (add-hook 'org-journal-mode-hook #'delete-other-windows)
+
   ;; and run org-wc-display on a timer every time I go idle for 5 seconds
   (defun pc/display-org-wc-in-buffer ()
     "Calls org-wc-display in the buffer if timer is set."
