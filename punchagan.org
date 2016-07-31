@@ -1522,7 +1522,39 @@ Use org-mode in comments everywhere!
         (move-file-to-trash post-file)
         (kill-buffer buf))))
 #+END_SRC
-**** Insert tags in post
+**** Weekly bookmarks post
+#+BEGIN_SRC emacs-lisp
+  (defun pc/nikola-last-week-bookmarks ()
+    "Creates a new post with last week's bookmarks"
+    (interactive)
+    (let* ((is-sunday (string= "Sun" (format-time-string "%a" (current-time))))
+           (start (if is-sunday "-Sun" "-2Sun"))
+           (end (if is-sunday "." "-Sun"))
+           (title (format "What I liked %s" (org-read-date nil nil start)))
+           (posts (helm-pinboard--bookmarks-between
+                   (org-read-date nil t (concat start " 00:00"))
+                   (org-read-date nil t (concat end " 00:00")))))
+      (with-temp-buffer
+        (org-mode)
+        (org-insert-heading)
+        (insert (concat title "\n\n"))
+        (loop for post in (reverse posts)
+              do (insert "- ")
+              do (org-insert-link nil (plist-get post :url) (plist-get post :title))
+              do (insert (concat "\n" (plist-get post :desc) "\n\n")))
+        ;; Replace stupid characters
+        (format-replace-strings '(("\x201C" . "\"")
+                                  ("\x201D" . "\"")
+                                  ("\x2018" . "'")
+                                  ("\x2019" . "'")
+                                  ("" . "\n"))
+                                nil
+                                (point-min)
+                                (point-max))
+        (fill-region (point-min) (point-max))
+        (blog-admin-backend-nikola-new-post title t))))
+#+END_SRC
+*** Insert tags in post
 #+BEGIN_SRC emacs-lisp
   (defun pc/nikola-tags-insert ()
     "Insert a nikola tag at point."
