@@ -1543,17 +1543,22 @@ Use org-mode in comments everywhere!
               do (insert "- ")
               do (org-insert-link nil (plist-get post :url) (plist-get post :title))
               do (insert (concat "\n" (plist-get post :desc) "\n\n")))
-        ;; Replace stupid characters
-        (format-replace-strings '(("\x201C" . "\"")
-                                  ("\x201D" . "\"")
-                                  ("\x2018" . "'")
-                                  ("\x2019" . "'")
-                                  ("" . "\n"))
-                                nil
-                                (point-min)
-                                (point-max))
+        (pc/replace-ugly-characters)
         (fill-region (point-min) (point-max))
         (blog-admin-backend-nikola-new-post title t))))
+
+
+  (defun pc/replace-ugly-characters ()
+    "Replace ugly unicode characters with their ascii equivalents."
+    (interactive)
+    (format-replace-strings '(("\x201C" . "\"")
+                              ("\x201D" . "\"")
+                              ("\x2018" . "'")
+                              ("\x2019" . "'")
+                              ("" . "\n"))
+                            nil
+                            (point-min)
+                            (point-max)))
 #+END_SRC
 *** Insert tags in post
 #+BEGIN_SRC emacs-lisp
