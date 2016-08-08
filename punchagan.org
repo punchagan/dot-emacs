@@ -1094,7 +1094,8 @@ Use org-mode in comments everywhere!
                    (list org-contacts-email-property
                          org-contacts-tel-property
                          org-contacts-birthday-property
-                         org-contacts-anniversary-property)
+                         org-contacts-anniversary-property
+                         howdy-jabber-property)
                    "|"))
 
   (set-register ?c `(file . ,pc/org-contacts-file))
