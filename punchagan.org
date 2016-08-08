@@ -1981,17 +1981,20 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 #+END_SRC
 
 *** Alerts
+
+**** Setup notifications
 #+BEGIN_SRC emacs-lisp
   (setq jabber-alert-presence-hooks nil)
-  (setq jabber-alert-message-hooks '(jabber-message-scroll jabber-message-notifications))
+
+  (setq jabber-alert-message-hooks '(jabber-message-scroll pc/jabber-message-notifications))
 
   ;; Enable alerts when focussed out of Emacs
   (add-hook 'focus-out-hook
-            (lambda () (add-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
+            (lambda () (add-hook 'jabber-alert-message-hooks #'pc/jabber-message-notifications)))
 
   ;; Disable alerts when focussed in Emacs
   (add-hook 'focus-in-hook
-            (lambda () (remove-hook 'jabber-alert-message-hooks 'jabber-message-notifications)))
+            (lambda () (remove-hook 'jabber-alert-message-hooks #'pc/jabber-message-notifications)))
 
 #+END_SRC
 
