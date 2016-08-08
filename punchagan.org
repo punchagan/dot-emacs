@@ -1982,6 +1982,33 @@ the ghosting works, it all happens before joining any channels, so it is neat!
 
 *** Alerts
 
+**** Custom notifications
+Switch to the buffer when notification is clicked.
+
+#+BEGIN_SRC emacs-lisp
+  (defun pc/jabber-message-notifications (from buffer text title)
+      "Show a message through the notifications.el interface"
+      (let
+          ((body (or (jabber-escape-xml text) " "))
+           (head (jabber-escape-xml
+                  (or title
+                      (or jabber-notifications-message-header " ")
+                      text)))
+           (avatar-hash (get (jabber-jid-symbol from) 'avatar-hash))
+           (on-close (lambda (id action) (unless (or (null jabber-activity-mode)
+                                                     (member buffer (mapcar #'window-buffer (window-list))))
+                                           (switch-to-buffer buffer)))))
+        (notifications-notify
+         :title title
+         :body body
+         :app-icon (or (and avatar-hash (jabber-avatar-find-cached avatar-hash))
+                       jabber-notifications-icon)
+         :app-name jabber-notifications-app
+         :category "jabber.message"
+         :timeout jabber-notifications-timeout
+         :on-close on-close)))
+#+END_SRC
+
 **** Setup notifications
 #+BEGIN_SRC emacs-lisp
   (setq jabber-alert-presence-hooks nil)
