@@ -1075,30 +1075,134 @@ Use org-mode in comments everywhere!
 #+END_SRC
 
 * Contact Management
+*** Howdy
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/software/my-repos/howdy/")
+  (require 'howdy)
+  (require 'howdy-hooks)
+
+  (defun pc/howdy-add-contact-function (info)
+    (let ((name (cdr (assoc :name info)))
+          (email (cdr (assoc :email info)))
+          (phone (cdr (assoc :phone info))))
+      (when name
+        (setq pc/org-capture-plist (plist-put org-capture-plist :howdy-name name))
+        (plist-put pc/org-capture-plist :howdy-email email)
+        (plist-put pc/org-capture-plist :howdy-phone phone)
+        (org-capture nil "C"))))
+
+  (setq howdy-add-contact-function 'pc/howdy-add-contact-function)
+
+  (setq howdy-max-contacts 5)
+
+  (setq howdy-interval-default 30)
+
+  (setq howdy-email-function #'mu4e~compose-mail)
+
+  (setq howdy-jabber-domains '("gmail.com"))
+#+END_SRC
+***** Hook up mu4e
+#+BEGIN_SRC emacs-lisp
+  (advice-add 'mu4e-headers-view-message :before 'howdy-mu4e-message-receive-hook)
+  ;; (add-hook 'message-send-hook 'howdy-email-message-send-hook)
+#+END_SRC
+***** Hook up jabber.el
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'jabber-message-hooks 'howdy-jabber-message-received-hook)
+#+END_SRC
+***** Hook up phone logs
+#+BEGIN_SRC emacs-lisp
+  (defun pc/howdy-phone-set-last-updated (time)
+    (let ((filename "~/.emacs.d/.phone"))
+      (with-temp-buffer
+        (insert (format-time-string "%FT%T%z" time))
+        (write-file filename)
+        (kill-buffer))))
+
+  (defun pc/howdy-phone-get-last-updated ()
+    (let ((filename "~/.emacs.d/.phone")
+          time)
+      (with-current-buffer (find-file-noselect filename)
+        (setq time (string-trim (buffer-substring-no-properties
+                                 (point-min) (point-max))))
+        (kill-buffer))
+      (parse-iso8601-time-string time)))
+
+  (defun pc/howdy-phone-logs (filename)
+    (let ((archive-buffer (find-file-noselect filename))
+          (current-modified (nth 5 (file-attributes filename)))
+          (last-update (pc/howdy-phone-get-last-updated)))
+      (with-current-buffer archive-buffer
+        (while (archive-get-descr t)
+          (archive-extract)
+          (loop for item in (cddadr  (xml-parse-region nil nil nil t))
+                do (when (listp item)
+                     (let ((name (cdr (assoc 'Name (cadr item))))
+                           (phone (cdr (assoc 'Number (cadr item))))
+                           (direction (cdr (assoc 'Direction (cadr item))))
+                           (status (cdr (assoc 'Status (cadr item))))
+                           (time (seconds-to-time
+                                  (/ (string-to-number (cdr (assoc 'DateLong (cadr item)))) 1000)))
+                           info)
+                       (when (or
+                              ;; Ignore MISSED calls
+                              (string= direction "INCOMING")
+                              (string= direction "OUTGOING")
+                              ;; Only consider incoming SMS messages
+                              (string= status "-1"))
+                         (setq info `((:phone . ,phone)))
+                         (when (not (string= name ""))
+                           (setq info (append info `((:name . ,name)))))
+                         (when (time-less-p last-update time)
+                           (howdy--contacted info time))))))
+          (kill-buffer)
+          (switch-to-buffer archive-buffer)
+          (forward-line)))
+      (kill-buffer archive-buffer)
+      (pc/howdy-phone-set-last-updated current-modified)))
+
+  (pc/run-with-timer-when-idle
+   60 60 (* 24 60 60) 'pc/howdy-phone-logs
+   "~/Dropbox/Apps/BakupSMSCallLog/Backup_Archive.zip")
+#+END_SRC
+******* Setup function to be able to run manually.
+#+BEGIN_SRC emacs-lisp
+  (defun pc/howdy-sync-phone-logs ()
+    (interactive)
+    (pc/howdy-phone-logs "~/Dropbox/Apps/BakupSMSCallLog/Backup_Archive.zip"))
+#+END_SRC
+
+***** Howdy from agenda
+#+BEGIN_SRC emacs-lisp
+  (define-key org-agenda-mode-map "H" 'howdy-agenda-contacted)
+#+END_SRC
 *** Setup org-contacts
 #+BEGIN_SRC emacs-lisp
-  (require 'org-contacts)
+  (use-package org-contacts
+    :config
+    ;; Matching rule for finding headings that are contacts.
+    (setq org-contacts-anniversary-property "ANNIVERSARY")
 
-  ;; Matching rule for finding headings that are contacts.
-  (setq org-contacts-anniversary-property "ANNIVERSARY")
+    ;; Set org-contacts-files to speed up stuff.
+    (setq pc/org-contacts-file (expand-file-name "contacts.txt" org-directory))
+    (setq org-contacts-files (list pc/org-contacts-file))
 
-  ;; Set org-contacts-files to speed up stuff.
-  (setq pc/org-contacts-file (expand-file-name "contacts.txt" org-directory))
-  (setq org-contacts-files (list pc/org-contacts-file))
+    ;; Using gravatar isn't fast enough
+    (setq org-contacts-icon-use-gravatar nil)
 
-  ;; Using gravatar isn't fast enough
-  (setq org-contacts-icon-use-gravatar nil)
+    ;; Which org subtrees are contacts?
+    (setq org-contacts-matcher
+          (mapconcat (lambda (p) (format "%s<>\"\"" p))
+                     (list org-contacts-email-property
+                           org-contacts-tel-property
+                           org-contacts-birthday-property
+                           org-contacts-anniversary-property
+                           howdy-jabber-property)
+                     "|"))
 
-  (setq org-contacts-matcher
-        (mapconcat (lambda (p) (format "%s<>\"\"" p))
-                   (list org-contacts-email-property
-                         org-contacts-tel-property
-                         org-contacts-birthday-property
-                         org-contacts-anniversary-property
-                         howdy-jabber-property)
-                   "|"))
+    ;; Jump to contacts file easily
+    (set-register ?c `(file . ,pc/org-contacts-file)))
 
-  (set-register ?c `(file . ,pc/org-contacts-file))
 #+END_SRC
 *** Show future events in today's agenda.
 #+BEGIN_SRC emacs-lisp
@@ -1228,107 +1332,6 @@ Use org-mode in comments everywhere!
   ;;  '("~/.life-in-plain-text/contacts.txt"))
 
 
-#+END_SRC
-*** Howdy
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/software/my-repos/howdy/")
-  (require 'howdy)
-  (require 'howdy-hooks)
-
-  (defun pc/howdy-add-contact-function (info)
-    (let ((name (cdr (assoc :name info)))
-          (email (cdr (assoc :email info)))
-          (phone (cdr (assoc :phone info))))
-      (when name
-        (setq pc/org-capture-plist (plist-put org-capture-plist :howdy-name name))
-        (plist-put pc/org-capture-plist :howdy-email email)
-        (plist-put pc/org-capture-plist :howdy-phone phone)
-        (org-capture nil "C"))))
-
-  (setq howdy-add-contact-function 'pc/howdy-add-contact-function)
-
-  (setq howdy-max-contacts 5)
-
-  (setq howdy-interval-default 30)
-
-  (setq howdy-email-function #'mu4e~compose-mail)
-
-  (setq howdy-jabber-domains '("gmail.com"))
-#+END_SRC
-***** Hook up mu4e
-#+BEGIN_SRC emacs-lisp
-  (advice-add 'mu4e-headers-view-message :before 'howdy-mu4e-message-receive-hook)
-  ;; (add-hook 'message-send-hook 'howdy-email-message-send-hook)
-#+END_SRC
-***** Hook up jabber.el
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'jabber-message-hooks 'howdy-jabber-message-received-hook)
-#+END_SRC
-***** Hook up phone logs
-#+BEGIN_SRC emacs-lisp
-  (defun pc/howdy-phone-set-last-updated (time)
-    (let ((filename "~/.emacs.d/.phone"))
-      (with-temp-buffer
-        (insert (format-time-string "%FT%T%z" time))
-        (write-file filename)
-        (kill-buffer))))
-
-  (defun pc/howdy-phone-get-last-updated ()
-    (let ((filename "~/.emacs.d/.phone")
-          time)
-      (with-current-buffer (find-file-noselect filename)
-        (setq time (string-trim (buffer-substring-no-properties
-                                 (point-min) (point-max))))
-        (kill-buffer))
-      (parse-iso8601-time-string time)))
-
-  (defun pc/howdy-phone-logs (filename)
-    (let ((archive-buffer (find-file-noselect filename))
-          (current-modified (nth 5 (file-attributes filename)))
-          (last-update (pc/howdy-phone-get-last-updated)))
-      (with-current-buffer archive-buffer
-        (while (archive-get-descr t)
-          (archive-extract)
-          (loop for item in (cddadr  (xml-parse-region nil nil nil t))
-                do (when (listp item)
-                     (let ((name (cdr (assoc 'Name (cadr item))))
-                           (phone (cdr (assoc 'Number (cadr item))))
-                           (direction (cdr (assoc 'Direction (cadr item))))
-                           (status (cdr (assoc 'Status (cadr item))))
-                           (time (seconds-to-time
-                                  (/ (string-to-number (cdr (assoc 'DateLong (cadr item)))) 1000)))
-                           info)
-                       (when (or
-                              ;; Ignore MISSED calls
-                              (string= direction "INCOMING")
-                              (string= direction "OUTGOING")
-                              ;; Only consider incoming SMS messages
-                              (string= status "-1"))
-                         (setq info `((:phone . ,phone)))
-                         (when (not (string= name ""))
-                           (setq info (append info `((:name . ,name)))))
-                         (when (time-less-p last-update time)
-                           (howdy--contacted info time))))))
-          (kill-buffer)
-          (switch-to-buffer archive-buffer)
-          (forward-line)))
-      (kill-buffer archive-buffer)
-      (pc/howdy-phone-set-last-updated current-modified)))
-
-  (pc/run-with-timer-when-idle
-   60 60 (* 24 60 60) 'pc/howdy-phone-logs
-   "~/Dropbox/Apps/BakupSMSCallLog/Backup_Archive.zip")
-#+END_SRC
-******* Setup function to be able to run manually.
-#+BEGIN_SRC emacs-lisp
-  (defun pc/howdy-sync-phone-logs ()
-    (interactive)
-    (pc/howdy-phone-logs "~/Dropbox/Apps/BakupSMSCallLog/Backup_Archive.zip"))
-#+END_SRC
-
-***** Howdy from agenda
-#+BEGIN_SRC emacs-lisp
-  (define-key org-agenda-mode-map "H" 'howdy-agenda-contacted)
 #+END_SRC
 * Language modes
 
