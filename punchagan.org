@@ -598,6 +598,7 @@ Use hippie expand
 
 * Helm
 #+BEGIN_SRC emacs-lisp
+  (require 'helm-config)
   (require 'helm)
   (require 'helm-themes)
 
