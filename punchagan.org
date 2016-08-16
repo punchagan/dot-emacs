@@ -15,7 +15,6 @@ Everything else tries to use ~use-package~.  So, we try to load it first.
 # ~package-initialize~.  This is not the best setup, when moving config to a
 # new machine.
 #+BEGIN_SRC emacs-lisp
-  (package-initialize)
   (require 'use-package)
 #+END_SRC
 
