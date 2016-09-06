@@ -575,17 +575,17 @@ Use hippie expand
 #+END_SRC
 * Magit
 #+BEGIN_SRC emacs-lisp
-  (require 'magit)
+  (use-package magit
+    :ensure t
 
-  ;; Global keybinding for magit status
-  (bind-key "C-M-g" 'magit-status)
+    ;; Global keybinding for magit status
+    :bind (("C-M-g" . magit-status))
 
-  ;; All dirs to search for git repos
-  (setq magit-repository-directories
-        '("~/software/my-repos/" "~/software/random/"
-          "~/.emacs.d" "~/.emacs.d/site-lisp"
-          "/opt/infilect/dev/"))
-
+    ;; All dirs to search for git repos
+    :config (setq magit-repository-directories
+                  '("~/software/my-repos/" "~/software/random/"
+                    "~/software/akvo/"
+                    "~/.emacs.d" "~/.emacs.d/site-lisp")))
 #+END_SRC
 ** Pull requests
 #+BEGIN_SRC emacs-lisp
