@@ -665,7 +665,7 @@ Use hippie expand
 
   ;; Org-tree-slide
   (require 'org-tree-slide)
-  (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
+  (global-set-key (kbd "<f7>") 'org-tree-slide-mode)
 
   ;; Encrypted org buffers
   (require 'org-crypt)
