@@ -861,7 +861,7 @@ Use hippie expand
 #+END_SRC
 ** Org refile targets
 #+BEGIN_SRC emacs-lisp
-(setq org-refile-targets '((nil . (:maxlevel . 5))))
+(setq org-refile-targets '((org-agenda-files . (:maxlevel . 5))))
 #+END_SRC
 
 ** Org date-tree refile
