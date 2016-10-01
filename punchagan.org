@@ -1546,13 +1546,15 @@ Use org-mode in comments everywhere!
   (defun pc/nikola-last-week-bookmarks ()
     "Creates a new post with last week's bookmarks"
     (interactive)
+    (helm-pinboard-update-async nil t)
     (let* ((is-sunday (string= "Sun" (format-time-string "%a" (current-time))))
            (start (if is-sunday "-Sun" "-2Sun"))
            (end (if is-sunday "." "-Sun"))
            (title (format "What I liked %s" (org-read-date nil nil start)))
            (posts (helm-pinboard--bookmarks-between
                    (org-read-date nil t (concat start " 00:00"))
-                   (org-read-date nil t (concat end " 00:00")))))
+                   (org-read-date nil t (concat end " 00:00"))
+                   t)))
       (with-temp-buffer
         (org-mode)
         (org-insert-heading)
