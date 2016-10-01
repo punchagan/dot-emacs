@@ -1689,18 +1689,18 @@ Use org-mode in comments everywhere!
     "Fetches the content for a url."
     (shell-command-to-string (format "/home/punchagan/bin/get_article.py %s" url)))
 
-  (defun pc/get-entry-content (entry)
+  (defun pc/get-entry-content (entry &optional force)
     "Fetches content for pinboard entries that are not tweets."
     (interactive
      (let ((entry elfeed-show-entry))
-       (list entry)))
+       (list entry t)))
 
     (let ((url (elfeed-entry-link entry))
           (feed-id (elfeed-deref (elfeed-entry-feed-id entry)))
           (content (elfeed-deref (elfeed-entry-content entry))))
       (when (and (s-matches? "feeds.pinboard.in/" feed-id)
                  (not (s-matches? "twitter.com/\\|pdf$\\|png$\\|jpg$" url))
-                 (string-equal "" content))
+                 (or force (string-equal "" content)))
         (setq content (pc/get-url-content url))
         (setf (elfeed-entry-content entry) (elfeed-ref content)))))
 
