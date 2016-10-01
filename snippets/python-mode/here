@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: here
+# key: here
+# binding: direct-keybinding
+# --
+from os.path import abspath, dirname, join
+HERE = dirname(abspath(__file__))
