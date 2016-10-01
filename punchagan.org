@@ -582,6 +582,12 @@ Use hippie expand
               (diminish #'beacon-mode " ⯐"))
     :demand t)
 #+END_SRC
+** Browser
+#+BEGIN_SRC emacs-lisp
+  ;; when in i3 xdg-open is not used by emacs
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "chromium-browser")
+#+END_SRC
 * Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
