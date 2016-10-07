@@ -1351,36 +1351,19 @@ Use org-mode in comments everywhere!
 * Language modes
 
 ** Python mode
+*** Use elpy
 #+BEGIN_SRC emacs-lisp
-  ;; Virtual environments
-  (setq python-environment-directory "~/.virtualenvs/")
+  (add-to-list 'package-archives
+               '("elpy" . "https://jorgenschaefer.github.io/packages/"))
 
-  (require 'virtualenvwrapper)
-  (venv-initialize-interactive-shells) ;; if you want interactive shell support
-  (venv-initialize-eshell) ;; if you want eshell support
-  (setq venv-location "~/.virtualenvs")
+  (use-package elpy
+    :ensure t
+    :config (progn
+              (setq elpy-syntax-check-command "~/bin/flake")
+              (pyvenv-workon "hs")
+              (pyvenv-tracking-mode)
+              (elpy-enable)))
 
-  ;; Use hs venv by default.
-  (venv-workon "hs")
-
-  ;; Pyflakes
-  (require 'flycheck-pyflakes)
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (unless (tramp-tramp-file-p (buffer-file-name))
-                (flycheck-mode))))
-  ;; (add-to-list 'flycheck-disabled-checkers 'python-flake8)
-  ;; (add-to-list 'flycheck-disabled-checkers 'python-pylint)
-
-  ;; Cython mode
-  (add-to-list 'auto-mode-alist '("\\.pyx\\'" . cython-mode))
-  (add-to-list 'auto-mode-alist '("\\.pxd\\'" . cython-mode))
-  (add-to-list 'auto-mode-alist '("\\.pxi\\'" . cython-mode))
-
-  ;; jedi support
-  (require 'jedi)
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t)
 #+END_SRC
 
 ** Emacs Lisp mode
