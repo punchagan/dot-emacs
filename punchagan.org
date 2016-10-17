@@ -1349,7 +1349,6 @@ Use org-mode in comments everywhere!
 
 #+END_SRC
 * Language modes
-
 ** Python mode
 *** Use elpy
 #+BEGIN_SRC emacs-lisp
@@ -1423,6 +1422,10 @@ Use org-mode in comments everywhere!
   (use-package hy-mode
     :ensure t
     :config (add-hook 'hy-mode-hook 'enable-paredit-mode))
+#+END_SRC
+** jsx mode
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-mode))
 #+END_SRC
 * Yasnippet
 #+BEGIN_SRC emacs-lisp
