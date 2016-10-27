@@ -1616,7 +1616,10 @@ Use org-mode in comments everywhere!
             (interactive)
             (elfeed)
             (delete-other-windows))
-    :config (setq elfeed-use-curl t)
+    :config
+    (setq elfeed-use-curl t)
+    (setq httpd-host "0.0.0.0")
+    (elfeed-web-start)
     :bind ("C-c f" . pc/elfeed))
 #+END_SRC
 ** elfeed-org
