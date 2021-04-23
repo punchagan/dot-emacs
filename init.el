@@ -251,6 +251,16 @@
 (setq version-control t)
 ;; Emacs backups:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*magit and git related stuff][magit and git related stuff:1]]
+;; Bottom of Emacs will show what branch you're on
+;; and whether the local file is modified or not.
+(use-package magit
+  :config (global-set-key (kbd "C-x g") 'magit-status)
+  :custom 
+  ;; Do not ask about this variable when cloning.
+  (magit-clone-set-remote.pushDefault t))
+;; magit and git related stuff:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)

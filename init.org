@@ -359,6 +359,34 @@ Keep lots of disk space since storage is cheap?
   (setq version-control t)
 #+END_SRC
 
+* Programming
+** magit and git related stuff
+
+For a full tutorial see [[http://jr0cket.co.uk/2012/12/driving-git-with-emacs-pure-magic-with.html.html][jr0cket's blog]].
+
+#+BEGIN_SRC emacs-lisp
+  ;; Bottom of Emacs will show what branch you're on
+  ;; and whether the local file is modified or not.
+  (use-package magit
+    :config (global-set-key (kbd "C-x g") 'magit-status)
+    :custom 
+    ;; Do not ask about this variable when cloning.
+    (magit-clone-set-remote.pushDefault t))
+#+END_SRC
+
+# FIXME: Set ~magit-repository-directories~, or projectile directories
+# to quickly open projects.
+
+I haven't used anything other than ~git~ for a while now, but these
+packages seem like useful tools for other kinds of repositories.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package magit-svn
+    :hook (magit-mode . magit-svn-mode))
+
+  ;; magit for hg
+  (use-package monky)
+#+END_SRC
 
 * Using Emacs from the "outside"
 ** Emacs Anywhere 
