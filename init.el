@@ -1,10 +1,10 @@
 ;;; init.el --- Load the full configuration -*- lexical-binding: t -*-
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Enable%20debug%20if%20required][Enable debug if required:1]]
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Enable debug if required][Enable debug if required:1]]
 ;; (setq debug-on-error t)
 ;; Enable debug if required:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Check%20that%20Emacs%20is%20not%20too%20old][Check that Emacs is not too old:1]]
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Check that Emacs is not too old][Check that Emacs is not too old:1]]
 (let ((minver "25.1"))
   (when (version< emacs-version minver)
     (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
@@ -143,3 +143,34 @@
   (which-key-setup-side-window-bottom)
   (setq which-key-idle-delay 0.5))
 ;; Use ~which-key~ for discovery:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:2]]
+(defun pc/github-conversation-p (window-title)
+  (or (string-match-p "Pull Request #" window-title)
+      (string-match-p "Issue #" window-title)))
+
+(defun pc/ea-popup-handler (app-name window-title x y w h)
+  ;; set major mode
+  (cond
+   ;; ((pc/github-conversation-p window-title) (gfm-mode))
+   ;; default major mode
+   (t (org-mode))))
+;; Emacs Anywhere:2 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
+(use-package emacs-anywhere
+  :defer 5
+  :load-path "fake-packages"
+
+  :ensure-system-package
+  ((xclip . xclip)
+   (xdotool . xdotool)
+   (xwininfo . xwininfo)
+   ;; NOTE: The script itself checks for deps, and installing deps
+   ;; asynchronously may cause the script to fail. Reloading the
+   ;; requirement after other system deps are installed makes it work.
+   ("~/.emacs_anywhere/bin/run" . "curl-bash-install https://raw.github.com/zachcurry/emacs-anywhere/master/install"))
+
+  :config
+  (add-hook 'ea-popup-hook 'pc/ea-popup-handler))
+;; Emacs Anywhere:3 ends here

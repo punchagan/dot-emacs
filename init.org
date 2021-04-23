@@ -218,6 +218,49 @@ missing package)
     (which-key-setup-side-window-bottom)
     (setq which-key-idle-delay 0.5))
 #+END_SRC
+* Using Emacs from the "outside"
+** Emacs Anywhere 
+Add the ability to use Emacs from input area. 
+
+We need to manually configure a keybinding to run
+=~/.emacs_anywhere/bin/run=.
+
+#+BEGIN_SRC emacs-lisp :tangle fake-packages/emacs-anywhere.el :comments link :results none
+  ;; This is a fake package created by us to try to ensure system packages
+  (provide 'emacs-anywhere)
+  ;;; emacs-anywhere ends here
+#+END_SRC 
+
+#+BEGIN_SRC emacs-lisp
+  (defun pc/github-conversation-p (window-title)
+    (or (string-match-p "Pull Request #" window-title)
+        (string-match-p "Issue #" window-title)))
+
+  (defun pc/ea-popup-handler (app-name window-title x y w h)
+    ;; set major mode
+    (cond
+     ;; ((pc/github-conversation-p window-title) (gfm-mode))
+     ;; default major mode
+     (t (org-mode))))
+#+END_SRC 
+
+#+BEGIN_SRC emacs-lisp
+  (use-package emacs-anywhere
+    :defer 5
+    :load-path "fake-packages"
+
+    :ensure-system-package
+    ((xclip . xclip)
+     (xdotool . xdotool)
+     (xwininfo . xwininfo)
+     ;; NOTE: The script itself checks for deps, and installing deps
+     ;; asynchronously may cause the script to fail. Reloading the
+     ;; requirement after other system deps are installed makes it work.
+     ("~/.emacs_anywhere/bin/run" . "curl-bash-install https://raw.github.com/zachcurry/emacs-anywhere/master/install"))
+
+    :config
+    (add-hook 'ea-popup-hook 'pc/ea-popup-handler))
+#+END_SRC
 
 * COMMENT Local Variables
   # Local Variables:
