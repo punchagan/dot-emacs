@@ -414,6 +414,7 @@ We need to manually configure a keybinding to run
 #+END_SRC
 
 * COMMENT Local Variables
-  # Local Variables:
-  # eval: (add-hook 'after-save-hook 'my/make-init-el nil 'local-to-this-file-please)
-  # End:
+# Local Variables:
+# eval: (add-hook 'after-save-hook 'my/make-init-el nil 'local-to-this-file-please)
+# End:
+ 
