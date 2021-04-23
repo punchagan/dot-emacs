@@ -176,6 +176,52 @@
   (counsel-mode 1))
 ;; Completion and Narrowing:2 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Lean UI][Lean UI:1]]
+;; No startup message
+(setq inhibit-startup-message t)
+
+;; No tool-bar, menu-bar and scroll-bar
+(tool-bar-mode   -1)
+(menu-bar-mode   -1)
+(scroll-bar-mode -1)
+
+;; More prominent window divider
+(window-divider-mode 1)
+;; Lean UI:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic Preferences][Basic Preferences:1]]
+;; Basic preferences (taken from purcell)
+(setq-default
+ blink-cursor-interval 0.4
+ bookmark-default-file (expand-file-name ".bookmarks.el" user-emacs-directory)
+ buffers-menu-max-size 30
+ case-fold-search t
+ column-number-mode t
+ indent-tabs-mode nil
+ create-lockfiles nil
+ auto-save-default nil
+ make-backup-files nil
+ mouse-yank-at-point t
+ save-interprogram-paste-before-kill t
+ scroll-preserve-screen-position 'always
+ set-mark-command-repeat-pop t
+ tooltip-delay 1.5
+ truncate-lines nil
+ truncate-partial-width-windows nil)
+;; Basic Preferences:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic Preferences][Basic Preferences:2]]
+(add-hook 'after-init-hook 'delete-selection-mode)
+
+(add-hook 'after-init-hook 'global-auto-revert-mode)
+(setq global-auto-revert-non-file-buffers t
+      auto-revert-verbose nil)
+(with-eval-after-load 'autorevert
+  (diminish 'auto-revert-mode))
+
+(add-hook 'after-init-hook 'transient-mark-mode)
+;; Basic Preferences:2 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
