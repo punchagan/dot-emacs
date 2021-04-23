@@ -42,37 +42,182 @@ to prevent gc from slowing down startup.
               (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
 #+END_SRC
 
-* ~init.el~ file generation
-** The =my/make-init-el= function
-   :PROPERTIES:
-   :CUSTOM_ID: my-make-init-el-function
-   :END:
+** ~init.el~ file generation
+:PROPERTIES:
+:CUSTOM_ID: my-make-init-el-function
+:END:
 
-   We genarate the ~init.el~ file, whenever this file gets saved. We need
-   to save with a prefix argument, though. ~C-u C-x C-s~.
+We genarate the ~init.el~ file, whenever this file gets saved. We need
+to save with a prefix argument, though. ~C-u C-x C-s~.
 
-   #+name: startup-code
-   #+BEGIN_SRC emacs-lisp
-     (defun my/make-init-el ()
-       "Tangle an init.el my init.org."
-       (interactive "P") ;; Places value of universal argument into: current-prefix-arg
-       (when current-prefix-arg
-         (let* ((time      (current-time))
-                (_date     (format-time-string "_%Y-%m-%d"))
-                (init-file (expand-file-name  "init.el"
-                                              (file-name-directory (buffer-file-name)))))
+#+name: startup-code
+#+BEGIN_SRC emacs-lisp
+  (defun my/make-init-el ()
+    "Tangle an init.el my init.org."
+    (interactive "P") ;; Places value of universal argument into: current-prefix-arg
+    (when current-prefix-arg
+      (let* ((time      (current-time))
+             (_date     (format-time-string "_%Y-%m-%d"))
+             (init-file (expand-file-name  "init.el"
+                                           (file-name-directory (buffer-file-name)))))
 
-           ;; Make and load init.el
-           (org-babel-tangle)
-           (load-file init-file)
+        ;; Make and load init.el
+        (org-babel-tangle)
+        (load-file init-file)
 
-           ;; Acknowledgement
-           (message "Tangled, compiled, and loaded init.el … %.06f seconds"
-                    (float-time (time-since time))))))
+        ;; Acknowledgement
+        (message "Tangled, compiled, and loaded init.el … %.06f seconds"
+                 (float-time (time-since time))))))
 
-     ;; Added this as a local variable in the org file, otherwise it doesn't work. :)
-     ;; (add-hook 'after-save-hook 'my/make-init-el nil 'local-to-this-file-please)
-   #+END_SRC
+  ;; Added this as a local variable in the org file, otherwise it doesn't work. :)
+  ;; (add-hook 'after-save-hook 'my/make-init-el nil 'local-to-this-file-please)
+#+END_SRC
+** Basic user information
+#+begin_src emacs-lisp
+  (setq user-full-name    "Puneeth Chaganti"
+        user-mail-address "punchagan@muse-amuse.in")
+#+end_src
+
+For some fun, run this cute method.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (animate-birthday-present user-full-name)
+#+END_SRC
+* Package manager and installation
+** Setup ~package.el~
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+
+  (setq package-archives '(("gnu"       . "http://elpa.gnu.org/packages/")
+                           ("melpa"     . "http://melpa.org/packages/")))
+
+  ;; Update local list of available packages. We don't want to do this
+  ;; on start-up, right?
+  ;; (package-refresh-contents)
+
+  ;; Ensure the installed packages are on load-path
+  (package-initialize)
+#+END_SRC
+** Setup ~use-package~
+
+The declarative configuration tool [[https://github.com/jwiegley/use-package/][use-package]] is a macro/interface
+that manages our packages and the way they interact.
+
+#+BEGIN_SRC emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+
+  ;; ~use-package.el~ is no longer needed at runtime
+  ;; Put the following at the top of your Emacs, to reduce load time:
+  (eval-when-compile
+    (require 'use-package))
+
+  (require 'diminish)
+  (require 'bind-key)
+#+END_SRC
+
+To make the setup bootstrap itself, we use let ~use-package~
+automatically download missing requirements.
+ 
+#+begin_src emacs-lisp
+  (setq use-package-always-ensure t)
+#+end_src
+** Auto update packageset's set up [[https://github.com/rranelli/auto-package-update.el][an auto-update mechanism]].
+#+BEGIN_SRC emacs-lisp
+  (use-package auto-package-update
+    :config
+    ;; Delete residual old versions
+    (setq auto-package-update-delete-old-versions t)
+    ;; Do not bother me when updates have taken place.
+    (setq auto-package-update-hide-results t)
+    ;; Update installed packages at startup if there is an update pending.
+    (auto-package-update-maybe))
+#+END_SRC
+** System packages used from with-in Emacs
+ 
+Sometimes Emacs packages depend on existing system binaries,
+~use-package~ let's us ensure these exist using the
+~:ensure-system-package~ keyword extension. This is a very powerful
+system - see the documentation [[https://github.com/jwiegley/use-package#use-package-ensure-system-package][here]].
+
+This is like ~:ensure t~ but operates at the OS level and uses your
+default OS package manager. But, it can be customized to run specific
+commands for update, etc.
+
+We also run an auto-update for system packages. It happens in the
+background ^_^. After 5 seconds of being idle, after starting up.
+
+#+BEGIN_SRC emacs-lisp
+  ;; Auto installing OS system packages
+  (use-package use-package-ensure-system-package
+    :defer 4
+    ;; Not sure, if I really want this, and may remove it in future. 
+    :config
+    (setq system-packages-package-manager 'apt
+          system-packages-use-sudo t)
+    (system-packages-update))
+
+  ;; Please don't bother me when shell buffer names are in use, just make a new
+  ;; buffer.
+  (setq async-shell-command-buffer 'new-buffer)
+
+  ;; Display the output buffer for asynchronous shell commands only when the
+  ;; command generates output.
+  (setq async-shell-command-display-buffer nil)
+
+  ;; Don't ask me if I want to kill a buffer with a live process attached to it;
+  ;; just kill it please.
+  (setq kill-buffer-query-functions
+        (remq 'process-kill-buffer-query-function
+              kill-buffer-query-functions))
+#+END_SRC
+
+* $PATH and such stuff
+** Setup exec-path 
+To be able to find external programs, we want our ~exec-path~ to be as
+close to ~$PATH~ as possible.
+
+NOTE: When starting emacs from Gnome Shell, the env vars in
+bash_profile are not in the env anyway? May be there's another trick,
+or may be don't start emacs from Gnome Shell?
+
+The block below is left here, because it seems to copy other useful
+things like LANG, etc.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+
+    :config
+    (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE"))
+      (add-to-list 'exec-path-from-shell-variables var))
+
+    (when (or (memq window-system '(mac ns x))
+              (unless (memq system-type '(ms-dos windows-nt))
+                (daemonp)))
+      (exec-path-from-shell-initialize)))
+#+END_SRC
+
+* Editor UI
+** ~diminish~ for modeline indicators
+
+This should probably have automatically come as a dependency of
+~use-package~, but doesn't seem to be. (It should at least warn about
+missing package)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :defer 3 ;; load after 5 seconds of idle time
+
+    :config ;; Let's hide some markers.
+    (diminish 'org-indent-mode))
+#+END_SRC
+** Use ~which-key~ for discovery
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :diminish
+    :config (which-key-mode)
+    (which-key-setup-side-window-bottom)
+    (setq which-key-idle-delay 0.5))
+#+END_SRC
 
 * COMMENT Local Variables
   # Local Variables:
