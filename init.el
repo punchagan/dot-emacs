@@ -222,6 +222,22 @@
 (add-hook 'after-init-hook 'transient-mark-mode)
 ;; Basic Preferences:2 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Large files][Large files:1]]
+(when (fboundp 'so-long-enable)
+  (add-hook 'after-init-hook 'so-long-enable))
+
+;; Use vlf package for very large files
+(use-package vlf)
+
+(defun ffap-vlf ()
+  "Find file at point with VLF."
+  (interactive)
+  (let ((file (ffap-file-at-point)))
+    (unless (file-exists-p file)
+      (error "File does not exist: %s" file))
+    (vlf file)))
+;; Large files:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
