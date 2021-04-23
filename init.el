@@ -144,6 +144,38 @@
   (setq which-key-idle-delay 0.5))
 ;; Use ~which-key~ for discovery:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Completion and Narrowing][Completion and Narrowing:1]]
+(use-package ivy 
+  :diminish
+  :config
+  (ivy-mode 1))
+
+;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+(setq ivy-use-virtual-buffers t)
+
+;; Number of lines to display
+(setq ivy-height 10)
+
+(setq ivy-count-format "[%d/%d] ")
+
+;; no initial regexp by default (see original value using
+;; `describe-variable')
+(setq ivy-initial-inputs-alist nil)
+;; Completion and Narrowing:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Completion and Narrowing][Completion and Narrowing:2]]
+(use-package counsel
+  :diminish
+  :ensure-system-package (ag . silversearcher-ag)
+  :bind*                              ; load when pressed
+  (("C-s"     . swiper)
+   ("C-S-s" . counsel-ag)               ; Use ag to search the repo
+   ("<f1> l"  . counsel-find-library)   ; find an Emacs Lisp library
+   ("<f2> u"  . counsel-unicode-char))  ; insert a unicode symbol using a pop-up
+  :config
+  (counsel-mode 1))
+;; Completion and Narrowing:2 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
