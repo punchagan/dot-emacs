@@ -236,7 +236,7 @@ Hit ~M-o~ to see the available actions in ivy/counsel completion
 buffers! For instance, ~counsel-find-file~ allows copying, deleting or
 renaming files!
 
-#+begin_src emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package ivy 
     :diminish
     :config
@@ -253,7 +253,7 @@ renaming files!
   ;; no initial regexp by default (see original value using
   ;; `describe-variable')
   (setq ivy-initial-inputs-alist nil)
-#+end_src
+#+END_SRC
 
 ~swiper~ is an alternative to Emacs' default incremental search.
  
