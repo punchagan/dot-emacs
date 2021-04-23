@@ -200,7 +200,6 @@
  indent-tabs-mode nil
  create-lockfiles nil
  auto-save-default nil
- make-backup-files nil
  mouse-yank-at-point t
  save-interprogram-paste-before-kill t
  scroll-preserve-screen-position 'always
@@ -237,6 +236,24 @@
       (error "File does not exist: %s" file))
     (vlf file)))
 ;; Large files:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs backups][Emacs backups:1]]
+;; New location for backups.
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name "backups" user-emacs-directory))))
+
+;; Silently delete execess backup versions
+(setq delete-old-versions t)
+
+;; Only keep the last 100 backups of a file.
+(setq kept-old-versions 100)
+
+;; Even version controlled files get to be backed up.
+(setq vc-make-backup-files t)
+
+;; Use version numbers for backup files.
+(setq version-control t)
+;; Emacs backups:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)

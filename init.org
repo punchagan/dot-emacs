@@ -299,7 +299,6 @@ background).
    indent-tabs-mode nil
    create-lockfiles nil
    auto-save-default nil
-   make-backup-files nil
    mouse-yank-at-point t
    save-interprogram-paste-before-kill t
    scroll-preserve-screen-position 'always
@@ -322,6 +321,7 @@ Some more basic preferences which are called in the ~after-init-hook~.
 
   (add-hook 'after-init-hook 'transient-mark-mode)
 #+END_SRC
+
 ** Large files
 
 #+BEGIN_SRC emacs-lisp
@@ -339,6 +339,29 @@ Some more basic preferences which are called in the ~after-init-hook~.
         (error "File does not exist: %s" file))
       (vlf file)))
 #+END_SRC
+
+** Emacs backups
+
+Keep lots of disk space since storage is cheap?
+
+#+BEGIN_SRC emacs-lisp
+  ;; New location for backups.
+  (setq backup-directory-alist
+        `(("." . ,(expand-file-name "backups" user-emacs-directory))))
+
+  ;; Silently delete execess backup versions
+  (setq delete-old-versions t)
+
+  ;; Only keep the last 100 backups of a file.
+  (setq kept-old-versions 100)
+
+  ;; Even version controlled files get to be backed up.
+  (setq vc-make-backup-files t)
+
+  ;; Use version numbers for backup files.
+  (setq version-control t)
+#+END_SRC
+
 
 * Using Emacs from the "outside"
 ** Emacs Anywhere 
