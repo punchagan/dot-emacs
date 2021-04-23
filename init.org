@@ -237,27 +237,6 @@ buffers! For instance, ~counsel-find-file~ allows copying, deleting or
 renaming files!
 
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy 
-    :diminish
-    :config
-    (ivy-mode 1))
-
-  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
-  (setq ivy-use-virtual-buffers t)
-
-  ;; Number of lines to display
-  (setq ivy-height 10)
-
-  (setq ivy-count-format "[%d/%d] ")
-
-  ;; no initial regexp by default (see original value using
-  ;; `describe-variable')
-  (setq ivy-initial-inputs-alist nil)
-#+END_SRC
-
-~swiper~ is an alternative to Emacs' default incremental search.
- 
-#+BEGIN_SRC emacs-lisp
   (use-package counsel
     :diminish
     :ensure-system-package (ag . silversearcher-ag)
@@ -266,9 +245,27 @@ renaming files!
      ("C-S-s" . counsel-ag)               ; Use ag to search the repo
      ("<f1> l"  . counsel-find-library)   ; find an Emacs Lisp library
      ("<f2> u"  . counsel-unicode-char))  ; insert a unicode symbol using a pop-up
+    )
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :diminish
     :config
+    ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+    (setq ivy-use-virtual-buffers t)
+    ;; Number of lines to display
+    (setq ivy-height 10)
+    (setq ivy-count-format "[%d/%d] ")
+    ;; no initial regexp by default (see original value using
+    ;; `describe-variable')
+    (setq ivy-initial-inputs-alist nil)
+    (ivy-mode 1)
     (counsel-mode 1))
 #+END_SRC
+
+~swiper~ is an alternative to Emacs' default incremental search.
+
 ** Lean UI
 
 #+BEGIN_SRC emacs-lisp
