@@ -144,7 +144,7 @@
   (setq which-key-idle-delay 0.5))
 ;; Use ~which-key~ for discovery:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:2]]
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
       (string-match-p "Issue #" window-title)))
@@ -155,12 +155,12 @@
    ;; ((pc/github-conversation-p window-title) (gfm-mode))
    ;; default major mode
    (t (org-mode))))
-;; Emacs Anywhere:2 ends here
+;; Emacs Anywhere:3 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:4]]
 (use-package emacs-anywhere
   :defer 5
-  :load-path "fake-packages"
+  :load-path "fake-lisp"
 
   :ensure-system-package
   ((xclip . xclip)
@@ -173,4 +173,4 @@
 
   :config
   (add-hook 'ea-popup-hook 'pc/ea-popup-handler))
-;; Emacs Anywhere:3 ends here
+;; Emacs Anywhere:4 ends here

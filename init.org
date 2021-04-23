@@ -218,6 +218,15 @@ missing package)
     (which-key-setup-side-window-bottom)
     (setq which-key-idle-delay 0.5))
 #+END_SRC
+** Restore previous session
+The following is disabled. I found it a nuisance to have my files open
+across sessions. If I'm closing Emacs, it's for a good reason.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; Keep open files open across sessions.
+  (desktop-save-mode 1)
+  (setq desktop-restore-eager 10)
+#+END_SRC
 * Using Emacs from the "outside"
 ** Emacs Anywhere 
 Add the ability to use Emacs from input area. 
@@ -225,7 +234,13 @@ Add the ability to use Emacs from input area.
 We need to manually configure a keybinding to run
 =~/.emacs_anywhere/bin/run=.
 
-#+BEGIN_SRC emacs-lisp :tangle fake-packages/emacs-anywhere.el :comments link :results none
+#+BEGIN_SRC text :tangle fake-lisp/README.md :results none :comments none
+  This directory contains fake packages that we create to be able to use
+  the `use-package` and it's wonderful `:ensure-system-package`
+  functionality.
+#+END_SRC 
+
+#+BEGIN_SRC emacs-lisp :tangle fake-lisp/emacs-anywhere.el :comments link :results none
   ;; This is a fake package created by us to try to ensure system packages
   (provide 'emacs-anywhere)
   ;;; emacs-anywhere ends here
@@ -247,7 +262,7 @@ We need to manually configure a keybinding to run
 #+BEGIN_SRC emacs-lisp
   (use-package emacs-anywhere
     :defer 5
-    :load-path "fake-packages"
+    :load-path "fake-lisp"
 
     :ensure-system-package
     ((xclip . xclip)
