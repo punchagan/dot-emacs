@@ -252,14 +252,77 @@
 ;; Emacs backups:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*magit and git related stuff][magit and git related stuff:1]]
-;; Bottom of Emacs will show what branch you're on
-;; and whether the local file is modified or not.
 (use-package magit
-  :config (global-set-key (kbd "C-x g") 'magit-status)
-  :custom 
+  :bind ("C-x g" . magit-status)
+  :custom
+  ;; Show word diffs for current hunk
+  (magit-diff-refine-hunk t)
   ;; Do not ask about this variable when cloning.
   (magit-clone-set-remote.pushDefault t))
 ;; magit and git related stuff:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Git helpers][Git helpers:1]]
+;; Incremental blame?
+(use-package git-blamed
+  :defer t)
+
+;; Major mode to edit git ignore files
+(use-package gitignore-mode
+  :defer t)
+
+;; Major mode to edit git config files
+(use-package gitconfig-mode
+  :defer t)
+
+;; Highlight diffs
+(use-package diff-hl
+  :defer
+  :config
+  (global-diff-hl-mode))
+;; Git helpers:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Magit helpers][Magit helpers:1]]
+(use-package magit-todos)
+;; Magit helpers:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*GitHub helpers][GitHub helpers:1]]
+;; More generic is “browse-at-remote”.
+;; Not very useful, if we have git-link?
+;; (use-package github-browse-file :defer t)
+
+;; Link to specific parts of a file
+(use-package git-link :defer t)
+
+;; Gists from Emacs
+(use-package yagist :defer t)
+
+;; Turn references to PRs/Issues to clickable links
+;; PR emacs/2 (Only the number is used -- emacs is ignored)
+;; Bug 2 also works
+(use-package bug-reference-github
+  :hook
+  (prog-mode . bug-reference-github-set-url-format))
+
+(use-package github-review :defer t)
+;; GitHub helpers:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*TODOs highlighting][TODOs highlighting:1]]
+;; NOTE that the highlighting works even in comments.
+(use-package hl-todo
+  ;; I want todo-words highlighted in prose, not just in code fragements.
+  :hook (org-mode . hl-todo-mode)
+  :config
+  ;; Enable it everywhere.
+  (global-hl-todo-mode))
+;; TODOs highlighting:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*TODOs highlighting][TODOs highlighting:2]]
+(use-package magit-todos
+  :after magit
+  :after hl-todo
+  :config
+  (magit-todos-mode))
+;; TODOs highlighting:2 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)

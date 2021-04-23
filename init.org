@@ -365,11 +365,11 @@ Keep lots of disk space since storage is cheap?
 For a full tutorial see [[http://jr0cket.co.uk/2012/12/driving-git-with-emacs-pure-magic-with.html.html][jr0cket's blog]].
 
 #+BEGIN_SRC emacs-lisp
-  ;; Bottom of Emacs will show what branch you're on
-  ;; and whether the local file is modified or not.
   (use-package magit
-    :config (global-set-key (kbd "C-x g") 'magit-status)
-    :custom 
+    :bind ("C-x g" . magit-status)
+    :custom
+    ;; Show word diffs for current hunk
+    (magit-diff-refine-hunk t)
     ;; Do not ask about this variable when cloning.
     (magit-clone-set-remote.pushDefault t))
 #+END_SRC
@@ -377,6 +377,69 @@ For a full tutorial see [[http://jr0cket.co.uk/2012/12/driving-git-with-emacs-pu
 # FIXME: Set ~magit-repository-directories~, or projectile directories
 # to quickly open projects.
 
+*** Git helpers
+#+BEGIN_SRC emacs-lisp
+  ;; Incremental blame?
+  (use-package git-blamed
+    :defer t)
+
+  ;; Major mode to edit git ignore files
+  (use-package gitignore-mode
+    :defer t)
+
+  ;; Major mode to edit git config files
+  (use-package gitconfig-mode
+    :defer t)
+
+  ;; Highlight diffs
+  (use-package diff-hl
+    :defer
+    :config
+    (global-diff-hl-mode))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  ;; NOTE: DISABLED because I don't really like the pop-ups, and prefer magit blame!
+  ;; M-x git-messenger:popup-message
+  (use-package git-messenger
+    :custom
+    ;; Always show who authored the commit and when.
+    (git-messenger:show-detail t)
+    ;; Message menu let's us use magit diff to see the commit change.
+    (git-messenger:use-magit-popup t))
+#+END_SRC
+
+*** Magit helpers
+#+BEGIN_SRC emacs-lisp
+  (use-package magit-todos)
+#+END_SRC
+
+*** GitHub helpers
+
+Get links/browse the file/commit on GitHub.
+
+#+BEGIN_SRC emacs-lisp
+  ;; More generic is “browse-at-remote”.
+  ;; Not very useful, if we have git-link?
+  ;; (use-package github-browse-file :defer t)
+
+  ;; Link to specific parts of a file
+  (use-package git-link :defer t)
+
+  ;; Gists from Emacs
+  (use-package yagist :defer t)
+
+  ;; Turn references to PRs/Issues to clickable links
+  ;; PR emacs/2 (Only the number is used -- emacs is ignored)
+  ;; Bug 2 also works
+  (use-package bug-reference-github
+    :hook
+    (prog-mode . bug-reference-github-set-url-format))
+
+  (use-package github-review :defer t)
+#+END_SRC
+
+*** For other VCS
 I haven't used anything other than ~git~ for a while now, but these
 packages seem like useful tools for other kinds of repositories.
 
@@ -386,6 +449,30 @@ packages seem like useful tools for other kinds of repositories.
 
   ;; magit for hg
   (use-package monky)
+#+END_SRC
+
+** TODOs highlighting
+
+Global TODOs highlighting
+
+#+BEGIN_SRC emacs-lisp
+  ;; NOTE that the highlighting works even in comments.
+  (use-package hl-todo
+    ;; I want todo-words highlighted in prose, not just in code fragements.
+    :hook (org-mode . hl-todo-mode)
+    :config
+    ;; Enable it everywhere.
+    (global-hl-todo-mode))
+#+END_SRC
+
+Show TODO keywords in magit status buffer!
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit-todos
+    :after magit
+    :after hl-todo
+    :config
+    (magit-todos-mode))
 #+END_SRC
 
 * Using Emacs from the "outside"
