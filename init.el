@@ -22,26 +22,31 @@
 ;; gc-thresholds ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::startup-code][startup-code]]
-(defun pc/make-init-el (&optional arg)
-  "Tangle an init.el my init.org."
-  (interactive "P")
-  (when arg
-    (let* ((time      (current-time))
-           (_date     (format-time-string "_%Y-%m-%d"))
-           (init-file (expand-file-name  "init.el"
-                                         (file-name-directory (buffer-file-name)))))
+(defun pc/load-init-el ()
+  "Load the init.el file."
+  (interactive)
+  (let* ((time (current-time))
+         (init-file (expand-file-name
+                     "init.el"
+                     (file-name-directory (buffer-file-name)))))
 
       ;; Make and load init.el
       (org-babel-tangle)
+      ;; NOTE: Loading the init file doesn't work well...
+      ;; We just tangle the file on save, and leave it at that. This
+      ;; utility is left around, in case we occasionally chosee to
+      ;; load the file manually. Ideally, when we are happy with the
+      ;; config, we should just start a new Emacs instance.
       (setq pc/loading-tangled-init-p t)
       (load-file init-file)
 
       ;; Acknowledgement
-      (message "Tangled, compiled, and loaded init.el … %.06f seconds"
-               (float-time (time-since time))))))
+      (message
+       "Tangled, compiled, and loaded init.el … %.06f seconds. Restart Emacs if things get weird..."
+       (float-time (time-since time)))))
 
-;; Added this as a local variable in the org file, otherwise it doesn't work. :)
-;; (add-hook 'after-save-hook 'my/make-init-el nil 'local-to-this-file-please)
+;; Added this as a local variable in the org file
+;; (add-hook 'after-save-hook 'org-babel-tangle nil 'local-to-this-file-please)
 ;; startup-code ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic user information][Basic user information:1]]
