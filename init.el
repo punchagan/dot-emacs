@@ -159,6 +159,7 @@
  buffers-menu-max-size 30
  case-fold-search t
  column-number-mode t
+ confirm-kill-emacs 'y-or-n-p
  indent-tabs-mode nil
  create-lockfiles nil
  auto-save-default nil
