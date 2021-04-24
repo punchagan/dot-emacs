@@ -5,3 +5,4 @@
 /backups/
 /transient/
 *.sqlite
+/quotes.json
