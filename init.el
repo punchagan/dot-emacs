@@ -133,50 +133,6 @@
 (setq auth-sources '("~/.authinfo.gpg"))
 ;; Use authinfo gpg file:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*~diminish~ for modeline indicators][~diminish~ for modeline indicators:1]]
-(use-package diminish
-  :defer 3 ;; load after 5 seconds of idle time
-
-  :config ;; Let's hide some markers.
-  (diminish 'org-indent-mode))
-;; ~diminish~ for modeline indicators:1 ends here
-
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Use ~which-key~ for discovery][Use ~which-key~ for discovery:1]]
-(use-package which-key
-  :diminish
-  :config (which-key-mode)
-  (which-key-setup-side-window-bottom)
-  (setq which-key-idle-delay 0.5))
-;; Use ~which-key~ for discovery:1 ends here
-
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Completion and Narrowing][Completion and Narrowing:1]]
-(use-package counsel
-  :diminish
-  :ensure-system-package (ag . silversearcher-ag)
-  :bind*                              ; load when pressed
-  (("C-s"     . swiper)
-   ("C-S-s" . counsel-ag)               ; Use ag to search the repo
-   ("<f1> l"  . counsel-find-library)   ; find an Emacs Lisp library
-   ("<f2> u"  . counsel-unicode-char))  ; insert a unicode symbol using a pop-up
-  )
-;; Completion and Narrowing:1 ends here
-
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Completion and Narrowing][Completion and Narrowing:2]]
-(use-package ivy
-  :diminish
-  :config
-  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
-  (setq ivy-use-virtual-buffers t)
-  ;; Number of lines to display
-  (setq ivy-height 10)
-  (setq ivy-count-format "[%d/%d] ")
-  ;; no initial regexp by default (see original value using
-  ;; `describe-variable')
-  (setq ivy-initial-inputs-alist nil)
-  (ivy-mode 1)
-  (counsel-mode 1))
-;; Completion and Narrowing:2 ends here
-
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Lean UI][Lean UI:1]]
 ;; No startup message
 (setq inhibit-startup-message t)
@@ -226,6 +182,87 @@
 (add-hook 'after-init-hook 'transient-mark-mode)
 ;; Basic Preferences:2 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Fill column indicator][Fill column indicator:1]]
+(when (boundp 'display-fill-column-indicator)
+  (setq-default indicate-buffer-boundaries 'left)
+  (setq-default display-fill-column-indicator-character ?│)
+  (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode))
+;; Fill column indicator:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*~diminish~ for modeline indicators][~diminish~ for modeline indicators:1]]
+(use-package diminish
+  :defer 3 ;; load after 5 seconds of idle time
+
+  :config ;; Let's hide some markers.
+  (diminish 'org-indent-mode))
+;; ~diminish~ for modeline indicators:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Use ~which-key~ for discovery][Use ~which-key~ for discovery:1]]
+(use-package which-key
+  :diminish
+  :config (which-key-mode)
+  (which-key-setup-side-window-bottom)
+  (setq which-key-idle-delay 0.5))
+;; Use ~which-key~ for discovery:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Completion and Narrowing][Completion and Narrowing:1]]
+(use-package counsel
+  :diminish
+  :ensure-system-package (ag . silversearcher-ag)
+  :bind*                              ; load when pressed
+  (("C-s"     . swiper)
+   ("C-S-s" . counsel-ag)               ; Use ag to search the repo
+   ("<f1> l"  . counsel-find-library)   ; find an Emacs Lisp library
+   ("<f2> u"  . counsel-unicode-char))  ; insert a unicode symbol using a pop-up
+  )
+;; Completion and Narrowing:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Completion and Narrowing][Completion and Narrowing:2]]
+(use-package ivy
+  :diminish
+  :config
+  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+  (setq ivy-use-virtual-buffers t)
+  ;; Number of lines to display
+  (setq ivy-height 10)
+  (setq ivy-count-format "[%d/%d] ")
+  ;; no initial regexp by default (see original value using
+  ;; `describe-variable')
+  (setq ivy-initial-inputs-alist nil)
+  (ivy-mode 1)
+  (counsel-mode 1))
+;; Completion and Narrowing:2 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Symbol overlays][Symbol overlays:1]]
+(use-package symbol-overlay
+  :defer t
+  :diminish t
+  :hook
+  (prog-mode . symbol-overlay-mode)
+  (html-mode . symbol-overlay-mode)
+  (yaml-mode . symbol-overlay-mode)
+  (conf-mode . symbol-overlay-mode)
+  :bind (:map symbol-overlay-mode-map
+              ("M-i" . symbol-overlay-put)
+              ("M-I" . symbol-overlay-remove-all)
+              ("M-n" . symbol-overlay-jump-next)
+              ("M-p" . symbol-overlay-jump-prev)))
+;; Symbol overlays:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Rainbow delimiters][Rainbow delimiters:1]]
+(use-package rainbow-delimiters
+  :defer t
+  :diminish t
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+;; Rainbow delimiters:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Subword and super-word modes][Subword and super-word modes:1]]
+(with-eval-after-load 'subword
+  (diminish 'subword-mode)
+  (diminish 'superword-mode))
+;; Subword and super-word modes:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Large files][Large files:1]]
 (when (fboundp 'so-long-enable)
   (add-hook 'after-init-hook 'so-long-enable))
@@ -259,43 +296,6 @@
 ;; Use version numbers for backup files.
 (setq version-control t)
 ;; Emacs backups:1 ends here
-
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Fill column indicator][Fill column indicator:1]]
-(when (boundp 'display-fill-column-indicator)
-  (setq-default indicate-buffer-boundaries 'left)
-  (setq-default display-fill-column-indicator-character ?│)
-  (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode))
-;; Fill column indicator:1 ends here
-
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Symbol overlays][Symbol overlays:1]]
-(use-package symbol-overlay
-  :defer t
-  :diminish t
-  :hook
-  (prog-mode . symbol-overlay-mode)
-  (html-mode . symbol-overlay-mode)
-  (yaml-mode . symbol-overlay-mode)
-  (conf-mode . symbol-overlay-mode)
-  :bind (:map symbol-overlay-mode-map
-              ("M-i" . symbol-overlay-put)
-              ("M-I" . symbol-overlay-remove-all)
-              ("M-n" . symbol-overlay-jump-next)
-              ("M-p" . symbol-overlay-jump-prev)))
-;; Symbol overlays:1 ends here
-
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Rainbow delimiters][Rainbow delimiters:1]]
-(use-package rainbow-delimiters
-  :defer t
-  :diminish t
-  :hook
-  (prog-mode . rainbow-delimiters-mode))
-;; Rainbow delimiters:1 ends here
-
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Subword and super-word modes][Subword and super-word modes:1]]
-(with-eval-after-load 'subword
-  (diminish 'subword-mode)
-  (diminish 'superword-mode))
-;; Subword and super-word modes:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*magit and git related stuff][magit and git related stuff:1]]
 (use-package magit

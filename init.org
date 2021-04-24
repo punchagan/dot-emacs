@@ -202,6 +202,71 @@ things like LANG, etc.
 #+END_SRC
 
 * Editor UI & Behavior
+** Lean UI
+
+#+BEGIN_SRC emacs-lisp
+  ;; No startup message
+  (setq inhibit-startup-message t)
+
+  (setq-default
+   initial-scratch-message
+   (format ";; Happy hacking, %s - Emacs ♥ you!\n\n" user-login-name))
+
+  ;; No tool-bar, menu-bar and scroll-bar
+  (tool-bar-mode   -1)
+  (menu-bar-mode   -1)
+  (scroll-bar-mode -1)
+
+  ;; More prominent window divider
+  (window-divider-mode 1)
+#+END_SRC
+** Basic Preferences
+
+Miscellaneous basic preferences for basic editor actions (foreground &
+background).
+
+#+BEGIN_SRC emacs-lisp
+  ;; Basic preferences (taken from purcell)
+  (setq-default
+   blink-cursor-interval 0.4
+   bookmark-default-file (expand-file-name ".bookmarks.el" user-emacs-directory)
+   buffers-menu-max-size 30
+   case-fold-search t
+   column-number-mode t
+   indent-tabs-mode nil
+   create-lockfiles nil
+   auto-save-default nil
+   mouse-yank-at-point t
+   save-interprogram-paste-before-kill t
+   scroll-preserve-screen-position 'always
+   set-mark-command-repeat-pop t
+   tooltip-delay 1.5
+   truncate-lines nil
+   truncate-partial-width-windows nil)
+#+END_SRC
+
+Some more basic preferences which are called in the ~after-init-hook~.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook 'delete-selection-mode)
+
+  (add-hook 'after-init-hook 'global-auto-revert-mode)
+  (setq global-auto-revert-non-file-buffers t
+        auto-revert-verbose nil)
+  (with-eval-after-load 'autorevert
+    (diminish 'auto-revert-mode))
+
+  (add-hook 'after-init-hook 'transient-mark-mode)
+#+END_SRC
+
+** Fill column indicator
+#+BEGIN_SRC emacs-lisp
+  (when (boundp 'display-fill-column-indicator)
+    (setq-default indicate-buffer-boundaries 'left)
+    (setq-default display-fill-column-indicator-character ?│)
+    (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode))
+#+END_SRC
+
 ** ~diminish~ for modeline indicators
 
 This should probably have automatically come as a dependency of
@@ -271,61 +336,37 @@ renaming files!
 
 ~swiper~ is an alternative to Emacs' default incremental search.
 
-** Lean UI
-
+** Symbol overlays
 #+BEGIN_SRC emacs-lisp
-  ;; No startup message
-  (setq inhibit-startup-message t)
-
-  (setq-default
-   initial-scratch-message
-   (format ";; Happy hacking, %s - Emacs ♥ you!\n\n" user-login-name))
-
-  ;; No tool-bar, menu-bar and scroll-bar
-  (tool-bar-mode   -1)
-  (menu-bar-mode   -1)
-  (scroll-bar-mode -1)
-
-  ;; More prominent window divider
-  (window-divider-mode 1)
-#+END_SRC
-** Basic Preferences
-
-Miscellaneous basic preferences for basic editor actions (foreground &
-background).
-
-#+BEGIN_SRC emacs-lisp
-  ;; Basic preferences (taken from purcell)
-  (setq-default
-   blink-cursor-interval 0.4
-   bookmark-default-file (expand-file-name ".bookmarks.el" user-emacs-directory)
-   buffers-menu-max-size 30
-   case-fold-search t
-   column-number-mode t
-   indent-tabs-mode nil
-   create-lockfiles nil
-   auto-save-default nil
-   mouse-yank-at-point t
-   save-interprogram-paste-before-kill t
-   scroll-preserve-screen-position 'always
-   set-mark-command-repeat-pop t
-   tooltip-delay 1.5
-   truncate-lines nil
-   truncate-partial-width-windows nil)
+  (use-package symbol-overlay
+    :defer t
+    :diminish t
+    :hook
+    (prog-mode . symbol-overlay-mode)
+    (html-mode . symbol-overlay-mode)
+    (yaml-mode . symbol-overlay-mode)
+    (conf-mode . symbol-overlay-mode)
+    :bind (:map symbol-overlay-mode-map
+                ("M-i" . symbol-overlay-put)
+                ("M-I" . symbol-overlay-remove-all)
+                ("M-n" . symbol-overlay-jump-next)
+                ("M-p" . symbol-overlay-jump-prev)))
 #+END_SRC
 
-Some more basic preferences which are called in the ~after-init-hook~.
-
+** Rainbow delimiters
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook 'delete-selection-mode)
+  (use-package rainbow-delimiters
+    :defer t
+    :diminish t
+    :hook
+    (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
 
-  (add-hook 'after-init-hook 'global-auto-revert-mode)
-  (setq global-auto-revert-non-file-buffers t
-        auto-revert-verbose nil)
-  (with-eval-after-load 'autorevert
-    (diminish 'auto-revert-mode))
-
-  (add-hook 'after-init-hook 'transient-mark-mode)
+** Subword and super-word modes
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'subword
+    (diminish 'subword-mode)
+    (diminish 'superword-mode))
 #+END_SRC
 
 ** Large files
@@ -373,47 +414,6 @@ backups.
 
   ;; Use version numbers for backup files.
   (setq version-control t)
-#+END_SRC
-
-** Fill column indicator
-#+BEGIN_SRC emacs-lisp
-  (when (boundp 'display-fill-column-indicator)
-    (setq-default indicate-buffer-boundaries 'left)
-    (setq-default display-fill-column-indicator-character ?│)
-    (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode))
-#+END_SRC
-
-** Symbol overlays
-#+BEGIN_SRC emacs-lisp
-  (use-package symbol-overlay
-    :defer t
-    :diminish t
-    :hook
-    (prog-mode . symbol-overlay-mode)
-    (html-mode . symbol-overlay-mode)
-    (yaml-mode . symbol-overlay-mode)
-    (conf-mode . symbol-overlay-mode)
-    :bind (:map symbol-overlay-mode-map
-                ("M-i" . symbol-overlay-put)
-                ("M-I" . symbol-overlay-remove-all)
-                ("M-n" . symbol-overlay-jump-next)
-                ("M-p" . symbol-overlay-jump-prev)))
-#+END_SRC
-
-** Rainbow delimiters
-#+BEGIN_SRC emacs-lisp
-  (use-package rainbow-delimiters
-    :defer t
-    :diminish t
-    :hook
-    (prog-mode . rainbow-delimiters-mode))
-#+END_SRC
-
-** Subword and super-word modes
-#+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'subword
-    (diminish 'subword-mode)
-    (diminish 'superword-mode))
 #+END_SRC
 
 * Programming
