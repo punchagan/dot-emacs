@@ -121,7 +121,7 @@ automatically download missing requirements.
 #+begin_src emacs-lisp
   (setq use-package-always-ensure t)
 #+end_src
-** Auto update packageset's set up [[https://github.com/rranelli/auto-package-update.el][an auto-update mechanism]].
+** Auto update package
 #+BEGIN_SRC emacs-lisp
   (use-package auto-package-update
     :config
@@ -143,18 +143,19 @@ This is like ~:ensure t~ but operates at the OS level and uses your
 default OS package manager. But, it can be customized to run specific
 commands for update, etc.
 
-We also run an auto-update for system packages. It happens in the
-background ^_^. After 5 seconds of being idle, after starting up.
+We also run an auto-update for system packages, after an update for
+Emacs packages is done ^_^.
 
 #+BEGIN_SRC emacs-lisp
   ;; Auto installing OS system packages
   (use-package use-package-ensure-system-package
     :defer 4
-    ;; Not sure, if I really want this, and may remove it in future. 
+
     :config
     (setq system-packages-package-manager 'apt
           system-packages-use-sudo t)
-    (system-packages-update))
+    :hook
+    (auto-package-update-before . system-packages-update))
 
   ;; Please don't bother me when shell buffer names are in use, just make a new
   ;; buffer.

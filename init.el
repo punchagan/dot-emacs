@@ -79,7 +79,7 @@
 (setq use-package-always-ensure t)
 ;; Setup ~use-package~:2 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Auto update packageset's set up [[https://github.com/rranelli/auto-package-update.el\][an auto-update mechanism\]].][Auto update packageset's set up [[https://github.com/rranelli/auto-package-update.el][an auto-update mechanism]].:1]]
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Auto update package][Auto update package:1]]
 (use-package auto-package-update
   :config
   ;; Delete residual old versions
@@ -88,17 +88,18 @@
   (setq auto-package-update-hide-results t)
   ;; Update installed packages at startup if there is an update pending.
   (auto-package-update-maybe))
-;; Auto update packageset's set up [[https://github.com/rranelli/auto-package-update.el][an auto-update mechanism]].:1 ends here
+;; Auto update package:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*System packages used from with-in Emacs][System packages used from with-in Emacs:1]]
 ;; Auto installing OS system packages
 (use-package use-package-ensure-system-package
   :defer 4
-  ;; Not sure, if I really want this, and may remove it in future. 
+
   :config
   (setq system-packages-package-manager 'apt
         system-packages-use-sudo t)
-  (system-packages-update))
+  :hook
+  (auto-package-update-before . system-packages-update))
 
 ;; Please don't bother me when shell buffer names are in use, just make a new
 ;; buffer.
