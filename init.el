@@ -22,10 +22,10 @@
 ;; gc-thresholds ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::startup-code][startup-code]]
-(defun pc/make-init-el ()
+(defun pc/make-init-el (&optional arg)
   "Tangle an init.el my init.org."
-  (interactive "P") ;; Places value of universal argument into: current-prefix-arg
-  (when current-prefix-arg
+  (interactive "P")
+  (when arg
     (let* ((time      (current-time))
            (_date     (format-time-string "_%Y-%m-%d"))
            (init-file (expand-file-name  "init.el"
