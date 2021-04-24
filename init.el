@@ -184,6 +184,15 @@
 (add-hook 'after-init-hook 'transient-mark-mode)
 ;; Basic Preferences:2 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic Preferences][Basic Preferences:3]]
+;; change all prompts to y or n
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Enable all ‘possibly confusing commands’ such as helpful but
+;; initially-worrisome “narrow-to-region”, C-x n n.
+(setq-default disabled-command-function nil)
+;; Basic Preferences:3 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Fill column indicator][Fill column indicator:1]]
 (when (boundp 'display-fill-column-indicator)
   (setq-default indicate-buffer-boundaries 'left)

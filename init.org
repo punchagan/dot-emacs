@@ -261,6 +261,17 @@ Some more basic preferences which are called in the ~after-init-hook~.
   (add-hook 'after-init-hook 'transient-mark-mode)
 #+END_SRC
 
+Let's save a few precious seconds
+
+#+begin_src emacs-lisp
+;; change all prompts to y or n
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; Enable all ‘possibly confusing commands’ such as helpful but
+;; initially-worrisome “narrow-to-region”, C-x n n.
+(setq-default disabled-command-function nil)
+#+end_src
+
 ** Fill column indicator
 #+BEGIN_SRC emacs-lisp
   (when (boundp 'display-fill-column-indicator)
