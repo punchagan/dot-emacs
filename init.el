@@ -22,6 +22,18 @@
 ;; gc-thresholds ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::startup-code][startup-code]]
+(defun pc/tangle-init-el ()
+  "Tangle the file to update init.el file."
+  (interactive "P")
+  (let* ((time (current-time)))
+    (when current-prefix-arg
+      ;; Make and load init.el
+      (org-babel-tangle)
+      ;; Acknowledgement
+      (message
+       "Tangled  init.el … %.06f seconds."
+       (float-time (time-since time))))))
+
 (defun pc/load-init-el ()
   "Load the init.el file."
   (interactive)
