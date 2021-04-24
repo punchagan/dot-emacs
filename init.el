@@ -180,6 +180,10 @@
 ;; No startup message
 (setq inhibit-startup-message t)
 
+(setq-default
+ initial-scratch-message
+ (format ";; Happy hacking, %s - Emacs ♥ you!\n\n" user-login-name))
+
 ;; No tool-bar, menu-bar and scroll-bar
 (tool-bar-mode   -1)
 (menu-bar-mode   -1)
