@@ -128,6 +128,10 @@
     (exec-path-from-shell-initialize)))
 ;; Setup exec-path:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Use authinfo gpg file][Use authinfo gpg file:1]]
+(setq auth-sources '("~/.authinfo.gpg"))
+;; Use authinfo gpg file:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*~diminish~ for modeline indicators][~diminish~ for modeline indicators:1]]
 (use-package diminish
   :defer 3 ;; load after 5 seconds of idle time
@@ -304,6 +308,8 @@
   (prog-mode . bug-reference-github-set-url-format))
 
 (use-package github-review :defer t)
+
+(use-package forge :after magit)
 ;; GitHub helpers:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*TODOs highlighting][TODOs highlighting:1]]

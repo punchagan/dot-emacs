@@ -195,6 +195,10 @@ things like LANG, etc.
                 (daemonp)))
       (exec-path-from-shell-initialize)))
 #+END_SRC
+** Use authinfo gpg file
+#+BEGIN_SRC emacs-lisp
+  (setq auth-sources '("~/.authinfo.gpg"))
+#+END_SRC
 
 * Editor UI & Behavior
 ** ~diminish~ for modeline indicators
@@ -437,6 +441,8 @@ Get links/browse the file/commit on GitHub.
     (prog-mode . bug-reference-github-set-url-format))
 
   (use-package github-review :defer t)
+
+  (use-package forge :after magit)
 #+END_SRC
 
 *** For other VCS
