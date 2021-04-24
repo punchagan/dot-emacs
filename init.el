@@ -157,11 +157,12 @@
          (source (cdr (assoc 'source q))))
     (format "%s -- %s" text source)))
 
-(setq pc/quotes-timer
-      (run-with-idle-timer
-       300
-       'repeat-forever
-       (lambda () (message (pc/get-random-quote)))))
+(unless (boundp 'pc/quotes-timer)
+  (setq pc/quotes-timer
+        (run-with-idle-timer
+         300
+         'repeat-forever
+         (lambda () (message (pc/get-random-quote))))))
 ;; Random Quote:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Lean UI][Lean UI:1]]

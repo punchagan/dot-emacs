@@ -228,11 +228,12 @@ Show a random quote when Emacs is idle for 5 minutes
            (source (cdr (assoc 'source q))))
       (format "%s -- %s" text source)))
 
-  (setq pc/quotes-timer
-        (run-with-idle-timer
-         300
-         'repeat-forever
-         (lambda () (message (pc/get-random-quote)))))
+  (unless (boundp 'pc/quotes-timer)
+    (setq pc/quotes-timer
+          (run-with-idle-timer
+           300
+           'repeat-forever
+           (lambda () (message (pc/get-random-quote))))))
 #+END_SRC
 ** Lean UI
 #+BEGIN_SRC emacs-lisp
