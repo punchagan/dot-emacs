@@ -347,7 +347,15 @@ Some more basic preferences which are called in the ~after-init-hook~.
 #+END_SRC
 
 ** Emacs backups
-Keep lots of disk space since storage is cheap?
+
+Emacs only saves backups on the first save, an not every save. One
+could set ~buffer-backed-up~ to ~nil~ on the ~before-save-hook~, to
+trigger a backup on each save.
+
+There's also a ~backup-walker~ package that may be useful, if we are
+into back-ups a lot. But, currently, almost everything that I work on,
+is in ~git~ and it doesn't seem super useful to have so much setup for
+backups.
 
 #+BEGIN_SRC emacs-lisp
   ;; New location for backups.
@@ -357,8 +365,8 @@ Keep lots of disk space since storage is cheap?
   ;; Silently delete execess backup versions
   (setq delete-old-versions t)
 
-  ;; Only keep the last 100 backups of a file.
-  (setq kept-old-versions 100)
+  ;; Only keep the last 3 backups of a file.
+  (setq kept-old-versions 3)
 
   ;; Even version controlled files get to be backed up.
   (setq vc-make-backup-files t)

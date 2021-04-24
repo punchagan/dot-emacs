@@ -250,8 +250,8 @@
 ;; Silently delete execess backup versions
 (setq delete-old-versions t)
 
-;; Only keep the last 100 backups of a file.
-(setq kept-old-versions 100)
+;; Only keep the last 3 backups of a file.
+(setq kept-old-versions 3)
 
 ;; Even version controlled files get to be backed up.
 (setq vc-make-backup-files t)
