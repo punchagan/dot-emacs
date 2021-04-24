@@ -255,6 +255,43 @@
 (setq version-control t)
 ;; Emacs backups:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Fill column indicator][Fill column indicator:1]]
+(when (boundp 'display-fill-column-indicator)
+  (setq-default indicate-buffer-boundaries 'left)
+  (setq-default display-fill-column-indicator-character ?│)
+  (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode))
+;; Fill column indicator:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Symbol overlays][Symbol overlays:1]]
+(use-package symbol-overlay
+  :defer t
+  :diminish t
+  :hook
+  (prog-mode . symbol-overlay-mode)
+  (html-mode . symbol-overlay-mode)
+  (yaml-mode . symbol-overlay-mode)
+  (conf-mode . symbol-overlay-mode)
+  :bind (:map symbol-overlay-mode-map
+              ("M-i" . symbol-overlay-put)
+              ("M-I" . symbol-overlay-remove-all)
+              ("M-n" . symbol-overlay-jump-next)
+              ("M-p" . symbol-overlay-jump-prev)))
+;; Symbol overlays:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Rainbow delimiters][Rainbow delimiters:1]]
+(use-package rainbow-delimiters
+  :defer t
+  :diminish t
+  :hook
+  (prog-mode . rainbow-delimiters-mode))
+;; Rainbow delimiters:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Subword and super-word modes][Subword and super-word modes:1]]
+(with-eval-after-load 'subword
+  (diminish 'subword-mode)
+  (diminish 'superword-mode))
+;; Subword and super-word modes:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*magit and git related stuff][magit and git related stuff:1]]
 (use-package magit
   :bind ("C-x g" . magit-status)

@@ -342,7 +342,6 @@ Some more basic preferences which are called in the ~after-init-hook~.
 #+END_SRC
 
 ** Emacs backups
-
 Keep lots of disk space since storage is cheap?
 
 #+BEGIN_SRC emacs-lisp
@@ -361,6 +360,47 @@ Keep lots of disk space since storage is cheap?
 
   ;; Use version numbers for backup files.
   (setq version-control t)
+#+END_SRC
+
+** Fill column indicator
+#+BEGIN_SRC emacs-lisp
+  (when (boundp 'display-fill-column-indicator)
+    (setq-default indicate-buffer-boundaries 'left)
+    (setq-default display-fill-column-indicator-character ?│)
+    (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode))
+#+END_SRC
+
+** Symbol overlays
+#+BEGIN_SRC emacs-lisp
+  (use-package symbol-overlay
+    :defer t
+    :diminish t
+    :hook
+    (prog-mode . symbol-overlay-mode)
+    (html-mode . symbol-overlay-mode)
+    (yaml-mode . symbol-overlay-mode)
+    (conf-mode . symbol-overlay-mode)
+    :bind (:map symbol-overlay-mode-map
+                ("M-i" . symbol-overlay-put)
+                ("M-I" . symbol-overlay-remove-all)
+                ("M-n" . symbol-overlay-jump-next)
+                ("M-p" . symbol-overlay-jump-prev)))
+#+END_SRC
+
+** Rainbow delimiters
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :defer t
+    :diminish t
+    :hook
+    (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
+
+** Subword and super-word modes
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'subword
+    (diminish 'subword-mode)
+    (diminish 'superword-mode))
 #+END_SRC
 
 * Programming
