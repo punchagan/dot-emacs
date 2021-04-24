@@ -233,6 +233,32 @@
   (counsel-mode 1))
 ;; Completion and Narrowing:2 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Themes][Themes:1]]
+;; Don't prompt to confirm theme safety. This avoids problems with
+;; first-time startup on Emacs > 26.3.
+(setq custom-safe-themes t)
+;; Themes:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Some code to pick and load a theme][Some code to pick and load a theme:1]]
+(defun pc/load-theme (theme)
+  "Apply user theme."
+  (interactive
+   (list
+    (intern (ivy-read "Load custom theme: "
+                      (mapcar #'symbol-name
+                              (custom-available-themes))))))
+  (progn
+    ;; Disable all previously enabled themes
+    (mapc 'disable-theme custom-enabled-themes)
+    ;; Load chosen theme
+    (load-theme theme)))
+;; Some code to pick and load a theme:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Ensure some nice themes are available][Ensure some nice themes are available:1]]
+(use-package base16-theme)
+(pc/load-theme 'base16-humanoid-dark)
+;; Ensure some nice themes are available:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Symbol overlays][Symbol overlays:1]]
 (use-package symbol-overlay
   :defer t

@@ -335,7 +335,35 @@ renaming files!
 #+END_SRC
 
 ~swiper~ is an alternative to Emacs' default incremental search.
+** Themes
 
+#+BEGIN_SRC emacs-lisp
+  ;; Don't prompt to confirm theme safety. This avoids problems with
+  ;; first-time startup on Emacs > 26.3.
+  (setq custom-safe-themes t)
+#+END_SRC
+*** Some code to pick and load a theme
+
+#+BEGIN_SRC emacs-lisp
+  (defun pc/load-theme (theme)
+    "Apply user theme."
+    (interactive
+     (list
+      (intern (ivy-read "Load custom theme: "
+                        (mapcar #'symbol-name
+                                (custom-available-themes))))))
+    (progn
+      ;; Disable all previously enabled themes
+      (mapc 'disable-theme custom-enabled-themes)
+      ;; Load chosen theme
+      (load-theme theme)))
+#+END_SRC
+
+*** Ensure some nice themes are available
+#+BEGIN_SRC emacs-lisp
+  (use-package base16-theme)
+  (pc/load-theme 'base16-humanoid-dark)
+#+END_SRC
 ** Symbol overlays
 #+BEGIN_SRC emacs-lisp
   (use-package symbol-overlay
