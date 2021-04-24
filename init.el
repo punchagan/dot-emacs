@@ -299,7 +299,9 @@
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*magit and git related stuff][magit and git related stuff:1]]
 (use-package magit
-  :bind ("C-x g" . magit-status)
+  :bind
+  ("C-x g" . magit-status)
+  ("C-c b" . magit-blame)
   :custom
   ;; Show word diffs for current hunk
   (magit-diff-refine-hunk t)

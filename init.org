@@ -423,7 +423,9 @@ For a full tutorial see [[http://jr0cket.co.uk/2012/12/driving-git-with-emacs-pu
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :bind ("C-x g" . magit-status)
+    :bind
+    ("C-x g" . magit-status)
+    ("C-c b" . magit-blame)
     :custom
     ;; Show word diffs for current hunk
     (magit-diff-refine-hunk t)
