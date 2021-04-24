@@ -201,6 +201,10 @@ things like LANG, etc.
 #+BEGIN_SRC emacs-lisp
   (setq auth-sources '("~/.authinfo.gpg"))
 #+END_SRC
+** Start Emacs server
+#+BEGIN_SRC emacs-lisp
+  (server-start)
+#+END_SRC
 
 * Editor UI & Behavior
 ** Lean UI

@@ -134,6 +134,10 @@
 (setq auth-sources '("~/.authinfo.gpg"))
 ;; Use authinfo gpg file:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Start Emacs server][Start Emacs server:1]]
+(server-start)
+;; Start Emacs server:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Lean UI][Lean UI:1]]
 ;; No startup message
 (setq inhibit-startup-message t)
