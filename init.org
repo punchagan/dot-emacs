@@ -601,6 +601,70 @@ Show TODO keywords in magit status buffer!
 
   ;; FIXME: Add some filters and stuff to make it more useful?
 #+END_SRC
+*** What are you doing?
+**** Template to capture entries
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-capture-templates
+               '("j"
+                 "Journal"
+                 entry
+                 (file+olp+datetree "journal.org")
+                 "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n%a\n"))
+#+END_SRC
+**** Custom code to fire off journal mode
+
+Simple function to insert the template at the correct location, and
+display it with the drawers hidden. We could simply use the capture
+template instead of this magic, but this gives us a better UI to be
+able to just go ahead and type what we want, instead of being in a
+"capture" mode.
+
+#+BEGIN_SRC emacs-lisp
+  (defun pc/insert-journal-template ()
+    (org-capture nil "j")
+    (org-capture-finalize)
+    (org-capture-goto-last-stored)
+    (org-cycle-hide-drawers 'all)
+    (org-end-of-line))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (defun pc/journal ()
+    "Open a new frame for journaling.
+      - Jumps to the currently clocked item, if there is one.
+
+      - Otherwise, opens to the current day in the journal, and creates
+        a new day entry if not already present."
+    (interactive)
+    (let* ((title "What are you doing?")
+           (frame (or
+                   (car (filtered-frame-list
+                         (lambda (f)
+                           (string= title (cdr (assq 'title (frame-parameters f)))))))
+                   (make-frame
+                    `((title . ,title)
+                      (user-position . t)
+                      (left . (+ 550))
+                      (top . (+ 400))
+                      (width . 120)
+                      (height . 40))))))
+      (select-frame frame)
+      (org-agenda nil "a")
+      (org-super-agenda-mode t)
+      (org-agenda-log-mode t)
+      (org-agenda-day-view)
+      (org-agenda-goto-today)
+      (delete-other-windows)
+      (split-window-right)
+      (if (org-clocking-p)
+          (org-clock-goto)
+        (pc/insert-journal-template))
+      (org-narrow-to-subtree)
+      (outline-show-subtree)
+      (when (org-clocking-p)
+        (goto-char (buffer-end 1)))
+      (shell-command (format "wmctrl -a \"%s\"" title))))
+#+END_SRC
 * Using Emacs from the "outside"
 ** Emacs Anywhere 
 Add the ability to use Emacs from input area. 

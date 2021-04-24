@@ -433,6 +433,62 @@
 ;; FIXME: Add some filters and stuff to make it more useful?
 ;; Super agenda:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Template to capture entries][Template to capture entries:1]]
+(add-to-list 'org-capture-templates
+             '("j"
+               "Journal"
+               entry
+               (file+olp+datetree "journal.org")
+               "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n%a\n"))
+;; Template to capture entries:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Custom code to fire off journal mode][Custom code to fire off journal mode:1]]
+(defun pc/insert-journal-template ()
+  (org-capture nil "j")
+  (org-capture-finalize)
+  (org-capture-goto-last-stored)
+  (org-cycle-hide-drawers 'all)
+  (org-end-of-line))
+;; Custom code to fire off journal mode:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Custom code to fire off journal mode][Custom code to fire off journal mode:2]]
+(defun pc/journal ()
+  "Open a new frame for journaling.
+    - Jumps to the currently clocked item, if there is one.
+
+    - Otherwise, opens to the current day in the journal, and creates
+      a new day entry if not already present."
+  (interactive)
+  (let* ((title "What are you doing?")
+         (frame (or
+                 (car (filtered-frame-list
+                       (lambda (f)
+                         (string= title (cdr (assq 'title (frame-parameters f)))))))
+                 (make-frame
+                  `((title . ,title)
+                    (user-position . t)
+                    (left . (+ 550))
+                    (top . (+ 400))
+                    (width . 120)
+                    (height . 40))))))
+    (select-frame frame)
+    (org-agenda nil "a")
+    (org-super-agenda-mode t)
+    (org-agenda-log-mode t)
+    (org-agenda-day-view)
+    (org-agenda-goto-today)
+    (delete-other-windows)
+    (split-window-right)
+    (if (org-clocking-p)
+        (org-clock-goto)
+      (pc/insert-journal-template))
+    (org-narrow-to-subtree)
+    (outline-show-subtree)
+    (when (org-clocking-p)
+      (goto-char (buffer-end 1)))
+    (shell-command (format "wmctrl -a \"%s\"" title))))
+;; Custom code to fire off journal mode:2 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
