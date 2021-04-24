@@ -138,6 +138,27 @@
 (server-start)
 ;; Start Emacs server:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Random Quote][Random Quote:1]]
+(require 'json)
+
+(defun pc/get-random-quote ()
+  (let* ((json-array-type 'list)
+         (quotes-file "quotes.json")
+         (quotes (and (file-exists-p quotes-file)
+                      (json-read-file quotes-file)))
+         (n (random (length quotes)))
+         (q (nth n quotes))
+         (text (cdr (assoc 'body q)))
+         (source (cdr (assoc 'source q))))
+    (format "%s -- %s" text source)))
+
+(setq pc/quotes-timer
+      (run-with-idle-timer
+       300
+       'repeat-forever
+       (lambda () (message (pc/get-random-quote)))))
+;; Random Quote:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Lean UI][Lean UI:1]]
 ;; No startup message
 (setq inhibit-startup-message t)
@@ -163,7 +184,7 @@
  buffers-menu-max-size 30
  case-fold-search t
  column-number-mode t
- confirm-kill-emacs 'y-or-n-p
+ confirm-kill-emacs (lambda (t) (y-or-n-p (format "%s\n%s" (pc/get-random-quote) t)))
  indent-tabs-mode nil
  create-lockfiles nil
  auto-save-default nil
