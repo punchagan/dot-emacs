@@ -33,6 +33,7 @@
 
       ;; Make and load init.el
       (org-babel-tangle)
+      (setq pc/loading-tangled-init-p t)
       (load-file init-file)
 
       ;; Acknowledgement
@@ -256,7 +257,8 @@
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Ensure some nice themes are available][Ensure some nice themes are available:1]]
 (use-package base16-theme)
-(pc/load-theme 'base16-humanoid-dark)
+(unless (boundp 'pc/loading-tangled-init-p)
+  (pc/load-theme 'base16-humanoid-dark))
 ;; Ensure some nice themes are available:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Symbol overlays][Symbol overlays:1]]

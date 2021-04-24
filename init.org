@@ -63,6 +63,7 @@ to save with a prefix argument, though. ~C-u C-x C-s~.
 
         ;; Make and load init.el
         (org-babel-tangle)
+        (setq pc/loading-tangled-init-p t)
         (load-file init-file)
 
         ;; Acknowledgement
@@ -362,7 +363,8 @@ renaming files!
 *** Ensure some nice themes are available
 #+BEGIN_SRC emacs-lisp
   (use-package base16-theme)
-  (pc/load-theme 'base16-humanoid-dark)
+  (unless (boundp 'pc/loading-tangled-init-p)
+    (pc/load-theme 'base16-humanoid-dark))
 #+END_SRC
 ** Symbol overlays
 #+BEGIN_SRC emacs-lisp
