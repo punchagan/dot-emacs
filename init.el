@@ -497,11 +497,7 @@
                          (string= title (cdr (assq 'title (frame-parameters f)))))))
                  (make-frame
                   `((title . ,title)
-                    (user-position . t)
-                    (left . (+ 550))
-                    (top . (+ 400))
-                    (width . 120)
-                    (height . 40))))))
+                    (fullscreen . maximized))))))
     (select-frame frame)
     (org-agenda nil "a")
     (org-super-agenda-mode t)
