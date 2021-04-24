@@ -412,6 +412,27 @@
   (magit-todos-mode))
 ;; TODOs highlighting:2 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic config][Basic config:1]]
+(setq org-directory "~/.life-in-plain-text/src/")
+(setq org-agenda-files
+      (expand-file-name "agenda-files.org" org-directory))
+
+;; Enable a bunch of things, since we are going to use them, anyway..
+(require 'org-clock)
+(require 'org-agenda)
+(require 'org-capture)
+;; Basic config:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Super agenda][Super agenda:1]]
+(use-package org-super-agenda
+  :defer t)
+
+(use-package org-ql
+    :defer t)
+
+;; FIXME: Add some filters and stuff to make it more useful?
+;; Super agenda:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
