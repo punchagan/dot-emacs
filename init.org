@@ -52,7 +52,7 @@ to save with a prefix argument, though. ~C-u C-x C-s~.
 
 #+name: startup-code
 #+BEGIN_SRC emacs-lisp
-  (defun my/make-init-el ()
+  (defun pc/make-init-el ()
     "Tangle an init.el my init.org."
     (interactive "P") ;; Places value of universal argument into: current-prefix-arg
     (when current-prefix-arg
@@ -616,6 +616,6 @@ We need to manually configure a keybinding to run
 
 * COMMENT Local Variables
 # Local Variables:
-# eval: (add-hook 'after-save-hook 'my/make-init-el nil 'local-to-this-file-please)
+# eval: (add-hook 'after-save-hook 'pc/make-init-el nil 'local-to-this-file-please)
 # End:
  

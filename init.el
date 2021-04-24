@@ -22,7 +22,7 @@
 ;; gc-thresholds ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::startup-code][startup-code]]
-(defun my/make-init-el ()
+(defun pc/make-init-el ()
   "Tangle an init.el my init.org."
   (interactive "P") ;; Places value of universal argument into: current-prefix-arg
   (when current-prefix-arg
