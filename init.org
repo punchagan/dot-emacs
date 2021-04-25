@@ -224,7 +224,7 @@ things like LANG, etc.
 #+END_SRC
 
 * Editor UI & Behavior
-* Random Quote
+** Random Quote
 Show a random quote when Emacs is idle for 5 minutes
 #+BEGIN_SRC emacs-lisp
   (require 'json)
