@@ -649,6 +649,22 @@ Some basic org-mode configuration
   (require 'org-clock)
   (require 'org-agenda)
   (require 'org-capture)
+
+  (setq org-enforce-todo-dependencies t)
+
+  ;; Add a note whenever a task's deadline or scheduled date is changed.
+  (setq org-log-redeadline 'time)
+  (setq org-log-reschedule 'time)
+
+  ;; How many days early a deadline item will begin showing up in your agenda list.
+  (setq org-deadline-warning-days 7)
+
+  ;; In the agenda view, days that have no associated tasks will still have a line showing the date.
+  (setq org-agenda-show-all-dates t)
+
+  ;; Scheduled items marked as complete will not show up in your agenda view.
+  (setq org-agenda-skip-scheduled-if-done t)
+  (setq org-agenda-skip-deadline-if-done t)
 #+END_SRC
 *** Super agenda
 #+BEGIN_SRC emacs-lisp
