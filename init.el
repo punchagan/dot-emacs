@@ -455,8 +455,11 @@
   (magit-todos-mode))
 ;; TODOs highlighting:2 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic config][Basic config:1]]
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org mode][Org mode:1]]
 (setq org-directory "~/.life-in-plain-text/src/")
+;; Org mode:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic config][Basic config:1]]
 (setq org-agenda-files
       (expand-file-name "agenda-files.org" org-directory))
 

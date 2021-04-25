@@ -622,10 +622,16 @@ Show TODO keywords in magit status buffer!
 #+END_SRC
 
 * Prose and Literate Programming
+** Org mode
+Some basic org-mode configuration
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-directory "~/.life-in-plain-text/src/")
+#+END_SRC
+
 ** Org Agenda
 *** Basic config
 #+BEGIN_SRC emacs-lisp
-  (setq org-directory "~/.life-in-plain-text/src/")
   (setq org-agenda-files
         (expand-file-name "agenda-files.org" org-directory))
 
