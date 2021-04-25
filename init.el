@@ -457,8 +457,17 @@
 ;; TODOs highlighting:2 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org mode][Org mode:1]]
+(use-package org
+  :bind
+  (:map org-mode-map
+        ("C-c C-q" . counsel-org-tag)))
+
 (setq org-directory "~/.life-in-plain-text/src/")
 ;; Org mode:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org tags][Org tags:1]]
+(setq org-complete-tags-always-offer-all-agenda-tags t)
+;; Org tags:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic config][Basic config:1]]
 (setq org-agenda-files

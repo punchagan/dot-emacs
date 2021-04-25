@@ -627,7 +627,16 @@ Show TODO keywords in magit status buffer!
 Some basic org-mode configuration
 
 #+BEGIN_SRC emacs-lisp
+  (use-package org
+    :bind
+    (:map org-mode-map
+          ("C-c C-q" . counsel-org-tag)))
+
   (setq org-directory "~/.life-in-plain-text/src/")
+#+END_SRC
+** Org tags
+#+BEGIN_SRC emacs-lisp
+  (setq org-complete-tags-always-offer-all-agenda-tags t)
 #+END_SRC
 
 ** Org Agenda and TODOs et al
