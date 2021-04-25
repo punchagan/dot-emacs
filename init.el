@@ -505,14 +505,14 @@
 ;; FIXME: Add some filters and stuff to make it more useful?
 ;; Super agenda:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Template to capture entries][Template to capture entries:1]]
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Template to capture journal entries][Template to capture journal entries:1]]
 (add-to-list 'org-capture-templates
              '("j"
                "Journal"
                entry
                (file+olp+datetree "journal.org")
                "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n%a\n"))
-;; Template to capture entries:1 ends here
+;; Template to capture journal entries:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Custom code to fire off journal mode][Custom code to fire off journal mode:1]]
 (defun pc/insert-journal-template ()
@@ -591,6 +591,20 @@
   :defer t
   :load-path "../zulip-helpers.el")
 ;; Zulip and Org mode:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org capture][Org capture:1]]
+(require 'org-protocol)
+;; Org capture:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Template to capture protocol entries][Template to capture protocol entries:1]]
+(add-to-list
+ 'org-capture-templates
+ '("p"
+   "Protocol"
+   entry
+   (file+olp+datetree "journal.org")
+   "* %:description\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:link\n\n%i\n"))
+;; Template to capture protocol entries:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Markdown][Markdown:1]]
 (use-package markdown-mode :defer t)
