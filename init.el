@@ -525,36 +525,54 @@
 ;; Custom code to fire off journal mode:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Custom code to fire off journal mode][Custom code to fire off journal mode:2]]
-(defun pc/journal ()
+(defun pc/journal (&optional mode)
   "Open a new frame for journaling.
     - Jumps to the currently clocked item, if there is one.
 
     - Otherwise, opens to the current day in the journal, and creates
       a new day entry if not already present."
   (interactive)
-  (let* ((title "What are you doing?")
-         (frame (or
-                 (car (filtered-frame-list
-                       (lambda (f)
-                         (string= title (cdr (assq 'title (frame-parameters f)))))))
-                 (make-frame
-                  `((title . ,title)
-                    (fullscreen . maximized))))))
+  (pc/select-window-by-name "What are you doing?")
+  ;; Display agenda...
+  (org-agenda nil "a")
+  (org-super-agenda-mode t)
+  (org-agenda-log-mode t)
+  (org-agenda-day-view)
+  (org-agenda-goto-today)
+  (delete-other-windows)
+  (split-window-right)
+  ;; Perform next action based on mode
+  (cond
+   ;; Show a capture buffer for a new journal entry
+   ((or (equal mode 'journal))
+    (org-capture nil "j"))
+   ;; Show the current clock entry, if there's one. Otherwise prompt!
+   ((and (equal mode 'clock) )
+    (org-clock-goto (not (org-clocking-p)))
+    (org-narrow-to-subtree)
+    (outline-show-subtree)
+    (goto-char (buffer-end 1)))
+   ;; Show today in the journal
+   (t
+    (org-capture-goto-target "j")
+    (org-narrow-to-subtree))))
+
+(defun pc/get-frame-by-name (title)
+  "Return frame with the given TITLE.
+If no such frame exists, creates a new frame."
+  (or
+   (car (filtered-frame-list
+         (lambda (f)
+           (string= title (cdr (assq 'title (frame-parameters f)))))))
+   (make-frame
+    `((title . ,title)
+      (fullscreen . maximized)))))
+
+(defun pc/select-window-by-name (title)
+  "Raise the window with the specified TITLE."
+  (let ((frame (pc/get-frame-by-name title)))
     (select-frame frame)
-    (org-agenda nil "a")
-    (org-super-agenda-mode t)
-    (org-agenda-log-mode t)
-    (org-agenda-day-view)
-    (org-agenda-goto-today)
-    (delete-other-windows)
-    (split-window-right)
-    (if (not (org-clocking-p))
-        (pc/insert-journal-template)
-      (org-clock-goto)
-      (org-narrow-to-subtree)
-      (outline-show-subtree)
-      (goto-char (buffer-end 1)))
-    (shell-command (format "wmctrl -a \"%s\"" title))))
+    (shell-command (format "wmctrl -R \"%s\"" title))))
 ;; Custom code to fire off journal mode:2 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Akvo today][Akvo today:1]]
