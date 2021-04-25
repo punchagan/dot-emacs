@@ -171,7 +171,8 @@ Emacs packages is done ^_^.
 
     :config
     (setq system-packages-package-manager 'apt
-          system-packages-use-sudo t)
+          system-packages-use-sudo t
+          system-packages-noconfirm t)
     (unless (boundp 'pc/loading-tangled-init-p)
       (system-packages-update)))
 
