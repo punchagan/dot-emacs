@@ -168,7 +168,7 @@
          (q (nth n quotes))
          (text (cdr (assoc 'body q)))
          (source (cdr (assoc 'source q))))
-    (format "%s -- %s" text source)))
+    (format "%s — %s" text source)))
 
 (unless (boundp 'pc/quotes-timer)
   (setq pc/quotes-timer
