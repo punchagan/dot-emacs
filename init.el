@@ -531,6 +531,45 @@
     (shell-command (format "wmctrl -a \"%s\"" title))))
 ;; Custom code to fire off journal mode:2 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Akvo today][Akvo today:1]]
+(defun pc/akvo-today ()
+  "Create a journal entry with today's Akvo tasks"
+  (interactive)
+  (let* ((date (format-time-string "%Y-%m-%d"))
+         (title "Notes for Today")
+         (headlines (org-ql-query
+                      :select '(org-get-heading t t t t)
+                      :from (org-agenda-files)
+                      :where `(and (clocked :on ,date) (tags "akvo")))))
+
+    ;; Exit early if no matching headlines
+    (when (not headlines)
+      (user-error "No matching headlines"))
+
+    (when (org-clocking-p)
+      (org-clock-out))
+    (pc/journal)
+    (insert title)
+    (org-set-tags ":akvo:")
+    (end-of-buffer)
+    (mapc (lambda (item) (insert (format "- %s\n" (org-no-properties item)))) headlines)
+    (org-set-property "ZULIP_REALM" "akvo.zulipchat.com")
+    (org-set-property "ZULIP_STREAM" "Everest Engine")
+    (org-set-property "ZULIP_TOPIC" "stand-up")))
+;; Akvo today:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Zulip and Org mode][Zulip and Org mode:1]]
+(use-package request :defer t)
+(use-package ox-gfm :defer t)
+(use-package zulip-helpers
+  :defer t
+  :load-path "../zulip-helpers.el")
+;; Zulip and Org mode:1 ends here
+
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Markdown][Markdown:1]]
+(use-package markdown-mode :defer t)
+;; Markdown:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
