@@ -7,3 +7,4 @@
 *.sqlite
 /quotes.json
 /.bookmarks.el
+/request/
