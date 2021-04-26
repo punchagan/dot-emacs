@@ -161,7 +161,7 @@
 
 (defun pc/get-random-quote ()
   (let* ((json-array-type 'list)
-         (quotes-file "quotes.json")
+         (quotes-file (expand-file-name "quotes.json" user-emacs-directory))
          (quotes (and (file-exists-p quotes-file)
                       (json-read-file quotes-file)))
          (n (random (length quotes)))
