@@ -787,6 +787,8 @@ Quickly send a Zulip note for what I worked on today.
       (when (org-clocking-p)
         (org-clock-out))
       (pc/journal)
+      (end-of-buffer)
+      (org-insert-heading-after-current)
       (insert title)
       (org-set-tags ":akvo:")
       (end-of-buffer)

@@ -598,6 +598,8 @@ If no such frame exists, creates a new frame."
     (when (org-clocking-p)
       (org-clock-out))
     (pc/journal)
+    (end-of-buffer)
+    (org-insert-heading-after-current)
     (insert title)
     (org-set-tags ":akvo:")
     (end-of-buffer)
