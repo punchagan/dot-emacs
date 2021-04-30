@@ -267,6 +267,7 @@
   :bind*                              ; load when pressed
   (("C-s"     . swiper)
    ("C-S-s" . counsel-ag)               ; Use ag to search the repo
+   ("C-c f" . counsel-git)              ; Use counsel git to find file in repo
    ("<f1> l"  . counsel-find-library)   ; find an Emacs Lisp library
    ("<f2> u"  . counsel-unicode-char))  ; insert a unicode symbol using a pop-up
   )
