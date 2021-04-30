@@ -135,7 +135,7 @@ that manages our packages and the way they interact.
 
 To make the setup bootstrap itself, we use let ~use-package~
 automatically download missing requirements.
- 
+
 #+begin_src emacs-lisp
   (setq use-package-always-ensure t)
 #+end_src
@@ -151,7 +151,7 @@ automatically download missing requirements.
     (auto-package-update-maybe))
 #+END_SRC
 ** System packages used from with-in Emacs
- 
+
 Sometimes Emacs packages depend on existing system binaries,
 ~use-package~ let's us ensure these exist using the
 ~:ensure-system-package~ keyword extension. This is a very powerful
@@ -192,7 +192,7 @@ Emacs packages is done ^_^.
 #+END_SRC
 
 * $PATH and such stuff
-** Setup exec-path 
+** Setup exec-path
 To be able to find external programs, we want our ~exec-path~ to be as
 close to ~$PATH~ as possible.
 
@@ -825,8 +825,8 @@ Quickly send a Zulip note for what I worked on today.
   (use-package markdown-mode :defer t)
 #+END_SRC
 * Using Emacs from the "outside"
-** Emacs Anywhere 
-Add the ability to use Emacs from input area. 
+** Emacs Anywhere
+Add the ability to use Emacs from input area.
 
 We need to manually configure a keybinding to run
 =~/.emacs_anywhere/bin/run=.
@@ -835,13 +835,13 @@ We need to manually configure a keybinding to run
   This directory contains fake packages that we create to be able to use
   the `use-package` and it's wonderful `:ensure-system-package`
   functionality.
-#+END_SRC 
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle fake-lisp/emacs-anywhere.el :comments link :results none
   ;; This is a fake package created by us to try to ensure system packages
   (provide 'emacs-anywhere)
   ;;; emacs-anywhere ends here
-#+END_SRC 
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (defun pc/github-conversation-p (window-title)
@@ -854,7 +854,7 @@ We need to manually configure a keybinding to run
      ;; ((pc/github-conversation-p window-title) (gfm-mode))
      ;; default major mode
      (t (org-mode))))
-#+END_SRC 
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (use-package emacs-anywhere
@@ -878,4 +878,3 @@ We need to manually configure a keybinding to run
 # Local Variables:
 # eval: (add-hook 'after-save-hook 'pc/tangle-init-el nil 'local-to-this-file-please)
 # End:
- 
