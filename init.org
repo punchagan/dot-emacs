@@ -503,6 +503,17 @@ backups.
   (setq version-control t)
 #+END_SRC
 
+** Whitespace
+
+Let's start off by cleaning-up any accidental trailing whitespace and
+in other places upon save.
+#+begin_src emacs-lisp
+(add-hook 'before-save-hook 'whitespace-cleanup)
+#+end_src
+
+See [[http://ergoemacs.org/emacs/whitespace-mode.html][here]] for making whitespace visible; including spaces, tabs, and
+newlines
+
 * Programming
 ** magit and git related stuff
 

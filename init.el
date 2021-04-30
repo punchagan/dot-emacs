@@ -380,6 +380,10 @@
 (setq version-control t)
 ;; Emacs backups:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Whitespace][Whitespace:1]]
+(add-hook 'before-save-hook 'whitespace-cleanup)
+;; Whitespace:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*magit and git related stuff][magit and git related stuff:1]]
 (use-package magit
   :bind
