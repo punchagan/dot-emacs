@@ -461,6 +461,10 @@
   (magit-todos-mode))
 ;; TODOs highlighting:2 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*yaml mode][yaml mode:1]]
+(use-package yaml-mode)
+;; yaml mode:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org mode][Org mode:1]]
 (use-package org
   :bind

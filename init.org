@@ -634,6 +634,11 @@ Show TODO keywords in magit status buffer!
     (magit-todos-mode))
 #+END_SRC
 
+** yaml mode
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode)
+#+END_SRC
+
 * Prose and Literate Programming
 ** Org mode
 Some basic org-mode configuration
