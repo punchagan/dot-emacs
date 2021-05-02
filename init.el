@@ -631,6 +631,10 @@ If no such frame exists, creates a new frame."
    "* %:description\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:link\n\n%i\n"))
 ;; Template to capture protocol entries:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org babel][Org babel:1]]
+(require 'org-tempo)
+;; Org babel:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Markdown][Markdown:1]]
 (use-package markdown-mode :defer t)
 ;; Markdown:1 ends here

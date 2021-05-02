@@ -820,6 +820,11 @@ Quickly send a Zulip note for what I worked on today.
      (file+olp+datetree "journal.org")
      "* %:description\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:link\n\n%i\n"))
 #+END_SRC
+** Org babel
+Template expansion!
+#+begin_src emacs-lisp
+  (require 'org-tempo)
+#+end_src
 ** Markdown
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode :defer t)
