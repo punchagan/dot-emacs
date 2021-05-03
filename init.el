@@ -618,8 +618,8 @@ If no such frame exists, creates a new frame."
 (use-package request :defer t)
 (use-package ox-gfm :defer t)
 (use-package zulip-helpers
-  :defer t
   :load-path "../zulip-helpers.el")
+(require 'zulip-helpers)
 ;; Zulip and Org mode:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org capture][Org capture:1]]

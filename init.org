@@ -806,8 +806,8 @@ Quickly send a Zulip note for what I worked on today.
   (use-package request :defer t)
   (use-package ox-gfm :defer t)
   (use-package zulip-helpers
-    :defer t
     :load-path "../zulip-helpers.el")
+  (require 'zulip-helpers)
 #+END_SRC
 ** Org capture
 #+BEGIN_SRC emacs-lisp
