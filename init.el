@@ -430,7 +430,7 @@
 (use-package git-link :defer t)
 
 ;; Gists from Emacs
-(use-package yagist :defer t)
+(use-package gist :defer t)
 
 ;; Turn references to PRs/Issues to clickable links
 ;; PR emacs/2 (Only the number is used -- emacs is ignored)
