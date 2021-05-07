@@ -473,6 +473,7 @@
         ("C-c C-q" . counsel-org-tag)))
 
 (setq org-directory "~/.life-in-plain-text/src/")
+(setq org-return-follows-link t)
 ;; Org mode:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org tags][Org tags:1]]

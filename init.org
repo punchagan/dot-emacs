@@ -648,6 +648,7 @@ Some basic org-mode configuration
           ("C-c C-q" . counsel-org-tag)))
 
   (setq org-directory "~/.life-in-plain-text/src/")
+  (setq org-return-follows-link t)
 #+END_SRC
 ** Org tags
 #+BEGIN_SRC emacs-lisp
