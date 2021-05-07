@@ -628,12 +628,12 @@ If no such frame exists, creates a new frame."
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Template to capture protocol entries][Template to capture protocol entries:1]]
 (add-to-list
- 'org-capture-templates
- '("p"
-   "Protocol"
-   entry
-   (file+olp+datetree "journal.org")
-   "* %:description\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:link\n\n%i\n"))
+   'org-capture-templates
+   '("p"
+     "Protocol"
+     entry
+     (file+olp+datetree "journal.org")
+     "* %:description\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:link\n\n#+begin_quote\n%i\n#+end_quote\n"))
 ;; Template to capture protocol entries:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org babel][Org babel:1]]

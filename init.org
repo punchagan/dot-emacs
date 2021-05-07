@@ -816,12 +816,12 @@ Quickly send a Zulip note for what I worked on today.
 *** Template to capture protocol entries
 #+BEGIN_SRC emacs-lisp
   (add-to-list
-   'org-capture-templates
-   '("p"
-     "Protocol"
-     entry
-     (file+olp+datetree "journal.org")
-     "* %:description\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:link\n\n%i\n"))
+     'org-capture-templates
+     '("p"
+       "Protocol"
+       entry
+       (file+olp+datetree "journal.org")
+       "* %:description\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:link\n\n#+begin_quote\n%i\n#+end_quote\n"))
 #+END_SRC
 ** Org babel
 Template expansion!
