@@ -384,6 +384,10 @@
 (add-hook 'before-save-hook 'whitespace-cleanup)
 ;; Whitespace:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Fill column][Fill column:1]]
+(setq-default fill-column 79)
+;; Fill column:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*magit and git related stuff][magit and git related stuff:1]]
 (use-package magit
   :bind
