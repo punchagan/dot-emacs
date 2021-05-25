@@ -480,6 +480,14 @@
 (setq org-return-follows-link t)
 ;; Org mode:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Paste HTML as org text][Paste HTML as org text:1]]
+(defun pc/html2org-clipboard ()
+  "Convert clipboard contents from HTML to Org and then paste (yank)."
+  (interactive)
+  (kill-new (shell-command-to-string "xclip -o -t text/html | pandoc -f html -t org"))
+  (yank))
+;; Paste HTML as org text:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org tags][Org tags:1]]
 (setq org-complete-tags-always-offer-all-agenda-tags t)
 ;; Org tags:1 ends here

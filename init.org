@@ -655,6 +655,19 @@ Some basic org-mode configuration
   (setq org-directory "~/.life-in-plain-text/src/")
   (setq org-return-follows-link t)
 #+END_SRC
+*** Paste HTML as org text
+
+Adapted from this [[https://emacs.stackexchange.com/questions/12121/org-mode-parsing-rich-html-directly-when-pasting][stackexchange]] post. There are also suggestions to use
+~org-web-tools-read-url-as-org~. May be worth exploring
+
+#+begin_src emacs-lisp
+  (defun pc/html2org-clipboard ()
+    "Convert clipboard contents from HTML to Org and then paste (yank)."
+    (interactive)
+    (kill-new (shell-command-to-string "xclip -o -t text/html | pandoc -f html -t org"))
+    (yank))
+#+end_src
+
 ** Org tags
 #+BEGIN_SRC emacs-lisp
   (setq org-complete-tags-always-offer-all-agenda-tags t)
