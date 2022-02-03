@@ -422,7 +422,9 @@
 ;; Git helpers:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Magit helpers][Magit helpers:1]]
-(use-package magit-todos)
+(use-package magit-todos
+  :config
+  (setq magit-todos-exclude-globs '("*.css.map")))
 ;; Magit helpers:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*GitHub helpers][GitHub helpers:1]]

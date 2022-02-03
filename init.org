@@ -571,7 +571,9 @@ For a full tutorial see [[http://jr0cket.co.uk/2012/12/driving-git-with-emacs-pu
 
 *** Magit helpers
 #+BEGIN_SRC emacs-lisp
-  (use-package magit-todos)
+  (use-package magit-todos
+    :config
+    (setq magit-todos-exclude-globs '("*.css.map")))
 #+END_SRC
 
 *** GitHub helpers
