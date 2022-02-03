@@ -600,16 +600,21 @@ If no such frame exists, creates a new frame."
     (shell-command (format "wmctrl -R \"%s\"" title))))
 ;; Custom code to fire off journal mode:2 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Akvo today][Akvo today:1]]
-(defun pc/akvo-today ()
-  "Create a journal entry with today's Akvo tasks"
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Work Today][Work Today:1]]
+(defun pc/work-today ()
+  "Create a journal entry with today's work tasks"
   (interactive)
   (let* ((date (format-time-string "%Y-%m-%d"))
          (title "Notes for Today")
+         (org-last-tags-completion-table
+          (org-global-tags-completion-table
+           (org-agenda-files)))
+         (tags
+          (org-completing-read "Tags:" #'org-tags-completion-function))
          (headlines (org-ql-query
                       :select '(org-get-heading t t t t)
                       :from (org-agenda-files)
-                      :where `(and (clocked :on ,date) (tags "akvo")))))
+                      :where `(and (clocked :on ,date) (tags tags)))))
 
     ;; Exit early if no matching headlines
     (when (not headlines)
@@ -621,13 +626,10 @@ If no such frame exists, creates a new frame."
     (end-of-buffer)
     (org-insert-heading-after-current)
     (insert title)
-    (org-set-tags ":akvo:")
+    (org-set-tags tags)
     (end-of-buffer)
-    (mapc (lambda (item) (insert (format "- %s\n" (org-no-properties item)))) headlines)
-    (org-set-property "ZULIP_REALM" "akvo.zulipchat.com")
-    (org-set-property "ZULIP_STREAM" "Everest Engine")
-    (org-set-property "ZULIP_TOPIC" "stand-up")))
-;; Akvo today:1 ends here
+    (mapc (lambda (item) (insert (format "- %s\n" (org-no-properties item)))) headlines)))
+;; Work Today:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Zulip and Org mode][Zulip and Org mode:1]]
 (use-package request :defer t)

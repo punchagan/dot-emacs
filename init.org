@@ -790,19 +790,25 @@ able to just go ahead and type what we want, instead of being in a
       (select-frame frame)
       (shell-command (format "wmctrl -R \"%s\"" title))))
 #+END_SRC
-**** Akvo today
-Quickly send a Zulip note for what I worked on today.
+**** Work Today
+Quickly create a summary of headlines tagged with specific tag
+
 
 #+BEGIN_SRC emacs-lisp
-  (defun pc/akvo-today ()
-    "Create a journal entry with today's Akvo tasks"
+  (defun pc/work-today ()
+    "Create a journal entry with today's work tasks"
     (interactive)
     (let* ((date (format-time-string "%Y-%m-%d"))
            (title "Notes for Today")
+           (org-last-tags-completion-table
+            (org-global-tags-completion-table
+             (org-agenda-files)))
+           (tags
+            (org-completing-read "Tags:" #'org-tags-completion-function))
            (headlines (org-ql-query
                         :select '(org-get-heading t t t t)
                         :from (org-agenda-files)
-                        :where `(and (clocked :on ,date) (tags "akvo")))))
+                        :where `(and (clocked :on ,date) (tags tags)))))
 
       ;; Exit early if no matching headlines
       (when (not headlines)
@@ -814,12 +820,10 @@ Quickly send a Zulip note for what I worked on today.
       (end-of-buffer)
       (org-insert-heading-after-current)
       (insert title)
-      (org-set-tags ":akvo:")
+      (org-set-tags tags)
       (end-of-buffer)
-      (mapc (lambda (item) (insert (format "- %s\n" (org-no-properties item)))) headlines)
-      (org-set-property "ZULIP_REALM" "akvo.zulipchat.com")
-      (org-set-property "ZULIP_STREAM" "Everest Engine")
-      (org-set-property "ZULIP_TOPIC" "stand-up")))
+      (mapc (lambda (item) (insert (format "- %s\n" (org-no-properties item)))) headlines)))
+
 #+END_SRC
 
 *** Zulip and Org mode
