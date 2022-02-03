@@ -661,6 +661,12 @@ If no such frame exists, creates a new frame."
 (use-package markdown-mode :defer t)
 ;; Markdown:1 ends here
 
+;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Hugo & Blog setup][Hugo & Blog setup:1]]
+(use-package ox-hugo
+  :ensure t            ;Auto-install the package from Melpa (optional)
+  :after ox)
+;; Hugo & Blog setup:1 ends here
+
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)

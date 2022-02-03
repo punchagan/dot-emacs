@@ -857,6 +857,12 @@ Template expansion!
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode :defer t)
 #+END_SRC
+** Hugo & Blog setup
+#+begin_src emacs-lisp
+  (use-package ox-hugo
+    :ensure t            ;Auto-install the package from Melpa (optional)
+    :after ox)
+#+end_src
 * Using Emacs from the "outside"
 ** Emacs Anywhere
 Add the ability to use Emacs from input area.
