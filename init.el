@@ -72,9 +72,10 @@
 (setq package-archives '(("gnu"       . "http://elpa.gnu.org/packages/")
                          ("melpa"     . "http://melpa.org/packages/")))
 
-;; Update local list of available packages. We don't want to do this
-;; on start-up, right?
-;; (package-refresh-contents)
+;; Update package list, unless previously updated. We do this only on the first
+;; start-up. auth-update package takes care of it, for future startups
+(unless (file-exists-p (expand-file-name "elpa/archives/melpa" user-emacs-directory))
+  (package-refresh-contents))
 
 ;; Ensure the installed packages are on load-path
 (package-initialize)
