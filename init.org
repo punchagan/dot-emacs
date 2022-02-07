@@ -129,8 +129,8 @@ that manages our packages and the way they interact.
   (eval-when-compile
     (require 'use-package))
 
-  (require 'diminish)
-  (require 'bind-key)
+  (use-package diminish)
+  (use-package bind-key)
 #+END_SRC
 
 To make the setup bootstrap itself, we use let ~use-package~

@@ -89,8 +89,8 @@
 (eval-when-compile
   (require 'use-package))
 
-(require 'diminish)
-(require 'bind-key)
+(use-package diminish)
+(use-package bind-key)
 ;; Setup ~use-package~:1 ends here
 
 ;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Setup ~use-package~][Setup ~use-package~:2]]
