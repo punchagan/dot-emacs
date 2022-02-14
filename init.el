@@ -1,10 +1,10 @@
 ;;; init.el --- Load the full configuration -*- lexical-binding: t -*-
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Enable debug if required][Enable debug if required:1]]
+;; Enable debug if required:1 starts here
 ;; (setq debug-on-error t)
 ;; Enable debug if required:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Check that Emacs is not too old][Check that Emacs is not too old:1]]
+;; Check that Emacs is not too old:1 starts here
 (let ((minver "25.1"))
   (when (version< emacs-version minver)
     (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
@@ -13,7 +13,7 @@
   (message "Your Emacs is old, and some functionality in this config will be disabled. Please upgrade if possible."))
 ;; Check that Emacs is not too old:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::gc-thresholds][gc-thresholds]]
+;; gc-thresholds starts here
 (let ((normal-gc-cons-threshold (* 20 1024 1024))
       (init-gc-cons-threshold (* 128 1024 1024)))
   (setq gc-cons-threshold init-gc-cons-threshold)
@@ -21,11 +21,12 @@
             (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
 ;; gc-thresholds ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::startup-code][startup-code]]
+;; startup-code starts here
 (defun pc/tangle-init-el ()
   "Tangle the file to update init.el file."
   (interactive "P")
-  (let* ((time (current-time)))
+  (let* ((time (current-time))
+         (org-babel-tangle-comment-format-beg "%source-name starts here"))
     (when current-prefix-arg
       ;; Make and load init.el
       (org-babel-tangle)
@@ -61,12 +62,12 @@
 ;; (add-hook 'after-save-hook 'org-babel-tangle nil 'local-to-this-file-please)
 ;; startup-code ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic user information][Basic user information:1]]
+;; Basic user information:1 starts here
 (setq user-full-name    "Puneeth Chaganti"
       user-mail-address "punchagan@muse-amuse.in")
 ;; Basic user information:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Setup ~package.el~][Setup ~package.el~:1]]
+;; Setup ~package.el~:1 starts here
 (require 'package)
 
 (setq package-archives '(("gnu"       . "http://elpa.gnu.org/packages/")
@@ -81,7 +82,7 @@
 (package-initialize)
 ;; Setup ~package.el~:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Setup ~use-package~][Setup ~use-package~:1]]
+;; Setup ~use-package~:1 starts here
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
@@ -94,11 +95,11 @@
 (use-package bind-key)
 ;; Setup ~use-package~:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Setup ~use-package~][Setup ~use-package~:2]]
+;; Setup ~use-package~:2 starts here
 (setq use-package-always-ensure t)
 ;; Setup ~use-package~:2 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Auto update package][Auto update package:1]]
+;; Auto update package:1 starts here
 (use-package auto-package-update
   :config
   ;; Delete residual old versions
@@ -109,7 +110,7 @@
   (auto-package-update-maybe))
 ;; Auto update package:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*System packages used from with-in Emacs][System packages used from with-in Emacs:1]]
+;; System packages used from with-in Emacs:1 starts here
 ;; Auto installing OS system packages
 (use-package use-package-ensure-system-package
   :defer 4
@@ -136,7 +137,7 @@
             kill-buffer-query-functions))
 ;; System packages used from with-in Emacs:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Setup exec-path][Setup exec-path:1]]
+;; Setup exec-path:1 starts here
 (use-package exec-path-from-shell
 
   :config
@@ -149,15 +150,15 @@
     (exec-path-from-shell-initialize)))
 ;; Setup exec-path:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Use authinfo gpg file][Use authinfo gpg file:1]]
+;; Use authinfo gpg file:1 starts here
 (setq auth-sources '("~/.authinfo.gpg"))
 ;; Use authinfo gpg file:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Start Emacs server][Start Emacs server:1]]
+;; Start Emacs server:1 starts here
 (server-start)
 ;; Start Emacs server:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Random Quote][Random Quote:1]]
+;; Random Quote:1 starts here
 (require 'json)
 
 (defun pc/get-random-quote ()
@@ -179,7 +180,7 @@
          (lambda () (message (pc/get-random-quote))))))
 ;; Random Quote:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Lean UI][Lean UI:1]]
+;; Lean UI:1 starts here
 ;; No startup message
 (setq inhibit-startup-message t)
 
@@ -196,7 +197,7 @@
 (window-divider-mode 1)
 ;; Lean UI:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic Preferences][Basic Preferences:1]]
+;; Basic Preferences:1 starts here
 ;; Basic preferences (taken from purcell)
 (setq-default
  blink-cursor-interval 0.4
@@ -217,7 +218,7 @@
  truncate-partial-width-windows nil)
 ;; Basic Preferences:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic Preferences][Basic Preferences:2]]
+;; Basic Preferences:2 starts here
 (add-hook 'after-init-hook 'delete-selection-mode)
 
 (add-hook 'after-init-hook 'global-auto-revert-mode)
@@ -229,7 +230,7 @@
 (add-hook 'after-init-hook 'transient-mark-mode)
 ;; Basic Preferences:2 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic Preferences][Basic Preferences:3]]
+;; Basic Preferences:3 starts here
 ;; change all prompts to y or n
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -238,14 +239,14 @@
 (setq-default disabled-command-function nil)
 ;; Basic Preferences:3 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Fill column indicator][Fill column indicator:1]]
+;; Fill column indicator:1 starts here
 (when (boundp 'display-fill-column-indicator)
   (setq-default indicate-buffer-boundaries 'left)
   (setq-default display-fill-column-indicator-character ?│)
   (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode))
 ;; Fill column indicator:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*~diminish~ for modeline indicators][~diminish~ for modeline indicators:1]]
+;; ~diminish~ for modeline indicators:1 starts here
 (use-package diminish
   :defer 3 ;; load after 5 seconds of idle time
 
@@ -253,7 +254,7 @@
   (diminish 'org-indent-mode))
 ;; ~diminish~ for modeline indicators:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Use ~which-key~ for discovery][Use ~which-key~ for discovery:1]]
+;; Use ~which-key~ for discovery:1 starts here
 (use-package which-key
   :diminish
   :config (which-key-mode)
@@ -261,7 +262,7 @@
   (setq which-key-idle-delay 0.5))
 ;; Use ~which-key~ for discovery:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Completion and Narrowing][Completion and Narrowing:1]]
+;; Completion and Narrowing:1 starts here
 (use-package counsel
   :diminish
   :ensure-system-package (ag . silversearcher-ag)
@@ -274,7 +275,7 @@
   )
 ;; Completion and Narrowing:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Completion and Narrowing][Completion and Narrowing:2]]
+;; Completion and Narrowing:2 starts here
 (use-package ivy
   :diminish
   :config
@@ -290,13 +291,13 @@
   (counsel-mode 1))
 ;; Completion and Narrowing:2 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Themes][Themes:1]]
+;; Themes:1 starts here
 ;; Don't prompt to confirm theme safety. This avoids problems with
 ;; first-time startup on Emacs > 26.3.
 (setq custom-safe-themes t)
 ;; Themes:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Some code to pick and load a theme][Some code to pick and load a theme:1]]
+;; Some code to pick and load a theme:1 starts here
 (defun pc/load-theme (theme)
   "Apply user theme."
   (interactive
@@ -311,13 +312,13 @@
     (load-theme theme)))
 ;; Some code to pick and load a theme:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Ensure some nice themes are available][Ensure some nice themes are available:1]]
+;; Ensure some nice themes are available:1 starts here
 (use-package base16-theme)
 (unless (boundp 'pc/loading-tangled-init-p)
   (pc/load-theme 'base16-humanoid-dark))
 ;; Ensure some nice themes are available:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Symbol overlays][Symbol overlays:1]]
+;; Symbol overlays:1 starts here
 (use-package symbol-overlay
   :defer t
   :diminish t
@@ -333,7 +334,7 @@
               ("M-p" . symbol-overlay-jump-prev)))
 ;; Symbol overlays:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Rainbow delimiters][Rainbow delimiters:1]]
+;; Rainbow delimiters:1 starts here
 (use-package rainbow-delimiters
   :defer t
   :diminish t
@@ -341,13 +342,13 @@
   (prog-mode . rainbow-delimiters-mode))
 ;; Rainbow delimiters:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Subword and super-word modes][Subword and super-word modes:1]]
+;; Subword and super-word modes:1 starts here
 (with-eval-after-load 'subword
   (diminish 'subword-mode)
   (diminish 'superword-mode))
 ;; Subword and super-word modes:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Large files][Large files:1]]
+;; Large files:1 starts here
 (when (fboundp 'so-long-enable)
   (add-hook 'after-init-hook 'so-long-enable))
 
@@ -363,7 +364,7 @@
     (vlf file)))
 ;; Large files:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs backups][Emacs backups:1]]
+;; Emacs backups:1 starts here
 ;; New location for backups.
 (setq backup-directory-alist
       `(("." . ,(expand-file-name "backups" user-emacs-directory))))
@@ -381,15 +382,15 @@
 (setq version-control t)
 ;; Emacs backups:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Whitespace][Whitespace:1]]
+;; Whitespace:1 starts here
 (add-hook 'before-save-hook 'whitespace-cleanup)
 ;; Whitespace:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Fill column][Fill column:1]]
+;; Fill column:1 starts here
 (setq-default fill-column 79)
 ;; Fill column:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*magit and git related stuff][magit and git related stuff:1]]
+;; magit and git related stuff:1 starts here
 (use-package magit
   :bind
   ("C-x g" . magit-status)
@@ -403,7 +404,7 @@
   (magit-clone-set-remote.pushDefault t))
 ;; magit and git related stuff:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Git helpers][Git helpers:1]]
+;; Git helpers:1 starts here
 ;; Incremental blame?
 (use-package git-blamed
   :defer t)
@@ -423,13 +424,13 @@
   (global-diff-hl-mode))
 ;; Git helpers:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Magit helpers][Magit helpers:1]]
+;; Magit helpers:1 starts here
 (use-package magit-todos
   :config
   (setq magit-todos-exclude-globs '("*.css.map")))
 ;; Magit helpers:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*GitHub helpers][GitHub helpers:1]]
+;; GitHub helpers:1 starts here
 ;; More generic is “browse-at-remote”.
 ;; Not very useful, if we have git-link?
 ;; (use-package github-browse-file :defer t)
@@ -452,7 +453,7 @@
 (use-package forge :after magit)
 ;; GitHub helpers:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*TODOs highlighting][TODOs highlighting:1]]
+;; TODOs highlighting:1 starts here
 ;; NOTE that the highlighting works even in comments.
 (use-package hl-todo
   ;; I want todo-words highlighted in prose, not just in code fragements.
@@ -462,7 +463,7 @@
   (global-hl-todo-mode))
 ;; TODOs highlighting:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*TODOs highlighting][TODOs highlighting:2]]
+;; TODOs highlighting:2 starts here
 (use-package magit-todos
   :after magit
   :after hl-todo
@@ -470,11 +471,11 @@
   (magit-todos-mode))
 ;; TODOs highlighting:2 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*yaml mode][yaml mode:1]]
+;; yaml mode:1 starts here
 (use-package yaml-mode)
 ;; yaml mode:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org mode][Org mode:1]]
+;; Org mode:1 starts here
 (use-package org
   :bind
   (:map org-mode-map
@@ -484,7 +485,7 @@
 (setq org-return-follows-link t)
 ;; Org mode:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Paste HTML as org text][Paste HTML as org text:1]]
+;; Paste HTML as org text:1 starts here
 (defun pc/html2org-clipboard ()
   "Convert clipboard contents from HTML to Org and then paste (yank)."
   (interactive)
@@ -492,11 +493,11 @@
   (yank))
 ;; Paste HTML as org text:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org tags][Org tags:1]]
+;; Org tags:1 starts here
 (setq org-complete-tags-always-offer-all-agenda-tags t)
 ;; Org tags:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Basic config][Basic config:1]]
+;; Basic config:1 starts here
 (setq org-agenda-files
       (expand-file-name "agenda-files.org" org-directory))
 
@@ -522,7 +523,7 @@
 (setq org-agenda-skip-deadline-if-done t)
 ;; Basic config:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Super agenda][Super agenda:1]]
+;; Super agenda:1 starts here
 (use-package org-super-agenda
   :defer t)
 
@@ -532,7 +533,7 @@
 ;; FIXME: Add some filters and stuff to make it more useful?
 ;; Super agenda:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Template to capture journal entries][Template to capture journal entries:1]]
+;; Template to capture journal entries:1 starts here
 (add-to-list 'org-capture-templates
              '("j"
                "Journal"
@@ -541,7 +542,7 @@
                "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n%a\n"))
 ;; Template to capture journal entries:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Custom code to fire off journal mode][Custom code to fire off journal mode:1]]
+;; Custom code to fire off journal mode:1 starts here
 (defun pc/insert-journal-template ()
   (org-capture nil "j")
   (org-capture-finalize)
@@ -551,7 +552,7 @@
   (org-end-of-line))
 ;; Custom code to fire off journal mode:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Custom code to fire off journal mode][Custom code to fire off journal mode:2]]
+;; Custom code to fire off journal mode:2 starts here
 (defun pc/journal (&optional mode)
   "Open a new frame for journaling.
     - Jumps to the currently clocked item, if there is one.
@@ -602,7 +603,7 @@ If no such frame exists, creates a new frame."
     (shell-command (format "wmctrl -R \"%s\"" title))))
 ;; Custom code to fire off journal mode:2 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Work Today][Work Today:1]]
+;; Work Today:1 starts here
 (defun pc/work-today ()
   "Create a journal entry with today's work tasks"
   (interactive)
@@ -633,7 +634,7 @@ If no such frame exists, creates a new frame."
     (mapc (lambda (item) (insert (format "- %s\n" (org-no-properties item)))) headlines)))
 ;; Work Today:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Zulip and Org mode][Zulip and Org mode:1]]
+;; Zulip and Org mode:1 starts here
 (use-package request :defer t)
 (use-package ox-gfm :defer t)
 (use-package zulip-helpers
@@ -641,11 +642,11 @@ If no such frame exists, creates a new frame."
 (require 'zulip-helpers)
 ;; Zulip and Org mode:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org capture][Org capture:1]]
+;; Org capture:1 starts here
 (require 'org-protocol)
 ;; Org capture:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Template to capture protocol entries][Template to capture protocol entries:1]]
+;; Template to capture protocol entries:1 starts here
 (add-to-list
    'org-capture-templates
    '("p"
@@ -655,21 +656,21 @@ If no such frame exists, creates a new frame."
      "* %:description\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%:link\n\n#+begin_quote\n%i\n#+end_quote\n"))
 ;; Template to capture protocol entries:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Org babel][Org babel:1]]
+;; Org babel:1 starts here
 (require 'org-tempo)
 ;; Org babel:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Markdown][Markdown:1]]
+;; Markdown:1 starts here
 (use-package markdown-mode :defer t)
 ;; Markdown:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Hugo & Blog setup][Hugo & Blog setup:1]]
+;; Hugo & Blog setup:1 starts here
 (use-package ox-hugo
   :ensure t            ;Auto-install the package from Melpa (optional)
   :after ox)
 ;; Hugo & Blog setup:1 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:3]]
+;; Emacs Anywhere:3 starts here
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
       (string-match-p "Issue #" window-title)))
@@ -682,7 +683,7 @@ If no such frame exists, creates a new frame."
    (t (org-mode))))
 ;; Emacs Anywhere:3 ends here
 
-;; [[file:~/software/my-repos/my-dot-emacs/init.org::*Emacs Anywhere][Emacs Anywhere:4]]
+;; Emacs Anywhere:4 starts here
 (use-package emacs-anywhere
   :defer 5
   :load-path "fake-lisp"

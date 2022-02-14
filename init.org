@@ -55,7 +55,8 @@ to save with a prefix argument, though. ~C-u C-x C-s~.
   (defun pc/tangle-init-el ()
     "Tangle the file to update init.el file."
     (interactive "P")
-    (let* ((time (current-time)))
+    (let* ((time (current-time))
+           (org-babel-tangle-comment-format-beg "%source-name starts here"))
       (when current-prefix-arg
         ;; Make and load init.el
         (org-babel-tangle)
