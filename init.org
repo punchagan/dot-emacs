@@ -646,6 +646,12 @@ Show TODO keywords in magit status buffer!
   (use-package yaml-mode)
 #+END_SRC
 
+** Flycheck mode
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
+#+end_src
 * Prose and Literate Programming
 ** Org mode
 Some basic org-mode configuration

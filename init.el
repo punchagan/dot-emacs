@@ -474,6 +474,12 @@
 (use-package yaml-mode)
 ;; yaml mode:1 ends here
 
+;; Flycheck mode:1 starts here
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+;; Flycheck mode:1 ends here
+
 ;; Org mode:1 starts here
 (use-package org
   :bind
