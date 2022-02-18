@@ -43,8 +43,6 @@
                      "init.el"
                      (file-name-directory (buffer-file-name)))))
 
-      ;; Make and load init.el
-      (org-babel-tangle)
       ;; NOTE: Loading the init file doesn't work well...
       ;; We just tangle the file on save, and leave it at that. This
       ;; utility is left around, in case we occasionally chosee to
