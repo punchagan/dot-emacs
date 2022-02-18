@@ -407,12 +407,8 @@
 (use-package git-blamed
   :defer t)
 
-;; Major mode to edit git ignore files
-(use-package gitignore-mode
-  :defer t)
-
-;; Major mode to edit git config files
-(use-package gitconfig-mode
+;; Major mode for editing git configuration files
+(use-package git-modes
   :defer t)
 
 ;; Highlight diffs

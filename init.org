@@ -544,12 +544,8 @@ For a full tutorial see [[http://jr0cket.co.uk/2012/12/driving-git-with-emacs-pu
   (use-package git-blamed
     :defer t)
 
-  ;; Major mode to edit git ignore files
-  (use-package gitignore-mode
-    :defer t)
-
-  ;; Major mode to edit git config files
-  (use-package gitconfig-mode
+  ;; Major mode for editing git configuration files
+  (use-package git-modes
     :defer t)
 
   ;; Highlight diffs
