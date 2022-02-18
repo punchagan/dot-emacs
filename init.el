@@ -480,6 +480,23 @@
   :init (global-flycheck-mode))
 ;; Flycheck mode:1 ends here
 
+;; Prettier:1 starts here
+(defun pc/enable-minor-mode (my-pair)
+  "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."
+  (if (buffer-file-name)
+      (if (string-match (car my-pair) buffer-file-name)
+          (funcall (cdr my-pair)))))
+
+(use-package prettier-js
+  :defer t
+  :config
+  (add-hook 'js-mode-hook 'prettier-js-mode)
+  (add-hook 'js2-mode-hook 'prettier-js-mode)
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (pc/enable-minor-mode
+                                '("\\.jsx?\\'" . prettier-js-mode)))))
+;; Prettier:1 ends here
+
 ;; Org mode:1 starts here
 (use-package org
   :bind
