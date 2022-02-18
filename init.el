@@ -65,6 +65,12 @@
       user-mail-address "punchagan@muse-amuse.in")
 ;; Basic user information:1 ends here
 
+;; System specific configuration:1 starts here
+(pcase (system-name)
+  ("haalbai" (setq pc/code-directory "~/code/"))
+  ("chandrahara" (setq pc/code-directory "~/software/")))
+;; System specific configuration:1 ends here
+
 ;; Setup ~package.el~:1 starts here
 (require 'package)
 
@@ -396,8 +402,7 @@
   :custom
   ;; Show word diffs for current hunk
   (magit-diff-refine-hunk t)
-  (magit-repository-directories '(("~/software/" . 3)
-                                  ("~/code/" . 3)))
+  (magit-repository-directories `((,pc/code-directory . 3)))
   ;; Do not ask about this variable when cloning.
   (magit-clone-set-remote.pushDefault t))
 ;; magit and git related stuff:1 ends here
@@ -631,8 +636,14 @@ If no such frame exists, creates a new frame."
 ;; Zulip and Org mode:1 starts here
 (use-package request :defer t)
 (use-package ox-gfm :defer t)
+
+(eval-and-compile
+  (setq zulip-helpers-load-path
+        (expand-file-name "my-repos/zulip-helpers.el" pc/code-directory)))
+
 (use-package zulip-helpers
-  :load-path "../zulip-helpers.el")
+    :load-path zulip-helpers-load-path)
+
 (require 'zulip-helpers)
 ;; Zulip and Org mode:1 ends here
 

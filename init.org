@@ -99,6 +99,12 @@ For some fun, run this cute method.
 #+BEGIN_SRC emacs-lisp :tangle no
   (animate-birthday-present user-full-name)
 #+END_SRC
+** System specific configuration
+#+begin_src emacs-lisp
+  (pcase (system-name)
+    ("haalbai" (setq pc/code-directory "~/code/"))
+    ("chandrahara" (setq pc/code-directory "~/software/")))
+#+end_src
 * Package manager and installation
 ** Setup ~package.el~
 #+BEGIN_SRC emacs-lisp
@@ -532,8 +538,7 @@ For a full tutorial see [[http://jr0cket.co.uk/2012/12/driving-git-with-emacs-pu
     :custom
     ;; Show word diffs for current hunk
     (magit-diff-refine-hunk t)
-    (magit-repository-directories '(("~/software/" . 3)
-                                    ("~/code/" . 3)))
+    (magit-repository-directories `((,pc/code-directory . 3)))
     ;; Do not ask about this variable when cloning.
     (magit-clone-set-remote.pushDefault t))
 #+END_SRC
@@ -827,8 +832,14 @@ Quickly create a summary of headlines tagged with specific tag
 #+BEGIN_SRC emacs-lisp
   (use-package request :defer t)
   (use-package ox-gfm :defer t)
+
+  (eval-and-compile
+    (setq zulip-helpers-load-path
+          (expand-file-name "my-repos/zulip-helpers.el" pc/code-directory)))
+
   (use-package zulip-helpers
-    :load-path "../zulip-helpers.el")
+      :load-path zulip-helpers-load-path)
+
   (require 'zulip-helpers)
 #+END_SRC
 ** Org capture
