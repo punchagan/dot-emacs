@@ -669,6 +669,15 @@ Show TODO keywords in magit status buffer!
                                  (pc/enable-minor-mode
                                   '("\\.jsx?\\'" . prettier-js-mode)))))
 #+end_src
+
+** Python
+*** Use black in Python buffers
+#+BEGIN_SRC emacs-lisp
+  (use-package blacken
+    :demand t
+    :after python
+    :hook (python-mode . blacken-mode))
+#+END_SRC
 * Prose and Literate Programming
 ** Org mode
 Some basic org-mode configuration

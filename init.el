@@ -497,6 +497,13 @@
                                 '("\\.jsx?\\'" . prettier-js-mode)))))
 ;; Prettier:1 ends here
 
+;; Use black in Python buffers:1 starts here
+(use-package blacken
+  :demand t
+  :after python
+  :hook (python-mode . blacken-mode))
+;; Use black in Python buffers:1 ends here
+
 ;; Org mode:1 starts here
 (use-package org
   :bind
