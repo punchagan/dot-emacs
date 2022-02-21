@@ -321,7 +321,10 @@ Let's save a few precious seconds
 ;; initially-worrisome “narrow-to-region”, C-x n n.
 (setq-default disabled-command-function nil)
 #+end_src
-
+*** Use UTF-8
+#+begin_src emacs-lisp
+  (set-default-coding-systems 'utf-8-unix)
+#+end_src
 ** Fill column indicator
 #+BEGIN_SRC emacs-lisp
   (when (boundp 'display-fill-column-indicator)

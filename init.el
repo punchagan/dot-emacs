@@ -243,6 +243,10 @@
 (setq-default disabled-command-function nil)
 ;; Basic Preferences:3 ends here
 
+;; Use UTF-8:1 starts here
+(set-default-coding-systems 'utf-8-unix)
+;; Use UTF-8:1 ends here
+
 ;; Fill column indicator:1 starts here
 (when (boundp 'display-fill-column-indicator)
   (setq-default indicate-buffer-boundaries 'left)
