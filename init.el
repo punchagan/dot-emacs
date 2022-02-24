@@ -406,7 +406,9 @@
   :custom
   ;; Show word diffs for current hunk
   (magit-diff-refine-hunk t)
-  (magit-repository-directories `((,pc/code-directory . 3)))
+  (magit-repository-directories `((,pc/code-directory . 3)
+                                  ("~" . 0)
+                                  ("~/.life-in-plain-text/" . 0)))
   ;; Do not ask about this variable when cloning.
   (magit-clone-set-remote.pushDefault t))
 ;; magit and git related stuff:1 ends here
