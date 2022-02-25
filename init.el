@@ -590,10 +590,12 @@
 ;; Custom code to fire off journal mode:2 starts here
 (defun pc/journal (&optional mode)
   "Open a new frame for journaling.
-    - Jumps to the currently clocked item, if there is one.
 
-    - Otherwise, opens to the current day in the journal, and creates
-      a new day entry if not already present."
+If MODE is 'journal opens to the current day in the journal, and
+creates a new day entry if not already present.
+
+If MODE is 'clock jumps to the currently clocked entry, or prompt
+one from the last few."
   (interactive)
   (pc/select-window-by-name "What are you doing?")
   ;; Display agenda...
@@ -607,10 +609,10 @@
   ;; Perform next action based on mode
   (cond
    ;; Show a capture buffer for a new journal entry
-   ((or (equal mode 'journal))
+   ((equal mode 'journal)
     (org-capture nil "j"))
    ;; Show the current clock entry, if there's one. Otherwise prompt!
-   ((and (equal mode 'clock) )
+   ((equal mode 'clock)
     (org-clock-goto (not (org-clocking-p)))
     (org-narrow-to-subtree)
     (outline-show-subtree)
