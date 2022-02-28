@@ -476,6 +476,16 @@
   (magit-todos-mode))
 ;; TODOs highlighting:2 ends here
 
+;; Project management:1 starts here
+(use-package projectile
+  :ensure t
+  :init
+  (projectile-mode +1)
+  :custom (projectile-project-search-path `((,pc/code-directory . 3)))
+  :bind (:map projectile-mode-map
+              ("C-c p" . projectile-command-map)))
+;; Project management:1 ends here
+
 ;; yaml mode:1 starts here
 (use-package yaml-mode)
 ;; yaml mode:1 ends here
