@@ -9,3 +9,6 @@
 /.bookmarks.el
 /request/
 /session.*
+/auto-save-list/
+/var/
+/*.eld
