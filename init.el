@@ -720,6 +720,10 @@ If no such frame exists, creates a new frame."
 (require 'org-tempo)
 ;; Org babel:1 ends here
 
+;; Org reveal:1 starts here
+(use-package ox-reveal :defer t)
+;; Org reveal:1 ends here
+
 ;; Markdown:1 starts here
 (use-package markdown-mode :defer t)
 ;; Markdown:1 ends here

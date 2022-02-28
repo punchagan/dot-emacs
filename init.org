@@ -919,6 +919,10 @@ Template expansion!
 #+begin_src emacs-lisp
   (require 'org-tempo)
 #+end_src
+** Org reveal
+#+begin_src emacs-lisp
+  (use-package ox-reveal :ensure t)
+#+end_src
 ** Markdown
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode :defer t)
