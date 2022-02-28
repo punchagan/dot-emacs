@@ -646,16 +646,19 @@ Show TODO keywords in magit status buffer!
 #+END_SRC
 
 ** Project management
+*** Setup projectile
 #+begin_src emacs-lisp
   (use-package projectile
     :ensure t
     :init
     (projectile-mode +1)
-    :custom (projectile-project-search-path `((,pc/code-directory . 3)))
+    :custom
+    (projectile-project-search-path `((,pc/code-directory . 3)))
+    (projectile-indexing-method 'alien)
+    (projectile-sort-order 'recently-active)
     :bind (:map projectile-mode-map
                 ("C-c p" . projectile-command-map)))
 #+end_src
-
 ** yaml mode
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode)
