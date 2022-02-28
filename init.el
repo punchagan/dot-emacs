@@ -488,6 +488,11 @@
               ("C-c p" . projectile-command-map)))
 ;; Setup projectile:1 ends here
 
+;; Install ~ag~:1 starts here
+(use-package ag
+  :defer t)
+;; Install ~ag~:1 ends here
+
 ;; yaml mode:1 starts here
 (use-package yaml-mode)
 ;; yaml mode:1 ends here

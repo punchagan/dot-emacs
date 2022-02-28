@@ -659,6 +659,12 @@ Show TODO keywords in magit status buffer!
     :bind (:map projectile-mode-map
                 ("C-c p" . projectile-command-map)))
 #+end_src
+*** Install ~ag~
+#+begin_src emacs-lisp
+  (use-package ag
+    :defer t)
+#+end_src
+
 ** yaml mode
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode)
