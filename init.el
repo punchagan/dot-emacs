@@ -692,7 +692,7 @@ If no such frame exists, creates a new frame."
     (mapc (lambda (item) (insert (format "- %s\n" (org-no-properties item)))) headlines)))
 ;; Work Today:1 ends here
 
-;; Zulip and Org mode:1 starts here
+;; Org mode and Zulip:1 starts here
 (use-package request :defer t)
 (use-package ox-gfm :defer t)
 
@@ -702,9 +702,7 @@ If no such frame exists, creates a new frame."
 
 (use-package zulip-helpers
     :load-path zulip-helpers-load-path)
-
-(require 'zulip-helpers)
-;; Zulip and Org mode:1 ends here
+;; Org mode and Zulip:1 ends here
 
 ;; Org capture:1 starts here
 (require 'org-protocol)
