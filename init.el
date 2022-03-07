@@ -723,7 +723,7 @@ If no such frame exists, creates a new frame."
 ;; Org babel:1 ends here
 
 ;; Org reveal:1 starts here
-(use-package ox-reveal :defer t)
+(use-package ox-reveal :ensure t)
 ;; Org reveal:1 ends here
 
 ;; Org subtree to gist:1 starts here
