@@ -726,6 +726,17 @@ If no such frame exists, creates a new frame."
 (use-package ox-reveal :defer t)
 ;; Org reveal:1 ends here
 
+;; Org subtree to gist:1 starts here
+(eval-and-compile
+  (setq org2gist-load-path
+        (expand-file-name "my-repos/org2gist" pc/code-directory)))
+
+(use-package org2gist
+  :load-path org2gist-load-path)
+
+;; (require 'org2gist)
+;; Org subtree to gist:1 ends here
+
 ;; Markdown:1 starts here
 (use-package markdown-mode :defer t)
 ;; Markdown:1 ends here

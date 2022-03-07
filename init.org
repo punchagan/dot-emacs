@@ -925,6 +925,17 @@ Template expansion!
 #+begin_src emacs-lisp
   (use-package ox-reveal :ensure t)
 #+end_src
+** Org subtree to gist
+#+begin_src emacs-lisp
+  (eval-and-compile
+    (setq org2gist-load-path
+          (expand-file-name "my-repos/org2gist" pc/code-directory)))
+
+  (use-package org2gist
+    :load-path org2gist-load-path)
+
+  ;; (require 'org2gist)
+#+end_src
 ** Markdown
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode :defer t)
