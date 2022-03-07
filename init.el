@@ -503,6 +503,10 @@
   :init (global-flycheck-mode))
 ;; Flycheck mode:1 ends here
 
+;; Javascript:1 starts here
+(setq js-indent-level 2)
+;; Javascript:1 ends here
+
 ;; Prettier:1 starts here
 (defun pc/enable-minor-mode (my-pair)
   "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."

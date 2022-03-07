@@ -676,7 +676,11 @@ Show TODO keywords in magit status buffer!
     :ensure t
     :init (global-flycheck-mode))
 #+end_src
-** Prettier
+** Javascript
+#+begin_src emacs-lisp
+  (setq js-indent-level 2)
+#+end_src
+*** Prettier
 #+begin_src emacs-lisp
   (defun pc/enable-minor-mode (my-pair)
     "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."
