@@ -529,9 +529,9 @@
 
 ;; Org mode:1 starts here
 (use-package org
-  :bind
-  (:map org-mode-map
-        ("C-c C-q" . counsel-org-tag)))
+  :bind (("C-c c" . org-capture)
+         (:map org-mode-map
+               ("C-c C-q" . counsel-org-tag))))
 
 (setq org-directory "~/.life-in-plain-text/src/")
 (setq org-return-follows-link t)
