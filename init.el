@@ -734,6 +734,33 @@ If no such frame exists, creates a new frame."
   :after ox)
 ;; Hugo & Blog setup:1 ends here
 
+;; Hugo & Blog setup:2 starts here
+(defun org-hugo-new-subtree-post-capture-template ()
+  "Returns `org-capture' template string for new Hugo post."
+  (let* ((date (format-time-string (org-time-stamp-format :long :inactive) (org-current-time)))
+         (title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+         (fname (org-hugo-slug title)))
+    (mapconcat #'identity
+               `(
+                 ,(concat "* TODO " title " :noexport:")
+                 ":PROPERTIES:"
+                 ,(concat ":EXPORT_FILE_NAME: " fname)
+                 ,(concat ":EXPORT_DATE: " date) ;Enter current date and time
+                 ":EXPORT_DESCRIPTION:"
+                 ":EXPORT_HUGO_CUSTOM_FRONT_MATTER:"
+                 ":END:"
+                 "%?\n")          ;Place the cursor here finally
+               "\n")))
+
+(add-to-list 'org-capture-templates
+             '("b"
+               "Blog post for punchagan.muse-amuse.in"
+               entry
+               (file "blog-posts.org")
+               (function org-hugo-new-subtree-post-capture-template)
+               :prepend t))
+;; Hugo & Blog setup:2 ends here
+
 ;; Emacs Anywhere:3 starts here
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
