@@ -706,6 +706,11 @@ Show TODO keywords in magit status buffer!
     :after python
     :hook (python-mode . blacken-mode))
 #+END_SRC
+** Emacs Lisp
+*** Generate README from file header
+#+begin_src emacs-lisp
+(use-package md-readme)
+#+end_src
 * Prose and Literate Programming
 ** Org mode
 Some basic org-mode configuration
