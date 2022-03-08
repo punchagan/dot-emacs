@@ -535,6 +535,10 @@
 (use-package md-readme)
 ;; Generate README from file header:1 ends here
 
+;; Package lint for submitting packages to melpa:1 starts here
+(use-package package-lint)
+;; Package lint for submitting packages to melpa:1 ends here
+
 ;; Org mode:1 starts here
 (use-package org
   :bind (("C-c c" . org-capture)
