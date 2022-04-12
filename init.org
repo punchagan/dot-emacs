@@ -937,13 +937,11 @@ Template expansion!
 ** Org subtree to gist
 #+begin_src emacs-lisp
   (eval-and-compile
-    (setq org2gist-load-path
-          (expand-file-name "my-repos/org2gist" pc/code-directory)))
+    (setq ox-gist-load-path
+          (expand-file-name "my-repos/ox-gist" pc/code-directory)))
 
-  (use-package org2gist
-    :load-path org2gist-load-path)
-
-  ;; (require 'org2gist)
+  (use-package ox-gist
+    :load-path ox-gist-load-path)
 #+end_src
 ** Markdown
 #+BEGIN_SRC emacs-lisp

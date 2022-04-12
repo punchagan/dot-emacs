@@ -736,13 +736,11 @@ If no such frame exists, creates a new frame."
 
 ;; Org subtree to gist:1 starts here
 (eval-and-compile
-  (setq org2gist-load-path
-        (expand-file-name "my-repos/org2gist" pc/code-directory)))
+  (setq ox-gist-load-path
+        (expand-file-name "my-repos/ox-gist" pc/code-directory)))
 
-(use-package org2gist
-  :load-path org2gist-load-path)
-
-;; (require 'org2gist)
+(use-package ox-gist
+  :load-path ox-gist-load-path)
 ;; Org subtree to gist:1 ends here
 
 ;; Markdown:1 starts here
