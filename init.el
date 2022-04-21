@@ -540,7 +540,14 @@
 ;; Package lint for submitting packages to melpa:1 ends here
 
 ;; Org mode:1 starts here
+;; Taken from comment here: https://github.com/jwiegley/use-package/issues/319#issuecomment-845214233
+(assq-delete-all 'org package--builtins)
+(assq-delete-all 'org package--builtin-versions)
+
 (use-package org
+  :pin gnu
+  :ensure t
+  :defer t
   :bind (("C-c c" . org-capture)
          (:map org-mode-map
                ("C-c C-q" . counsel-org-tag))))
