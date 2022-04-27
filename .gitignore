@@ -12,3 +12,5 @@
 /auto-save-list/
 /var/
 /*.eld
+/projectile.cache
+/.org-id-locations
