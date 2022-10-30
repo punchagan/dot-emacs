@@ -566,7 +566,7 @@
 
 (setq org-directory "~/.life-in-plain-text/src/")
 (setq org-return-follows-link t)
-;; Org mode:1 ends here
+;; Org mode:2 ends here
 
 ;; Paste HTML as org text:1 starts here
 (defun pc/html2org-clipboard ()
@@ -767,12 +767,25 @@ If no such frame exists, creates a new frame."
 ;; Markdown:1 ends here
 
 ;; Hugo & Blog setup:1 starts here
-(use-package ox-hugo
-  :ensure t            ;Auto-install the package from Melpa (optional)
-  :after ox)
+;; Copied from newer org-mode since ox-hugo needs it
+
+(defun org-back-to-heading-or-point-min (&optional invisible-ok)
+  "Go back to heading or first point in buffer.
+If point is before first heading go to first point in buffer
+instead of back to heading."
+  (condition-case nil
+      (outline-back-to-heading invisible-ok)
+    (error
+     (goto-char (point-min)))))
 ;; Hugo & Blog setup:1 ends here
 
 ;; Hugo & Blog setup:2 starts here
+(use-package ox-hugo
+  :ensure t            ;Auto-install the package from Melpa (optional)
+  :after ox)
+;; Hugo & Blog setup:2 ends here
+
+;; Hugo & Blog setup:3 starts here
 (defun org-hugo-new-subtree-post-capture-template ()
   "Returns `org-capture' template string for new Hugo post."
   (let* ((date (format-time-string (org-time-stamp-format :long :inactive) (org-current-time)))
@@ -797,7 +810,7 @@ If no such frame exists, creates a new frame."
                (file "blog-posts.org")
                (function org-hugo-new-subtree-post-capture-template)
                :prepend t))
-;; Hugo & Blog setup:2 ends here
+;; Hugo & Blog setup:3 ends here
 
 ;; Emacs Anywhere:3 starts here
 (defun pc/github-conversation-p (window-title)

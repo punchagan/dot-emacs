@@ -968,6 +968,18 @@ Template expansion!
 #+END_SRC
 ** Hugo & Blog setup
 #+begin_src emacs-lisp
+  ;; Copied from newer org-mode since ox-hugo needs it
+
+  (defun org-back-to-heading-or-point-min (&optional invisible-ok)
+    "Go back to heading or first point in buffer.
+  If point is before first heading go to first point in buffer
+  instead of back to heading."
+    (condition-case nil
+        (outline-back-to-heading invisible-ok)
+      (error
+       (goto-char (point-min)))))
+#+end_src
+#+begin_src emacs-lisp
   (use-package ox-hugo
     :ensure t            ;Auto-install the package from Melpa (optional)
     :after ox)
