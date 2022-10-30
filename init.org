@@ -707,13 +707,6 @@ Show TODO keywords in magit status buffer!
 #+end_src
 
 ** Python
-*** Use black in Python buffers
-#+BEGIN_SRC emacs-lisp
-  (use-package blacken
-    :demand t
-    :after python
-    :hook (python-mode . blacken-mode))
-#+END_SRC
 *** Use anaconda mode for code completion, etc.
 #+BEGIN_SRC emacs-lisp
   (use-package anaconda-mode
@@ -722,6 +715,54 @@ Show TODO keywords in magit status buffer!
     :hook ((python-mode . anaconda-mode)
            (python-mode . anaconda-eldoc-mode)))
 #+END_SRC
+*** Use importmagic mode for fixing imports
+#+BEGIN_SRC emacs-lisp
+  (use-package importmagic
+    :demand t
+    :after python
+    :hook (python-mode . importmagic-mode))
+#+END_SRC
+*** Use autoflake to remove unused imports
+#+BEGIN_SRC emacs-lisp
+  (defun pc/autoflake-remove-unused-imports-before-save ()
+    (interactive)
+    (when (eq major-mode 'python-mode)
+      (if (executable-find "autoflake")
+        (progn
+          (shell-command (format "autoflake --remove-all-unused-imports -i %s"
+                                 (shell-quote-argument (buffer-file-name))))
+          (revert-buffer t t t))
+        (message "Error: Cannot find autoflake executable."))))
+
+  ;; NOTE: The hook is added after py-isort hook has been added below
+
+#+end_src
+
+*** Use isort to sort imports
+#+BEGIN_SRC emacs-lisp
+  (defun pc/py-clean-up-imports-hook ()
+    "Hooks that clean up python mode imports."
+    ;; Hooks are added at the head of the before-save-hook list. So, hooks should
+    ;; be added here in the reverse order in which they should be applied.
+    (add-hook 'before-save-hook 'py-isort-before-save nil t)
+    (add-hook 'before-save-hook 'pc/autoflake-remove-unused-imports-before-save nil t))
+
+  (use-package py-isort
+    :demand t
+    :after python
+    :hook (python-mode . pc/py-clean-up-imports-hook))
+#+END_SRC
+
+*** Use black in Python buffers
+NOTE: This appears after the isort stuff above.. since we want blacken to be
+the last thing to run!
+#+BEGIN_SRC emacs-lisp
+  (use-package blacken
+    :demand t
+    :after python
+    :hook (python-mode . blacken-mode))
+#+END_SRC
+
 ** Emacs Lisp
 *** Generate README from file header
 #+begin_src emacs-lisp

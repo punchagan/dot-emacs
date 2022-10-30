@@ -532,13 +532,6 @@
                                 '("\\.jsx?\\'" . prettier-js-mode)))))
 ;; Prettier:1 ends here
 
-;; Use black in Python buffers:1 starts here
-(use-package blacken
-  :demand t
-  :after python
-  :hook (python-mode . blacken-mode))
-;; Use black in Python buffers:1 ends here
-
 ;; Use anaconda mode for code completion, etc.:1 starts here
 (use-package anaconda-mode
   :demand t
@@ -546,6 +539,48 @@
   :hook ((python-mode . anaconda-mode)
          (python-mode . anaconda-eldoc-mode)))
 ;; Use anaconda mode for code completion, etc.:1 ends here
+
+;; Use importmagic mode for fixing imports:1 starts here
+(use-package importmagic
+  :demand t
+  :after python
+  :hook (python-mode . importmagic-mode))
+;; Use importmagic mode for fixing imports:1 ends here
+
+;; Use autoflake to remove unused imports:1 starts here
+(defun pc/autoflake-remove-unused-imports-before-save ()
+  (interactive)
+  (when (eq major-mode 'python-mode)
+    (if (executable-find "autoflake")
+      (progn
+        (shell-command (format "autoflake --remove-all-unused-imports -i %s"
+                               (shell-quote-argument (buffer-file-name))))
+        (revert-buffer t t t))
+      (message "Error: Cannot find autoflake executable."))))
+
+;; NOTE: The hook is added after py-isort hook has been added below
+;; Use autoflake to remove unused imports:1 ends here
+
+;; Use isort to sort imports:1 starts here
+(defun pc/py-clean-up-imports-hook ()
+  "Hooks that clean up python mode imports."
+  ;; Hooks are added at the head of the before-save-hook list. So, hooks should
+  ;; be added here in the reverse order in which they should be applied.
+  (add-hook 'before-save-hook 'py-isort-before-save nil t)
+  (add-hook 'before-save-hook 'pc/autoflake-remove-unused-imports-before-save nil t))
+
+(use-package py-isort
+  :demand t
+  :after python
+  :hook (python-mode . pc/py-clean-up-imports-hook))
+;; Use isort to sort imports:1 ends here
+
+;; Use black in Python buffers:1 starts here
+(use-package blacken
+  :demand t
+  :after python
+  :hook (python-mode . blacken-mode))
+;; Use black in Python buffers:1 ends here
 
 ;; Generate README from file header:1 starts here
 (use-package md-readme)
@@ -566,7 +601,7 @@
 
 (setq org-directory "~/.life-in-plain-text/src/")
 (setq org-return-follows-link t)
-;; Org mode:2 ends here
+;; Org mode:1 ends here
 
 ;; Paste HTML as org text:1 starts here
 (defun pc/html2org-clipboard ()
