@@ -552,10 +552,10 @@
   (interactive)
   (when (eq major-mode 'python-mode)
     (if (executable-find "autoflake")
-      (progn
-        (shell-command (format "autoflake --remove-all-unused-imports -i %s"
-                               (shell-quote-argument (buffer-file-name))))
-        (revert-buffer t t t))
+        (progn
+          (shell-command (format "autoflake --remove-all-unused-imports -i %s"
+                                 (shell-quote-argument (buffer-file-name))))
+          (revert-buffer t t t))
       (message "Error: Cannot find autoflake executable."))))
 
 ;; NOTE: The hook is added after py-isort hook has been added below
@@ -567,7 +567,8 @@
   ;; Hooks are added at the head of the before-save-hook list. So, hooks should
   ;; be added here in the reverse order in which they should be applied.
   (add-hook 'before-save-hook 'py-isort-before-save nil t)
-  (add-hook 'before-save-hook 'pc/autoflake-remove-unused-imports-before-save nil t))
+  ;; The function is called on the file, and not buffer. So, we call it after saving the file
+  (add-hook 'after-save-hook 'pc/autoflake-remove-unused-imports-before-save nil t))
 
 (use-package py-isort
   :demand t
