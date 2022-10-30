@@ -583,6 +583,13 @@
   :hook (python-mode . blacken-mode))
 ;; Use black in Python buffers:1 ends here
 
+;; Use poetry with poetry-tracking-mode:1 starts here
+(use-package poetry
+  :demand t
+  :after python
+  :hook (python-mode . poetry-tracking-mode))
+;; Use poetry with poetry-tracking-mode:1 ends here
+
 ;; Generate README from file header:1 starts here
 (use-package md-readme)
 ;; Generate README from file header:1 ends here

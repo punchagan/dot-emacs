@@ -763,7 +763,13 @@ the last thing to run!
     :after python
     :hook (python-mode . blacken-mode))
 #+END_SRC
-
+*** Use poetry with poetry-tracking-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package poetry
+    :demand t
+    :after python
+    :hook (python-mode . poetry-tracking-mode))
+#+END_SRC
 ** Emacs Lisp
 *** Generate README from file header
 #+begin_src emacs-lisp
