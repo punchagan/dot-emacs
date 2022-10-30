@@ -688,11 +688,19 @@ Show TODO keywords in magit status buffer!
         (if (string-match (car my-pair) buffer-file-name)
             (funcall (cdr my-pair)))))
 
+  (defun pc/disable-whitespace-cleanup ()
+    "Set whitespace-style to nil locally."
+    (setq-local whitespace-style nil))
+
   (use-package prettier-js
     :defer t
     :config
     (add-hook 'js-mode-hook 'prettier-js-mode)
+    (add-hook 'js-mode-hook #'pc/disable-whitespace-cleanup)
+    (add-hook 'js-jsx-mode-hook 'prettier-js-mode)
+    (add-hook 'js-jsx-mode-hook #'pc/disable-whitespace-cleanup)
     (add-hook 'js2-mode-hook 'prettier-js-mode)
+    (add-hook 'js2-mode-hook #'pc/disable-whitespace-cleanup)
     (add-hook 'web-mode-hook #'(lambda ()
                                  (pc/enable-minor-mode
                                   '("\\.jsx?\\'" . prettier-js-mode)))))
