@@ -531,6 +531,14 @@
   :hook (python-mode . blacken-mode))
 ;; Use black in Python buffers:1 ends here
 
+;; Use anaconda mode for code completion, etc.:1 starts here
+(use-package anaconda-mode
+  :demand t
+  :after python
+  :hook ((python-mode . anaconda-mode)
+         (python-mode . anaconda-eldoc-mode)))
+;; Use anaconda mode for code completion, etc.:1 ends here
+
 ;; Generate README from file header:1 starts here
 (use-package md-readme)
 ;; Generate README from file header:1 ends here

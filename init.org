@@ -706,6 +706,14 @@ Show TODO keywords in magit status buffer!
     :after python
     :hook (python-mode . blacken-mode))
 #+END_SRC
+*** Use anaconda mode for code completion, etc.
+#+BEGIN_SRC emacs-lisp
+  (use-package anaconda-mode
+    :demand t
+    :after python
+    :hook ((python-mode . anaconda-mode)
+           (python-mode . anaconda-eldoc-mode)))
+#+END_SRC
 ** Emacs Lisp
 *** Generate README from file header
 #+begin_src emacs-lisp
