@@ -532,6 +532,11 @@
                                 '("\\.jsx?\\'" . prettier-js-mode)))))
 ;; Prettier:1 ends here
 
+;; Typescript:1 starts here
+(use-package typescript-mode
+  :defer t)
+;; Typescript:1 ends here
+
 ;; Use anaconda mode for code completion, etc.:1 starts here
 (use-package anaconda-mode
   :demand t

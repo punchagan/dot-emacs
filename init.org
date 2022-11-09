@@ -705,7 +705,11 @@ Show TODO keywords in magit status buffer!
                                  (pc/enable-minor-mode
                                   '("\\.jsx?\\'" . prettier-js-mode)))))
 #+end_src
-
+** Typescript
+#+begin_src emacs-lisp
+  (use-package typescript-mode
+    :defer t)
+#+end_src
 ** Python
 *** Use anaconda mode for code completion, etc.
 #+BEGIN_SRC emacs-lisp
