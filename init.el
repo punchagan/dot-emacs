@@ -626,6 +626,11 @@
   )
 ;; Ocaml:1 ends here
 
+;; Lua:1 starts here
+(use-package lua-mode
+  :defer t)
+;; Lua:1 ends here
+
 ;; Org mode:1 starts here
 (use-package org
   :pin gnu
