@@ -603,6 +603,29 @@
 (use-package package-lint)
 ;; Package lint for submitting packages to melpa:1 ends here
 
+;; Ocaml:1 starts here
+;; Tuareg
+(use-package tuareg)
+
+(setq pc/ocaml-default-dir "/home/punchagan/.opam/default/")
+(when (file-directory-p pc/ocaml-default-dir)
+  (push (expand-file-name "share/emacs/site-lisp" pc/ocaml-default-dir) load-path)
+
+  ;; Merlin
+  (setq merlin-command (expand-file-name "bin/ocamlmerlin" pc/ocaml-default-dir))
+  (autoload 'merlin-mode "merlin" "Merlin mode" t)
+  (add-hook 'tuareg-mode-hook #'merlin-mode)
+  (add-hook 'caml-mode-hook #'merlin-mode)
+
+  ;; Ocamlformat
+  (require 'ocamlformat)
+  (add-hook 'tuareg-mode-hook
+            (lambda ()
+              (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
+              (add-hook 'before-save-hook #'ocamlformat-before-save)))
+  )
+;; Ocaml:1 ends here
+
 ;; Org mode:1 starts here
 (use-package org
   :pin gnu
