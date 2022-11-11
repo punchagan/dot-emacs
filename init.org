@@ -1001,6 +1001,15 @@ Template expansion!
 #+begin_src emacs-lisp
   (require 'org-tempo)
 #+end_src
+*** Enable org-babel for some languages
+#+begin_src emacs-lisp
+  (setq org-babel-load-languages '((emacs-lisp . t)
+                                   (python . t)
+                                   (sh . t)))
+
+  (require 'ob-emacs-lisp)
+  (require 'ob-python)
+#+end_src
 ** Org reveal
 #+begin_src emacs-lisp
   (use-package ox-reveal :ensure t)

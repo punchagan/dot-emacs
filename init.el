@@ -797,6 +797,15 @@ If no such frame exists, creates a new frame."
 (require 'org-tempo)
 ;; Org babel:1 ends here
 
+;; Enable org-babel for some languages:1 starts here
+(setq org-babel-load-languages '((emacs-lisp . t)
+                                 (python . t)
+                                 (sh . t)))
+
+(require 'ob-emacs-lisp)
+(require 'ob-python)
+;; Enable org-babel for some languages:1 ends here
+
 ;; Org reveal:1 starts here
 (use-package ox-reveal :ensure t)
 ;; Org reveal:1 ends here
