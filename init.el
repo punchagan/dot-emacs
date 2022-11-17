@@ -702,16 +702,6 @@
 ;; Template to capture journal entries:1 ends here
 
 ;; Custom code to fire off journal mode:1 starts here
-(defun pc/insert-journal-template ()
-  (org-capture nil "j")
-  (org-capture-finalize)
-  (org-capture-goto-last-stored)
-  (recenter-top-bottom 0)
-  (org-cycle-hide-drawers 'all)
-  (org-end-of-line))
-;; Custom code to fire off journal mode:1 ends here
-
-;; Custom code to fire off journal mode:2 starts here
 (defun pc/journal (&optional mode)
   "Open a new frame for journaling.
 
@@ -762,7 +752,7 @@ If no such frame exists, creates a new frame."
   (let ((frame (pc/get-frame-by-name title)))
     (select-frame frame)
     (shell-command (format "wmctrl -R \"%s\"" title))))
-;; Custom code to fire off journal mode:2 ends here
+;; Custom code to fire off journal mode:1 ends here
 
 ;; Work Today:1 starts here
 (defun pc/work-today ()

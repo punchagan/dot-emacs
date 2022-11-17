@@ -895,22 +895,6 @@ Adapted from this [[https://emacs.stackexchange.com/questions/12121/org-mode-par
 #+END_SRC
 **** Custom code to fire off journal mode
 
-Simple function to insert the template at the correct location, and
-display it with the drawers hidden. We could simply use the capture
-template instead of this magic, but this gives us a better UI to be
-able to just go ahead and type what we want, instead of being in a
-"capture" mode.
-
-#+BEGIN_SRC emacs-lisp
-  (defun pc/insert-journal-template ()
-    (org-capture nil "j")
-    (org-capture-finalize)
-    (org-capture-goto-last-stored)
-    (recenter-top-bottom 0)
-    (org-cycle-hide-drawers 'all)
-    (org-end-of-line))
-#+END_SRC
-
 #+BEGIN_SRC emacs-lisp
   (defun pc/journal (&optional mode)
     "Open a new frame for journaling.
