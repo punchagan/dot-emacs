@@ -900,6 +900,43 @@ instead of back to heading."
                :prepend t))
 ;; Hugo & Blog setup:3 ends here
 
+;; Refile single subtree:1 starts here
+(defun pc/org-refile-subtree-to-journal ()
+  "Refile a subtree to a journal.org datetree corresponding to it's timestamp."
+  (interactive)
+  (let* ((entry-date (org-entry-get nil "CREATED" t))
+         (org-overriding-default-time
+          (apply #'encode-time (org-parse-time-string entry-date)))
+         (buf (current-buffer)))
+    (when entry-date
+      (org-cut-subtree)
+      ;; Set the continuation position when this function is called from org-map-entries
+      (setq org-map-continue-from (point))
+      (save-mark-and-excursion
+        (org-capture-goto-target "j")
+        (org-narrow-to-subtree)
+        (org-show-subtree)
+        (org-end-of-subtree t)
+        (newline)
+        (goto-char (point-max))
+        (org-paste-subtree 4)
+        (widen)
+        (save-buffer)
+        (switch-to-buffer buf)
+        (save-buffer)))))
+;; Refile single subtree:1 ends here
+
+;; Refile Inbox.org:1 starts here
+(defun pc/org-refile-inbox ()
+  (interactive)
+  (require 'dash)
+  (require 's)
+  (org-map-entries
+   #'pc/org-refile-subtree-to-journal
+   nil
+   (-filter (lambda (x) (s-contains? "Inbox.org" x)) (org-agenda-files))))
+;; Refile Inbox.org:1 ends here
+
 ;; Emacs Anywhere:3 starts here
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
