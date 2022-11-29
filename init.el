@@ -940,10 +940,14 @@ instead of back to heading."
 ;; Reading PDFs and taking notes:1 starts here
 (use-package pdf-tools
   :ensure t)
+;; Install pdf loader
+(pdf-loader-install)
+;; Reading PDFs and taking notes:1 ends here
 
+;; Reading PDFs and taking notes:2 starts here
 (use-package org-noter
   :ensure t)
-;; Reading PDFs and taking notes:1 ends here
+;; Reading PDFs and taking notes:2 ends here
 
 ;; Emacs Anywhere:3 starts here
 (defun pc/github-conversation-p (window-title)

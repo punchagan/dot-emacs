@@ -1148,7 +1148,13 @@ Refile all the entries in Inbox.org
 #+begin_src emacs-lisp
   (use-package pdf-tools
     :ensure t)
+  ;; Install pdf loader
+  (pdf-loader-install)
+#+end_src
 
+Install Org noter
+
+#+begin_src emacs-lisp
   (use-package org-noter
     :ensure t)
 #+end_src
