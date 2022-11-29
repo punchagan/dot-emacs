@@ -937,6 +937,14 @@ instead of back to heading."
    (-filter (lambda (x) (s-contains? "Inbox.org" x)) (org-agenda-files))))
 ;; Refile Inbox.org:1 ends here
 
+;; Reading PDFs and taking notes:1 starts here
+(use-package pdf-tools
+  :ensure t)
+
+(use-package org-noter
+  :ensure t)
+;; Reading PDFs and taking notes:1 ends here
+
 ;; Emacs Anywhere:3 starts here
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)

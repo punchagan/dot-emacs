@@ -1144,6 +1144,15 @@ Refile all the entries in Inbox.org
      nil
      (-filter (lambda (x) (s-contains? "Inbox.org" x)) (org-agenda-files))))
 #+end_src
+** Reading PDFs and taking notes
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :ensure t)
+
+  (use-package org-noter
+    :ensure t)
+#+end_src
+
 * Using Emacs from the "outside"
 ** Emacs Anywhere
 Add the ability to use Emacs from input area.
