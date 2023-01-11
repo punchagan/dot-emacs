@@ -529,6 +529,7 @@ Saves to a temp file and puts the filename in the kill ring."
 
 (defun pc/disable-whitespace-cleanup ()
   "Set whitespace-style to nil locally."
+  (interactive)
   (setq-local whitespace-style nil))
 
 (use-package prettier-js

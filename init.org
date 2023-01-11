@@ -708,6 +708,7 @@ Show TODO keywords in magit status buffer!
 
   (defun pc/disable-whitespace-cleanup ()
     "Set whitespace-style to nil locally."
+    (interactive)
     (setq-local whitespace-style nil))
 
   (use-package prettier-js
