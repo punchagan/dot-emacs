@@ -541,6 +541,8 @@ Saves to a temp file and puts the filename in the kill ring."
   (add-hook 'js-jsx-mode-hook #'pc/disable-whitespace-cleanup)
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'js2-mode-hook #'pc/disable-whitespace-cleanup)
+  (add-hook 'typescript-mode-hook 'prettier-js-mode)
+  (add-hook 'typescript-mode-hook #'pc/disable-whitespace-cleanup)
   (add-hook 'web-mode-hook #'(lambda ()
                                (pc/enable-minor-mode
                                 '("\\.jsx?\\'" . prettier-js-mode)))))
