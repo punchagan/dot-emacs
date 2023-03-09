@@ -859,6 +859,12 @@ Adapted from this [[https://emacs.stackexchange.com/questions/12121/org-mode-par
     (kill-new (shell-command-to-string "xclip -o -t text/html | pandoc -f html -t org"))
     (yank))
 #+end_src
+** Table of contents
+#+begin_src emacs-lisp
+  (use-package org-make-toc
+    :ensure t
+    :defer t)
+#+end_src
 
 ** Org tags
 #+BEGIN_SRC emacs-lisp

@@ -666,6 +666,12 @@ Saves to a temp file and puts the filename in the kill ring."
   (yank))
 ;; Paste HTML as org text:1 ends here
 
+;; Table of contents:1 starts here
+(use-package org-make-toc
+  :ensure t
+  :defer t)
+;; Table of contents:1 ends here
+
 ;; Org tags:1 starts here
 (setq org-complete-tags-always-offer-all-agenda-tags t)
 ;; Org tags:1 ends here
