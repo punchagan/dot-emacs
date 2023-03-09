@@ -601,7 +601,9 @@ Saves to a temp file and puts the filename in the kill ring."
 (use-package blacken
   :demand t
   :after python
-  :hook (python-mode . blacken-mode))
+  :hook (python-mode . blacken-mode)
+  :config
+  (setq blacken-line-length 100))
 ;; Use black in Python buffers:1 ends here
 
 ;; Use poetry with poetry-tracking-mode:1 starts here

@@ -786,7 +786,10 @@ the last thing to run!
   (use-package blacken
     :demand t
     :after python
-    :hook (python-mode . blacken-mode))
+    :hook (python-mode . blacken-mode)
+    :config
+    (setq blacken-line-length 100))
+
 #+END_SRC
 *** Use poetry with poetry-tracking-mode
 #+BEGIN_SRC emacs-lisp
