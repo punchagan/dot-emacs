@@ -960,6 +960,10 @@ instead of back to heading."
   :ensure t)
 ;; Reading PDFs and taking notes:2 ends here
 
+;; Org crypt:1 starts here
+(require 'org-crypt)
+;; Org crypt:1 ends here
+
 ;; Emacs Anywhere:3 starts here
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)

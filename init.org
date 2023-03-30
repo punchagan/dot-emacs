@@ -1170,6 +1170,10 @@ Install Org noter
   (use-package org-noter
     :ensure t)
 #+end_src
+** Org crypt
+#+begin_src emacs-lisp
+  (require 'org-crypt)
+#+end_src
 
 * Using Emacs from the "outside"
 ** Emacs Anywhere
