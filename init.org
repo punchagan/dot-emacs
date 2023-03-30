@@ -835,7 +835,23 @@ the last thing to run!
   (use-package lua-mode
     :defer t)
 #+end_src
-
+** GitHub Co-Pilot
+#+BEGIN_SRC emacs-lisp
+  (eval-and-compile
+    (setq pc/copilot-load-path
+          (expand-file-name "misc/copilot.el/" pc/code-directory)))
+  (use-package editorconfig
+    :ensure t)
+  (use-package copilot
+    :load-path pc/copilot-load-path
+    :demand
+    :init
+    (setq copilot-idle-delay 0.5)
+    ;; Turn on Copilot in prog mode
+    (add-hook 'prog-mode-hook 'copilot-mode)
+    :bind (:map copilot-mode-map
+           ("C-c C-c" . copilot-accept-completion)))
+#+END_SRC
 * Prose and Literate Programming
 ** Org mode
 Some basic org-mode configuration

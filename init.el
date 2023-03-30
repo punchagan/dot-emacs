@@ -649,6 +649,23 @@ Saves to a temp file and puts the filename in the kill ring."
   :defer t)
 ;; Lua:1 ends here
 
+;; GitHub Co-Pilot:1 starts here
+(eval-and-compile
+  (setq pc/copilot-load-path
+        (expand-file-name "misc/copilot.el/" pc/code-directory)))
+(use-package editorconfig
+  :ensure t)
+(use-package copilot
+  :load-path pc/copilot-load-path
+  :demand
+  :init
+  (setq copilot-idle-delay 0.5)
+  ;; Turn on Copilot in prog mode
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  :bind (:map copilot-mode-map
+         ("C-c C-c" . copilot-accept-completion)))
+;; GitHub Co-Pilot:1 ends here
+
 ;; Org mode:1 starts here
 (use-package org
   :pin gnu
