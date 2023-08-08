@@ -845,6 +845,11 @@ the last thing to run!
     :bind (:map copilot-mode-map
            ("C-c C-c" . copilot-accept-completion)))
 #+END_SRC
+** Dockerfile
+#+begin_src emacs-lisp
+  (use-package dockerfile-mode
+    :ensure t)
+#+end_src
 * Prose and Literate Programming
 ** Org mode
 Some basic org-mode configuration

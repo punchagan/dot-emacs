@@ -659,6 +659,11 @@ Saves to a temp file and puts the filename in the kill ring."
          ("C-c C-c" . copilot-accept-completion)))
 ;; GitHub Co-Pilot:1 ends here
 
+;; Dockerfile:1 starts here
+(use-package dockerfile-mode
+  :ensure t)
+;; Dockerfile:1 ends here
+
 ;; Org mode:1 starts here
 (use-package org
   :pin gnu
