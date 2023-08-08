@@ -561,13 +561,6 @@ Saves to a temp file and puts the filename in the kill ring."
          (python-mode . anaconda-eldoc-mode)))
 ;; Use anaconda mode for code completion, etc.:1 ends here
 
-;; Use importmagic mode for fixing imports:1 starts here
-(use-package importmagic
-  :demand t
-  :after python
-  :hook (python-mode . importmagic-mode))
-;; Use importmagic mode for fixing imports:1 ends here
-
 ;; Use autoflake to remove unused imports:1 starts here
 (defun pc/autoflake-remove-unused-imports-before-save ()
   (interactive)

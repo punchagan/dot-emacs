@@ -740,13 +740,6 @@ Show TODO keywords in magit status buffer!
     :hook ((python-mode . anaconda-mode)
            (python-mode . anaconda-eldoc-mode)))
 #+END_SRC
-*** Use importmagic mode for fixing imports
-#+BEGIN_SRC emacs-lisp
-  (use-package importmagic
-    :demand t
-    :after python
-    :hook (python-mode . importmagic-mode))
-#+END_SRC
 *** Use autoflake to remove unused imports
 #+BEGIN_SRC emacs-lisp
   (defun pc/autoflake-remove-unused-imports-before-save ()
