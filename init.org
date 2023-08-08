@@ -1039,6 +1039,14 @@ Quickly create a summary of headlines tagged with specific tag
   (use-package zulip-helpers
       :load-path zulip-helpers-load-path)
 #+END_SRC
+
+*** Convert markdown from Zulip (or Slack or GitHub) to org
+#+begin_src emacs-lisp
+  (defun pc/zulip-to-org (begin end)
+    (interactive "r")
+    (when (use-region-p)
+      (shell-command-on-region begin end "pandoc -r markdown -w org" t t)))
+#+end_src
 ** Org capture
 #+BEGIN_SRC emacs-lisp
   (require 'org-protocol)

@@ -836,6 +836,13 @@ If no such frame exists, creates a new frame."
     :load-path zulip-helpers-load-path)
 ;; Org mode and Zulip:1 ends here
 
+;; Convert markdown from Zulip (or Slack or GitHub) to org:1 starts here
+(defun pc/zulip-to-org (begin end)
+  (interactive "r")
+  (when (use-region-p)
+    (shell-command-on-region begin end "pandoc -r markdown -w org" t t)))
+;; Convert markdown from Zulip (or Slack or GitHub) to org:1 ends here
+
 ;; Org capture:1 starts here
 (require 'org-protocol)
 ;; Org capture:1 ends here
