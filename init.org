@@ -1090,6 +1090,10 @@ Template expansion!
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode :defer t)
 #+END_SRC
+*** Markdown toc
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-toc :defer t)
+#+END_SRC
 ** Hugo & Blog setup
 #+begin_src emacs-lisp
   ;; Copied from newer org-mode since ox-hugo needs it

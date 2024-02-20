@@ -885,6 +885,10 @@ If no such frame exists, creates a new frame."
 (use-package markdown-mode :defer t)
 ;; Markdown:1 ends here
 
+;; Markdown toc:1 starts here
+(use-package markdown-toc :defer t)
+;; Markdown toc:1 ends here
+
 ;; Hugo & Blog setup:1 starts here
 ;; Copied from newer org-mode since ox-hugo needs it
 
