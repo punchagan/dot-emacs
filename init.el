@@ -122,9 +122,7 @@
   :config
   (setq system-packages-package-manager 'apt
         system-packages-use-sudo t
-        system-packages-noconfirm t)
-  (unless (boundp 'pc/loading-tangled-init-p)
-    (system-packages-update)))
+        system-packages-noconfirm t))
 
 ;; Please don't bother me when shell buffer names are in use, just make a new
 ;; buffer.
