@@ -492,7 +492,7 @@ Saves to a temp file and puts the filename in the kill ring."
   :init
   (projectile-mode +1)
   :custom
-  (projectile-project-search-path `((,pc/code-directory . 3)))
+  (projectile-project-search-path `((,pc/code-directory . 4)))
   (projectile-indexing-method 'alien)
   (projectile-sort-order 'recently-active)
   :bind (:map projectile-mode-map
