@@ -1194,7 +1194,11 @@ Install Org noter
 #+begin_src emacs-lisp
   (require 'org-crypt)
 #+end_src
-
+** Org bookmarks
+#+begin_src emacs-lisp
+  (use-package org-bookmark-heading
+    :defer t)
+#+end_src
 * Using Emacs from the "outside"
 ** Emacs Anywhere
 Add the ability to use Emacs from input area.

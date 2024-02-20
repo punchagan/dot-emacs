@@ -984,6 +984,11 @@ instead of back to heading."
 (require 'org-crypt)
 ;; Org crypt:1 ends here
 
+;; Org bookmarks:1 starts here
+(use-package org-bookmark-heading
+  :defer t)
+;; Org bookmarks:1 ends here
+
 ;; Emacs Anywhere:3 starts here
 (defun pc/github-conversation-p (window-title)
   (or (string-match-p "Pull Request #" window-title)
