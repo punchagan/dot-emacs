@@ -821,6 +821,15 @@ the last thing to run!
                 (add-hook 'before-save-hook #'ocamlformat-before-save)))
     )
 #+end_src
+*** Set merlin command on setting switch
+#+begin_src emacs-lisp
+  (defun pc/set-merlincommand ()
+    "Set the merlin command to the current switch's merlin"
+    (setq merlin-command
+          (expand-file-name "bin/ocamlmerlin" (opam-switch--get-current-switch-prefix))))
+
+  (add-hook 'opam-switch-change-opam-switch-hook #'pc/set-merlincommand)
+#+end_src
 ** Lua
 #+begin_src emacs-lisp
   (use-package lua-mode

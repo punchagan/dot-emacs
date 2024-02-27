@@ -635,6 +635,15 @@ Saves to a temp file and puts the filename in the kill ring."
   )
 ;; Ocaml:1 ends here
 
+;; Set merlin command on setting switch:1 starts here
+(defun pc/set-merlincommand ()
+  "Set the merlin command to the current switch's merlin"
+  (setq merlin-command
+        (expand-file-name "bin/ocamlmerlin" (opam-switch--get-current-switch-prefix))))
+
+(add-hook 'opam-switch-change-opam-switch-hook #'pc/set-merlincommand)
+;; Set merlin command on setting switch:1 ends here
+
 ;; Lua:1 starts here
 (use-package lua-mode
   :defer t)
