@@ -399,6 +399,12 @@ renaming files!
 #+END_SRC
 
 ~swiper~ is an alternative to Emacs' default incremental search.
+*** In-buffer completion
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :hook ((after-init-hook) . global-company-mode))
+#+end_src
 ** Themes
 
 #+BEGIN_SRC emacs-lisp

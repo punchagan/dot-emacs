@@ -296,6 +296,12 @@
   (counsel-mode 1))
 ;; Completion and Narrowing:2 ends here
 
+;; In-buffer completion:1 starts here
+(use-package company
+  :ensure t
+  :hook ((after-init-hook) . global-company-mode))
+;; In-buffer completion:1 ends here
+
 ;; Themes:1 starts here
 ;; Don't prompt to confirm theme safety. This avoids problems with
 ;; first-time startup on Emacs > 26.3.
