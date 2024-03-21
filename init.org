@@ -807,25 +807,43 @@ the last thing to run!
 ** Ocaml
 #+begin_src emacs-lisp
   ;; Tuareg
-  (use-package tuareg)
+  (use-package tuareg
+    :ensure t
+    :mode (("\\.ocamlinit\\'" . tuareg-mode)))
 
-  (setq pc/ocaml-default-dir "/home/punchagan/.opam/default/")
-  (when (file-directory-p pc/ocaml-default-dir)
-    (push (expand-file-name "share/emacs/site-lisp" pc/ocaml-default-dir) load-path)
+  ;; Dune
+  (use-package dune
+    :ensure t)
 
-    ;; Merlin
-    (setq merlin-command (expand-file-name "bin/ocamlmerlin" pc/ocaml-default-dir))
-    (autoload 'merlin-mode "merlin" "Merlin mode" t)
+  ;; Ocamlformat
+  (use-package ocamlformat
+    :ensure t
+    :hook ((tuareg-mode) . (lambda ()
+                (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
+                (add-hook 'before-save-hook #'ocamlformat-before-save))))
+
+  ;; Merlin configuration
+  (use-package merlin
+    :ensure t
+    :config
     (add-hook 'tuareg-mode-hook #'merlin-mode)
     (add-hook 'caml-mode-hook #'merlin-mode)
+    (add-hook 'merlin-mode-hook #'company-mode)
+    ;; we're using flycheck instead
+    (setq merlin-error-after-save nil))
 
-    ;; Ocamlformat
-    (require 'ocamlformat)
-    (add-hook 'tuareg-mode-hook
-              (lambda ()
-                (define-key tuareg-mode-map (kbd "C-M-<tab>") #'ocamlformat)
-                (add-hook 'before-save-hook #'ocamlformat-before-save)))
-    )
+  (use-package merlin-eldoc
+    :ensure t
+    :hook ((tuareg-mode) . merlin-eldoc-setup))
+
+  ;; This uses Merlin internally
+  (use-package flycheck-ocaml
+    :ensure t
+    :config (flycheck-ocaml-setup))
+
+  ;; opam-switch mode
+  (use-package opam-switch-mode
+    :ensure t)
 #+end_src
 *** Set merlin command on setting switch
 #+begin_src emacs-lisp
