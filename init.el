@@ -855,6 +855,24 @@ If no such frame exists, creates a new frame."
     (mapc (lambda (item) (insert (format "- %s\n" (org-no-properties item)))) headlines)))
 ;; Work Today:1 ends here
 
+;; Org clock to Status:1 starts here
+(defun pc/current-task-to-status ()
+  (interactive)
+  (if (fboundp 'org-clocking-p)
+      (if (org-clocking-p)
+          (call-process "dconf" nil nil nil "write"
+                        "/org/gnome/shell/extensions/simple-message/message"
+                        (concat "'" (org-clock-get-clock-string) "'"))
+        (call-process "dconf" nil nil nil "write"
+                      "/org/gnome/shell/extensions/simple-message/message"
+                      "'No active clock'"))))
+(run-with-timer 0 60 #'pc/current-task-to-status)
+(add-hook 'org-clock-in-hook #'pc/current-task-to-status)
+(add-hook 'org-clock-out-hook #'pc/current-task-to-status)
+(add-hook 'org-clock-cancel-hook #'pc/current-task-to-status)
+(add-hook 'org-clock-goto-hook #'pc/current-task-to-status)
+;; Org clock to Status:1 ends here
+
 ;; Org mode and Zulip:1 starts here
 (use-package request :defer t)
 (use-package ox-gfm :defer t)

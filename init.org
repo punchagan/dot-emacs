@@ -1057,7 +1057,24 @@ Quickly create a summary of headlines tagged with specific tag
       (mapc (lambda (item) (insert (format "- %s\n" (org-no-properties item)))) headlines)))
 
 #+END_SRC
-
+**** Org clock to Status
+#+begin_src emacs-lisp
+  (defun pc/current-task-to-status ()
+    (interactive)
+    (if (fboundp 'org-clocking-p)
+        (if (org-clocking-p)
+            (call-process "dconf" nil nil nil "write"
+                          "/org/gnome/shell/extensions/simple-message/message"
+                          (concat "'" (org-clock-get-clock-string) "'"))
+          (call-process "dconf" nil nil nil "write"
+                        "/org/gnome/shell/extensions/simple-message/message"
+                        "'No active clock'"))))
+  (run-with-timer 0 60 #'pc/current-task-to-status)
+  (add-hook 'org-clock-in-hook #'pc/current-task-to-status)
+  (add-hook 'org-clock-out-hook #'pc/current-task-to-status)
+  (add-hook 'org-clock-cancel-hook #'pc/current-task-to-status)
+  (add-hook 'org-clock-goto-hook #'pc/current-task-to-status)
+#+end_src
 ** Org mode and Zulip
 #+BEGIN_SRC emacs-lisp
   (use-package request :defer t)
